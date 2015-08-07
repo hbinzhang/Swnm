@@ -1,0 +1,325 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="../include.inc.jsp"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>安防综合监控系统</title>
+		<link href="<c:url value='/resources/images/favicon.ico'></c:url>" rel="icon" type="image/x-icon" />
+	    <link href="<c:url value='/resources/images/favicon.ico'></c:url>" rel="shortcut icon" type="image/x-icon" />
+		<link href="${pageContext.request.contextPath}/resources/css/common.css" rel="stylesheet">
+		<link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
+		<link href="${pageContext.request.contextPath}/resources/css/popModal.min.css" rel="stylesheet">
+		<link href="${pageContext.request.contextPath}/resources/css/validationEngine.jquery.css" rel="stylesheet">
+		<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			function onAppData(event)
+			{
+				  if (event.getSubject() == localWarning) 
+				  {//告警推送发来的消息
+						var alarmOperation = event.get("alarmOperation");//消息处理类型 add 或者 del
+						var alarmType = event.get("alarmType");//消息类型 securityAlarm或者devAlarm
+						 if(alarmOperation=="add")
+						 {
+						 	if(alarmType=="deviceAlarm")
+				        	{
+								$("#data_loading").show();
+				        		var meesage = event.get("message");
+				        		var jsonString = $.parseJSON(meesage);
+				        		var alarmId = jsonString['alarmId'];
+				        		var deUrl = '<c:url value="/alarmmgt/handleDeviceAlarm?alarmId='+alarmId+'"></c:url>';
+				        		var hiddenSpan = "";
+				        		if(jsonString['type']==1)
+				        		{
+				        			hiddenSpan += "<span style='display:none;' id='alarm"+alarmId+"_gaojingleixing'>"+"安防告警"+"</span>";
+				        		}
+				        		else
+				        		{
+				        			hiddenSpan += "<span style='display:none;' id='alarm"+alarmId+"_gaojingleixing'>"+"设备告警"+"</span>";
+				        		}
+				        		if(jsonString['alarmStatus']==1)
+				        		{
+				        			hiddenSpan += "<span style='display:none;' id='alarm"+alarmId+"_zhuangtai'>"+"已处理"+"</span>";
+				        		}
+				        		else
+				        		{
+				        			hiddenSpan += "<span style='display:none;' id='alarm"+alarmId+"_zhuangtai'>"+"未处理"+"</span>";
+				        		}
+				        		hiddenSpan += "<span style='display:none;' id='alarm"+alarmId+"_yuanyin'>"+jsonString['cause']+"</span>";
+				        		hiddenSpan += "<span style='display:none;' id='alarm"+alarmId+"_houguo'>"+jsonString['result']+"</span>";
+				        		hiddenSpan += "<span style='display:none;' id='alarm"+alarmId+"_caozuo'>"+jsonString['operation']+"</span>";
+				        		if(jsonString['isAffect']==1)
+				        		{
+				        			hiddenSpan += "<span style='display:none;' id='alarm"+alarmId+"_yingxiang'>"+"是"+"</span>";
+				        		}
+				        		else
+				        		{
+				        			hiddenSpan += "<span style='display:none;' id='alarm"+alarmId+"_yingxiang'>"+"否"+"</span>";
+				        		}
+				        		hiddenSpan += "<span style='display:none;' id='alarm"+alarmId+"_fujia'>"+jsonString['info']+"</span>";
+				        		var node = "<tr>";
+				        		node += "<td id='alarm"+alarmId+"_bianhao'><a href='javascript:void(0);' onclick='pushGaojingDetail(this);' class='detail gaojingjianshi_detail' alarmid="+alarmId+">"+alarmId+"</a></td>";
+				        		node += "<td id='alarm"+alarmId+"_gaojingma'>"+jsonString['alarmCode']+"</td>";
+				        		node += "<td id='alarm"+alarmId+"_gaojingmingcheng'>"+jsonString['alarmName']+"</td>";
+				        		node += "<td id='alarm"+alarmId+"_gaojingshijian'>"+jsonString['alarmTime']+"</td>";
+				        		if(jsonString['alarmLevel']==1)
+				        		{
+				        			node += "<td id='alarm"+alarmId+"_gaojingjibie'>"+"警告"+"</td>";
+				        		}
+				        		else if(jsonString['alarmLevel']==2)
+				        		{
+				        			node += "<td id='alarm"+alarmId+"_gaojingjibie'>"+"次要"+"</td>";
+				        		}
+				        		else if(jsonString['alarmLevel']==3)
+				        		{
+				        			node += "<td id='alarm"+alarmId+"_gaojingjibie'>"+"主要"+"</td>";
+				        		}
+				        		else
+				        		{
+				        			node += "<td id='alarm"+alarmId+"_gaojingjibie'>"+"严重"+"</td>";
+				        		}
+				        		
+				        		if(jsonString['deviceType']==1)
+				        		{
+				        			node += "<td id='alarm"+alarmId+"_shebeileixing'>"+"高压脉冲主机"+"</td>";
+				        		}
+				        		else if(jsonString['deviceType']==2)
+				        		{
+				        			node += "<td id='alarm"+alarmId+"_shebeileixing'>"+"一体化探测主机"+"</td>";
+				        		}
+				        		else if(jsonString['deviceType']==3)
+				        		{
+				        			node += "<td id='alarm"+alarmId+"_shebeileixing'>"+"防区型振动光纤"+"</td>";
+				        		}
+				        		else if(jsonString['deviceType']==4)
+				        		{
+				        			node += "<td id='alarm"+alarmId+"_shebeileixing'>"+"定位型振动光纤"+"</td>";
+				        		}
+				        		else if(jsonString['deviceType']==5)
+				        		{
+				        			node += "<td id='alarm"+alarmId+"_shebeileixing'>"+"NVR"+"</td>";
+				        		}
+				        		else if(jsonString['deviceType']==6)
+				        		{
+				        			node += "<td id='alarm"+alarmId+"_shebeileixing'>"+"IPC"+"</td>";
+				        		}
+				        		else
+				        		{
+				        			node += "<td id='alarm"+alarmId+"_shebeileixing'>"+"智能视频服务器"+"</td>";
+				        		}
+				        		node += "<td id='alarm"+alarmId+"_shebeiid'>"+jsonString['deviceId']+"</td>";
+				        		node += "<td id='alarm"+alarmId+"_fengongsi'>"+jsonString['branchName']+"</td>";
+				        		node += "<td id='alarm"+alarmId+"_guanlichu'>"+jsonString['departmentName']+"</td>";
+				        		node += "<td id='alarm"+alarmId+"_fangqu'>"+jsonString['zoneName']+"</td>";
+				        		node += "<td id='alarm"+alarmId+"_fujiaxinxi'>"+jsonString['info']+"</td>";
+				        		node += "<td align='center'><a class='gaojingchuli chulilink' href='"+deUrl+"'>处理</a></td></tr>";
+				        		$(".tableui tbody").prepend(node);
+								$(".tableui tbody").prepend(hiddenSpan);
+								var totalCount = parseInt($("#totalrecords").val());
+								if(!isNaN(totalCount)&&totalCount>=100)
+								{
+									$(".tableui tr:last").remove();
+								}
+								else
+								{
+									$("#totalrecords").val(totalCount+1);
+								}
+				        		$(".tableui").colorTable();
+								$("#data_loading").hide();
+				        	}
+						 }
+				  }
+			}			
+		</script>
+	</head>
+	<body>
+		<c:import url="../layout/header.jsp" charEncoding="UTF-8"></c:import>
+		<div id="main_content_container">
+			<div id="nav_place">
+				<div id="title">位置：</div>
+				<ul>
+					<li><a href="<c:url value="/"></c:url>">首页</a></li>
+					<li><a href="<c:url value="/alarmmgt/queryDeviceAlarm"></c:url>">告警管理</a></li>
+					<li>告警监视</li>
+				</ul>
+			</div>
+			<div id="content_container">
+				<c:import url="../layout/gaojingtab.jsp?gTabLink=gaojingjianshi" charEncoding="UTF-8"></c:import>
+			    <div class="tableui_container">
+					<input type="hidden" id="totalrecords" value="${fn:length(deviceAlarmList)}">
+					<div class="normalajaxloading" id="data_loading"></div>
+					<table class="tableui" id="alarm_table">
+				    	<thead>
+					    	<tr>
+					    		<th width="2%">
+					    			<input type="checkbox" id="gaojingchuli_select_all"/>
+					    		</th>                      
+						        <th><span>告警编号</span></th>
+						        <th><span>告警码</span></th>
+						        <th><span>告警名称</span></th>
+						        <th><span>告警时间</span></th>
+						        <th><span>告警级别</span></th>
+						        <th><span>设备类型</span></th>
+						        <th><span>设备ID</span></th>
+						        <th><span>分公司</span></th>
+								<th><span>管理处</span></th>
+								<th><span>防区</span></th>
+						        <th><span>附加信息</span></th>
+								<!-- <th><span>处理</span></th> -->
+					        </tr>
+					   	</thead>
+						<tbody>
+						<c:forEach items="${deviceAlarmList }" var="alarm">
+							
+								<span style="display:none;" id="alarm${alarm.alarmId }_gaojingleixing">
+									<c:choose>
+										<c:when test="${alarm.type==1 }">安防告警</c:when>
+										<c:otherwise>设备告警</c:otherwise>
+									</c:choose>
+								</span>
+								<span style="display:none;" id="alarm${alarm.alarmId }_zhuangtai">
+									<c:choose>
+										<c:when test="${alarm.alarmStatus==1 }">已处理</c:when>
+										<c:otherwise>未处理</c:otherwise>
+									</c:choose>
+								</span>
+								<span style="display:none;" id="alarm${alarm.alarmId }_yuanyin"><c:out value="${alarm.cause }"></c:out></span>
+								<span style="display:none;" id="alarm${alarm.alarmId }_houguo"><c:out value="${alarm.result }"></c:out></span>
+								<span style="display:none;" id="alarm${alarm.alarmId }_caozuo"><c:out value="${alarm.operation }"></c:out></span>
+								<span style="display:none;" id="alarm${alarm.alarmId }_yingxiang">
+								<c:choose>
+									<c:when test="${alarm.isAffect==1 }">是</c:when>
+									<c:otherwise>否</c:otherwise>
+								</c:choose>
+								</span>
+								<span style="display:none;" id="alarm${alarm.alarmId }_fujia"><c:out value="${alarm.info }"></c:out></span>
+								<tr>
+									<td align="center">
+										<input type="checkbox" value="${alarm.alarmId}" name="chulialarmids" id="chulialarmids"/>
+									</td>
+									<td id="alarm${alarm.alarmId }_bianhao">
+										<a class="detail gaojingjianshi_detail" href="javascript:void(0);" alarmid=${alarm.alarmId }><c:out value="${alarm.alarmId }"></c:out></a>
+									</td>
+									<td id="alarm${alarm.alarmId }_gaojingma"><c:out value="${alarm.alarmCode }"></c:out></td>
+									<td id="alarm${alarm.alarmId }_gaojingmingcheng"><c:out value="${alarm.alarmName }"></c:out></td>
+									<td id="alarm${alarm.alarmId }_gaojingshijian"><fmt:formatDate value="${alarm.alarmTime }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+									<c:choose>
+										<c:when test="${alarm.alarmLevel == 1 }">
+											<td id="alarm${alarm.alarmId }_gaojingjibie"><c:out value="警告"></c:out></td>
+										</c:when>
+										<c:when test="${alarm.alarmLevel == 2 }">
+											<td id="alarm${alarm.alarmId }_gaojingjibie"><c:out value="次要"></c:out></td>
+										</c:when>
+										<c:when test="${alarm.alarmLevel == 3 }">
+											<td id="alarm${alarm.alarmId }_gaojingjibie"><c:out value="主要"></c:out></td>
+										</c:when>
+										<c:when test="${alarm.alarmLevel == 4 }">
+											<td id="alarm${alarm.alarmId }_gaojingjibie"><c:out value="严重"></c:out></td>
+										</c:when>
+										<c:otherwise>
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${alarm.deviceType == 1 }">
+											<td id="alarm${alarm.alarmId }_shebeileixing"><c:out value="高压脉冲主机"></c:out></td>
+										</c:when>
+										<c:when test="${alarm.deviceType == 2 }">
+											<td id="alarm${alarm.alarmId }_shebeileixing"><c:out value="一体化探测主机"></c:out></td>
+										</c:when>
+										<c:when test="${alarm.deviceType == 3 }">
+											<td id="alarm${alarm.alarmId }_shebeileixing"><c:out value="防区型振动光纤"></c:out></td>
+										</c:when>
+										<c:when test="${alarm.deviceType == 4 }">
+											<td id="alarm${alarm.alarmId }_shebeileixing"><c:out value="定位型振动光纤"></c:out></td>
+										</c:when>
+										<c:when test="${alarm.deviceType == 5 }">
+											<td id="alarm${alarm.alarmId }_shebeileixing"><c:out value="NVR"></c:out></td>
+										</c:when>
+										<c:when test="${alarm.deviceType == 6 }">
+											<td id="alarm${alarm.alarmId }_shebeileixing"><c:out value="IPC"></c:out></td>
+										</c:when>
+										<c:when test="${alarm.deviceType == 7 }">
+											<td id="alarm${alarm.alarmId }_shebeileixing"><c:out value=" 智能视频服务器"></c:out></td>
+										</c:when>
+										<c:otherwise>
+										</c:otherwise>
+									</c:choose>
+									<td id="alarm${alarm.alarmId }_shebeiid"><c:out value="${alarm.deviceId }"></c:out></td>
+									<td id="alarm${alarm.alarmId }_fengongsi"><c:out value="${alarm.branchName }"></c:out></td>
+									<td id="alarm${alarm.alarmId }_guanlichu"><c:out value="${alarm.departmentName }"></c:out></td>
+									<td id="alarm${alarm.alarmId }_fangqu"><c:out value="${alarm.zoneName }"></c:out></td>
+									<td id="alarm${alarm.alarmId }_fujiaxinxi"><c:out value="${alarm.info }"></c:out></td>
+									<%-- <td align="center">
+									<c:if test="${poteviofn:clContains(sessionScope.session.authorizatedOps,'处理设备告警') }">
+										<a class="gaojingchuli chulilink" href="<c:url value="/alarmmgt/handleDeviceAlarm?alarmId=${alarm.alarmId  }"></c:url>">处理</a>
+									</c:if>
+									</td> --%>
+								</tr>
+							</c:forEach>
+						</tbody>
+				    </table>
+				</div>
+			</div>
+		</div>
+		<c:import url="../layout/footer.jsp" charEncoding="UTF-8"></c:import>
+		<div id="gaojingjianshi_info" style="display: none;z-index:0;" wid="60">
+			<div class='dialogModal_header'>告警详细信息</div>
+			<div class='dialogModal_content'>
+				<table class="detail_table">
+					<tbody>
+						<tr>
+							<td class="title_name">告警编号:</td>
+							<td class="content content_bianhao"></td>
+							<td class="title_name">告警码:</td>
+							<td class="content content_gaojingma"></td>
+							<td class="title_name">告警名称:</td>
+							<td class="content content_gaojingmingcheng"></td>
+						</tr>
+						<tr>
+							<td class="title_name">告警时间:</td>
+							<td class="content content_gaojingshijian"></td>
+							<td class="title_name">告警级别:</td>
+							<td class="content content_gaojingjibie"></td>
+							<td class="title_name">告警类型:</td>
+							<td class="content content_gaojingleixing"></td>
+						</tr>
+						<tr>
+							<td class="title_name">设备类型:</td>
+							<td class="content content_shebeileixing"></td>
+							<td class="title_name">设备ID:</td>
+							<td class="content content_shebeiid"></td>
+							<td class="title_name">处理状态:</td>
+							<td class="content content_zhuangtai"></td>
+						</tr>
+						<tr>
+							<td class="title_name">分公司:</td>
+							<td class="content content_fengongsi"></td>
+							<td class="title_name">管理处:</td>
+							<td class="content content_guanlichu"></td>
+							<td class="title_name">防区:</td>
+							<td class="content content_fangqu"></td>
+						</tr>
+						<tr>
+							<td class="title_name">可能原因:</td>
+							<td class="content content_yuanyin"></td>
+							<td class="title_name">可能后果:</td>
+							<td class="content content_houguo"></td>
+							<td class="title_name">建议操作:</td>
+							<td class="content content_caozuo"></td>
+						</tr>
+						<tr>
+							<td class="title_name">是否影响业务:</td>
+							<td class="content content_yingxiang"></td>
+							<td class="title_name">附加信息:</td>
+							<td colspan="3" class="content content_fujia"></td>
+						</tr>
+					<tbody>
+				</table>
+			</div>
+			<div class="left20 top10" style="padding-bottom:20px;">
+				<input class="left20 btn" data-dialogModalBut="cancel" type="button" value="关闭"/>
+			</div>
+		</div>
+	</body>
+</html>

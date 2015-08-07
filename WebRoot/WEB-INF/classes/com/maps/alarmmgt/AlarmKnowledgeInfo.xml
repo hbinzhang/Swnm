@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="alarmKnowledgeInfo">
+	<typeAlias alias="alarmKnowledgeInfo" type="com.entity.alarmmgt.AlarmKnowledge" />
+	
+	<select id="queryAllAlarmKnowledge" resultClass="alarmKnowledgeInfo">
+		SELECT  
+		alarmCode,alarmName,alarmType,deviceType,alarmLevel,
+     	cause,result,operation,isAffect,info 
+     	FROM T_ALM_KNOWLEDGE 
+		ORDER BY ALARMCODE
+	</select>
+	
+	<update id="updateAlarmKnowledgeInfo" parameterClass="alarmKnowledgeInfo">
+		UPDATE T_ALM_KNOWLEDGE 
+		set 
+        CAUSE=#cause#,  
+        RESULT=#result#, 
+        OPERATION=#operation#,
+        INFO = #info#
+		WHERE ALARMCODE=#alarmCode#
+	</update>
+	
+	<select id="queryAlaKnowByKnowledge" resultClass="alarmKnowledgeInfo"
+		parameterClass="alarmKnowledgeInfo">
+		SELECT   
+		alarmCode,alarmName,alarmType,deviceType,alarmLevel,
+     	cause,result,operation,isAffect,info 
+     	FROM T_ALM_KNOWLEDGE 
+		<dynamic prepend="WHERE">
+			<isNotEqual prepend="AND" property="alarmType" compareValue="-1">  	
+			    ALARMTYPE = #alarmType#			    
+		    </isNotEqual> 
+		    <isNotEqual prepend="AND" property="deviceType" compareValue="-1">
+			    DEVICETYPE = #deviceType#
+		    </isNotEqual>	
+		</dynamic>
+		ORDER BY ALARMCODE
+	</select>
+	
+	<select id="queryAlarmKnowledgeByCode" resultClass="alarmKnowledgeInfo"
+		parameterClass="java.lang.Integer">
+		SELECT  
+		alarmCode,alarmName,alarmType,deviceType,alarmLevel,
+     	cause,result,operation,isAffect,info 
+     	FROM T_ALM_KNOWLEDGE 
+		WHERE ALARMCODE = #alarmCode#
+	</select>
+	
+</sqlMap>
+

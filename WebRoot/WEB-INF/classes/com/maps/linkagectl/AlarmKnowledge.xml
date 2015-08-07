@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="alarmKnowledge">
+<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="AlarmKnowledge" type="com.entity.linkagectl.AlarmKnowledge" />
+	<typeAlias alias="UIMCSecurityAlarm" type="com.entity.linkagectl.UIMCSecurityAlarm" />
+		<!-- 这样以后改了sql，就不需要去改java代码了 -->
+<!-- id表示select里的sql语句，resultClass表示返回结果的类型 -->
+<!-- parameterClass表示参数的内容 -->
+<!-- #表示这是一个外部调用的需要传进的参数，可以理解为占位符 -->
+	<select id="getAlarmKnowledge" parameterClass="java.lang.String"
+		resultClass="AlarmKnowledge">
+		<![CDATA[ 
+    select 
+     alarmCode,alarmName,alarmType,deviceType,alarmLevel,
+     cause,result,operation,isAffect,info
+    from T_ALM_KNOWLEDGE
+    where alarmCode = #alarmCode# 
+    ]]>
+	</select>
+	<!-- 注意这里的resultClass类型，使用SeAlarm类型取决于queryForList还是queryForObject -->
+	<select id="getAllAlarmKnowledge" resultClass="AlarmKnowledge">
+		<![CDATA[ 
+    select 
+      alarmCode,alarmName,alarmType,deviceType,alarmLevel,
+     cause,result,operation,isAffect,info
+    from T_ALM_KNOWLEDGE
+    ]]>
+	</select>
+	<!-- 
+	<select id="getUIAlarm" parameterClass="AlarmKnowledge"
+		resultClass="UIMCSecurityAlarm">
+		<![CDATA[ 
+    select 
+     * 
+    from T_ALM_KNOWLEDGE
+    where alarmCode = #alarmCode# 
+    ]]>
+	</select>
+	-->
+	<update id="updateAlarmKnowledge" parameterClass="AlarmKnowledge">
+		<![CDATA[ 
+    UPDATE T_ALM_KNOWLEDGE
+    SET         
+      alarmName=#alarmName#,
+      alarmType=#alarmType#,      
+      deviceType=#deviceType#,
+      alarmLevel=#alarmLevel#,      
+      cause=#cause#,
+      result=#result#,
+      operation=#operation#,      
+      isAffect=#isAffect#,
+      info=#info#
+  WHERE alarmCode = #alarmCode# 
+]]>
+	</update>
+   
+
+<insert id="insertAlarmKnowledge" parameterClass="AlarmKnowledge">
+		INSERT INTO T_ALM_KNOWLEDGE (alarmCode,alarmName,
+		alarmType,deviceType,alarmLevel,cause,result,operation,isAffect,
+		info) 
+      VALUES (#alarmCode#,#alarmName#,
+      #alarmType#,#deviceType#,#alarmLevel#,#cause#,#result#,#operation#,#isAffect#,
+      #info#)
+	</insert>
+	
+	<delete id="deleteAlarmKnowledge" parameterClass="java.lang.String">
+		delete from T_ALM_KNOWLEDGE where alarmCode=#alarmCode#
+	</delete>
+
+</sqlMap>

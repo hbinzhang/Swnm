@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="operationLog">
+
+	<typeAlias alias="operationLog" type="com.entity.logmgt.OperationLog" />
+	
+	<insert id="createOperationLog" parameterClass="operationLog">
+		INSERT INTO T_AUT_OPERATIONLOG
+		(
+		  OLSID,
+		  OPTIME,
+		  ACCOUNTID,
+		  ORGANIZATIONID,
+		  MODULEID,
+		  COMMANDID,
+		  OPRESULT,
+		  OPDETAIL,
+		  HOSTNAME,
+		  HOSTIP,
+		  ENDTIME,
+		  OPERATIONOBJECTS
+		)
+		VALUES
+		(
+			#olsId#,
+			#opTime#,
+			#accountId#,
+			#organizationId#,
+			#moduleId#,
+			#commandId#,	
+			#opResult#,
+			#opDetail#,
+			#hostName#,
+			#hostIp#,
+			#endTime#,
+			#operationObjects#
+		)
+	</insert>	
+
+	<select id="getOperationLogId" resultClass="Integer">
+		SELECT T_AUT_OPERATIONLOG_ID_SEQ.NEXTVAL AS OLSID FROM DUAL
+	</select>	
+	
+	<update id="updateOperationLog" parameterClass="operationLog">
+		UPDATE T_AUT_OPERATIONLOG 
+		<dynamic prepend="set">   
+      		<isNotNull prepend="," property="opResult">             
+            	OPRESULT=#opResult# 
+            </isNotNull>   
+            <isNotNull prepend="," property="opDetail">             
+                OPDETAIL=#opDetail#  
+            </isNotNull>
+            <isNotNull prepend="," property="endTime">             
+                ENDTIME=#endTime#  
+            </isNotNull>  
+        </dynamic> 
+		WHERE OLSID=#olsId#
+	</update>
+	
+	<delete id="deleteOperLogById" parameterClass="java.lang.Long">
+		DELETE T_AUT_OPERATIONLOG WHERE OLSID=#olsId#
+	</delete>
+	
+	<select id="queryOperLogByOrgId" resultClass="operationLog" 
+			parameterClass="com.entity.logmgt.OperationLogCondition">
+		SELECT * FROM(
+			SELECT a.*, rownum rn 
+			FROM 
+			(SELECT t.* FROM 	
+			T_AUT_OPERATIONLOG t	
+			<dynamic prepend="WHERE">   
+		    <isNotNull prepend="AND" property="beginTime">
+			    OPTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    OPTIME <=#endTime#
+			     ]]>
+		    </isNotNull>  
+		    <isNotNull prepend="AND" property="organizationId">
+			    ORGANIZATIONID=#organizationId#
+		    </isNotNull>
+		    <isNotEqual prepend="AND" property="moduleId" compareValue="-1">
+			    MODULEID=#moduleId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="commandId" compareValue="-1">
+			    COMMANDID=#commandId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="opResult" compareValue="-1">
+			    OPRESULT=#opResult#
+		    </isNotEqual>  
+		    </dynamic> 
+		    ORDER BY OPTIME
+			)a
+			)b
+		<![CDATA[ 
+		WHERE rn>=#start# AND rn<#end#
+		 ]]>
+	</select>
+	
+	<select id="getOperLogCountByOrgId" resultClass="java.lang.Integer" 
+			parameterClass="com.entity.logmgt.OperationLogCondition">
+			SELECT count(*)
+			FROM 
+			T_AUT_OPERATIONLOG		
+			<dynamic prepend="WHERE">   
+		    <isNotNull prepend="AND" property="beginTime">
+			    OPTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    OPTIME <=#endTime#
+			     ]]>
+		    </isNotNull>  
+		    <isNotNull prepend="AND" property="organizationId">
+			    ORGANIZATIONID=#organizationId#
+		    </isNotNull>
+		    <isNotEqual prepend="AND" property="moduleId" compareValue="-1">
+			    MODULEID=#moduleId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="commandId" compareValue="-1">
+			    COMMANDID=#commandId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="opResult" compareValue="-1">
+			    OPRESULT=#opResult#
+		    </isNotEqual>  
+		    </dynamic> 
+	</select>
+	
+	<select id="getOperLogCountByAccId" resultClass="java.lang.Integer" 
+			parameterClass="com.entity.logmgt.OperationLogCondition">
+			SELECT count(*)
+			FROM 
+			T_AUT_OPERATIONLOG		
+			<dynamic prepend="WHERE">   
+		    <isNotNull prepend="AND" property="beginTime">
+			    OPTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    OPTIME <=#endTime#
+			     ]]>
+		    </isNotNull>  
+		    <isNotEmpty prepend="AND" property="accountId">
+			    ACCOUNTID=#accountId#
+		    </isNotEmpty>
+		    <isNotEqual prepend="AND" property="moduleId" compareValue="-1">
+			    MODULEID=#moduleId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="commandId" compareValue="-1">
+			    COMMANDID=#commandId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="opResult" compareValue="-1">
+			    OPRESULT=#opResult#
+		    </isNotEqual>  
+		    </dynamic> 
+	</select>
+	
+	<select id="queryOperLogByAccId" resultClass="operationLog" 
+			parameterClass="com.entity.logmgt.OperationLogCondition">
+				SELECT * FROM(
+			SELECT a.*, rownum rn 
+			FROM 
+			(SELECT t.* FROM 	
+			T_AUT_OPERATIONLOG t	
+			<dynamic prepend="WHERE">   
+		    <isNotNull prepend="AND" property="beginTime">
+			    OPTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    OPTIME <=#endTime#
+			     ]]>
+		    </isNotNull>  
+		    <isNotEmpty prepend="AND" property="accountId">
+			    ACCOUNTID=#accountId#
+		    </isNotEmpty>
+		    <isNotEqual prepend="AND" property="moduleId" compareValue="-1">
+			    MODULEID=#moduleId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="commandId" compareValue="-1">
+			    COMMANDID=#commandId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="opResult" compareValue="-1">
+			    OPRESULT=#opResult#
+		    </isNotEqual>  
+		    </dynamic> 
+		    ORDER BY OPTIME
+			)a
+			)b
+		<![CDATA[ 
+		WHERE rn>=#start# AND rn<#end#
+		 ]]>
+	</select>
+		
+	<select id="queryOperLogByOrgsAndAccId" resultClass="operationLog" 
+			parameterClass="com.entity.logmgt.OperationLogCondition">
+		SELECT * FROM(
+			SELECT a.*, rownum rn 
+			FROM 
+			(SELECT t.* FROM 	
+			T_AUT_OPERATIONLOG t	
+			WHERE
+			ORGANIZATIONID in $organs$	  			
+			<dynamic>
+		    <isNotNull prepend="AND" property="beginTime">
+			    OPTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    OPTIME <=#endTime#
+			     ]]>
+		    </isNotNull>  
+		    <isNotEmpty prepend="AND" property="accountId">
+			    ACCOUNTID=#accountId#
+		    </isNotEmpty>
+		    <isNotEqual prepend="AND" property="moduleId" compareValue="-1">
+			    MODULEID=#moduleId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="commandId" compareValue="-1">
+			    COMMANDID=#commandId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="opResult" compareValue="-1">
+			    OPRESULT=#opResult#
+		    </isNotEqual>  
+		    </dynamic> 
+		    ORDER BY OPTIME
+			)a
+			)b
+		<![CDATA[ 
+		WHERE rn>=#start# AND rn<#end#
+		 ]]>
+	</select>
+		
+	<select id="getOperLogCountByOrgsAndAccId" resultClass="java.lang.Integer" 
+			parameterClass="com.entity.logmgt.OperationLogCondition">
+			SELECT count(*)
+			FROM 
+			T_AUT_OPERATIONLOG	
+			WHERE
+			ORGANIZATIONID in $organs$	  			
+			<dynamic>
+		    <isNotNull prepend="AND" property="beginTime">
+			    OPTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    OPTIME <=#endTime#
+			     ]]>
+		    </isNotNull>  
+		    <isNotEmpty prepend="AND" property="accountId">
+			    ACCOUNTID=#accountId#
+		    </isNotEmpty>
+		    <isNotEqual prepend="AND" property="moduleId" compareValue="-1">
+			    MODULEID=#moduleId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="commandId" compareValue="-1">
+			    COMMANDID=#commandId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="opResult" compareValue="-1">
+			    OPRESULT=#opResult#
+		    </isNotEqual>  
+		    </dynamic> 
+	</select>
+	
+	<delete id="deleteOperLogByTime" parameterClass="com.entity.logmgt.OperationLogCondition">
+		DELETE T_AUT_OPERATIONLOG 
+		WHERE  
+		<![CDATA[ 
+		OPTIME >=#beginTime# AND OPTIME <#endTime#
+		 ]]>
+	</delete>
+	
+</sqlMap>
+

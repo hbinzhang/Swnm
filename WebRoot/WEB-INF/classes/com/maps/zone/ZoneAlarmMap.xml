@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ZoneAlarmInfo">
+
+	<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="AlarmDTO" type="com.entity.alarmmgt.AlarmDTO" />
+	
+	<select id="queryAlarmsByZoneID" resultClass="AlarmDTO" parameterClass="java.lang.Integer" >
+	select * from 
+ 		(select 
+	 		ad.ALARMID,ad.ALARMCODE ,AD.ALARMSTATUS,AD.ALARMTIME,
+	 		t_org.BRANCHNAME,t_org.MGTNAME,fi.IP, kl.deviceType,
+	 		ze.ZONENAME,kl.ALARMNAME,kl.ALARMTYPE,kl.ALARMLEVEL
+		from 
+			T_ALM_SECURITYALARM ad 
+		left join 
+			(SELECT 
+				p_org.ORGID branchID,c_org.ORGID mgtID,p_org.ORGNAME branchName,c_org.ORGNAME mgtName 
+			from 
+				T_AUT_ORGANIZATION p_org 
+			join 
+				T_AUT_ORGANIZATION c_org 
+			on 
+				c_org.SUPORGID=p_org.ORGID) t_org
+		on 
+			AD.BRANCHID=t_org.BRANCHID and AD.DEPARTMENTID=t_org.MGTID 
+		left join 
+			T_EF_FENCEINFO fi 
+		on 
+			fi.HOSTID=AD.DEVICEID 
+		left join 
+			T_LC_ZONEINFO ze 
+		on 
+			ZE.ZONEID=AD.ZONEID
+		left join 
+			T_ALM_KNOWLEDGE kl 
+		ON 
+			AD.ALARMCODE=kl.ALARMCODE 
+		where 
+			ze.ZONEID=#zoneID# and AD.ALARMSTATUS=0
+		ORDER BY 
+			AD.ALARMTIME DESC,ad.ALARMID desc)
+	where 
+		<![CDATA[
+		ROWNUM<=10
+		]]>
+	</select>
+ 
+
+</sqlMap>

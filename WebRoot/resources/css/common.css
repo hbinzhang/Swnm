@@ -1,0 +1,664 @@
+* {
+	font-size: 14px;
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+html,body {
+	margin: 0px auto;
+	font-family: "微软雅黑";
+	font-size: 14px;
+	background-color: #ffffff;
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+	color: #51555c;
+}
+ul {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+}
+li {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+}
+a, a:focus {
+	text-decoration: none;
+	color: #000;
+	outline: none;
+	blr: expression(this.onFocus = this.blur ());
+}
+inout{
+	outline:none;
+}
+a:hover {
+	color: #00a4ac;
+	text-decoration: none;
+}
+.clear{
+	clear:both;
+}
+.left{
+	float:left;
+}
+.right{
+	float:right;
+}
+.left10 {
+	margin-left: 10px;
+}
+
+.left20 {
+	margin-left: 20px;
+}
+
+.left30 {
+	margin-left: 30px;
+}
+
+.left40 {
+	margin-left: 40px;
+}
+
+.left50 {
+	margin-left: 50px;
+}
+.top5 {
+	margin-top: 5px;
+}
+
+.top10 {
+	margin-top: 10px;
+}
+
+.top15 {
+	margin-top: 15px;
+}
+
+.top20 {
+	margin-top: 20px;
+}
+
+.top30 {
+	margin-top: 30px;
+}
+
+.bottom10 {
+	margin-bottom: 10px;
+}
+
+.bottom15 {
+	margin-bottom: 15px;
+}
+
+.bottom20 {
+	margin-bottom: 20px;
+}
+.paddingtop5 {
+	padding-top: 5px;
+}
+.hidden{
+	display:none;
+}
+.bold{
+	font-weight:bold;
+}
+.btn {
+	background: none repeat scroll 0 0 #36A9E1;
+	border: medium none;
+	border-radius: 5px;
+	color: #FFFFFF;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 15px;
+	font-weight:bold;
+	line-height: 1.5;
+	margin: 5px 0;
+	padding: 6px 12px;
+	margin-right: 20px;
+	min-width:100px;
+	outline:none;
+}
+.hrefbtn {
+	background: none repeat scroll 0 0 #36A9E1;
+	border: medium none;
+	border-radius: 5px;
+	color: #FFFFFF;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 15px;
+	font-weight:bold;
+	line-height: 1.5;
+	margin: 5px 0;
+	padding: 7px 12px;
+	margin-right: 20px;
+	min-width:80px;
+	text-align:center;
+}
+.hrefbtn:hover {
+	color: #FFFFFF;
+	cursor: pointer;
+}
+#header_container{
+	background: url("../images/header/headerbg.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+    height:88px;
+    z-index: 9999;
+}
+#header_container #logo{
+	float:left;
+	height:71px;
+	width:264px;
+	margin-left:10px;
+	margin-top:12px;
+}
+#header_container #fastnav{
+	margin-left:150px;
+	float:left;
+}
+#header_container #fastnav ul{
+	float:left;
+}
+#header_container #fastnav ul li{
+	float: left;
+    height: 88px;
+    text-align: center;
+    width: 87px;
+    margin-left:3px;
+}
+#header_container #fastnav ul li a{
+	display: block;
+    height: 88px;
+    transition: background-color 0.3s linear 0s;
+    width: 87px;
+    background: #035c93;
+}
+#header_container #fastnav ul li a.selected {
+    background: url("../images/header/currenthref.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+#header_container #fastnav ul li a:hover {
+    background: none repeat scroll 0 0 rgb(43, 127, 181);
+    color: #fff;
+    display: block;
+}
+#header_container #fastnav ul li img {
+    margin-top: 10px;
+}
+
+#header_container #fastnav ul li a h2 {
+    color: #d6e8f1;
+    font-size: 14px;
+}
+#header_container #righttop {
+    background: url("../images/header/topright.jpg") no-repeat scroll right center rgba(0, 0, 0, 0);
+    float: right;
+    height: 88px;
+}
+#header_container #righttop #logininfo {
+    background: url("../images/header/logininfo.png") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    border-radius: 30px;
+    clear: both;
+    float: left;
+    height: 30px;
+    line-height:30px;
+    white-space: nowrap;
+    margin-right:10px;
+    padding-right:20px;
+    padding-left:10px;
+}
+
+#header_container #righttop #logininfo span {
+    background: url("../images/header/user.png") no-repeat scroll 15px 10px rgba(0, 0, 0, 0);
+    color: #b8ceda;
+    font-size: 14px;
+    line-height: 30px;
+    padding-left: 35px;
+    padding-right: 10px;
+    display: block;
+    float:left;
+}
+#header_container #righttop #logininfo a  {
+	display: block;
+    float:left;
+    margin-right: 10px;
+}
+#header_container #righttop #logininfo a img {
+	height:20px;
+	width:20px;	
+	margin-top:5px;
+	display: block;
+    float:left;
+}
+#header_container #righttop #logininfo a span {
+    background: none;
+    color: #fff;
+    display: block;
+    float:left;
+    font-size: 15px;
+    font-weight: bold;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+    min-width: 15px;
+    padding-left:0px;
+    padding-right:2px;
+    margin-top:8px;
+    margin-left:2px;
+}
+
+#header_container #righttop #help{
+	background: url("../images/header/help.png") no-repeat;
+	padding-left:20px;
+	color: #e9f2f7;
+    font-size: 13px;
+    margin-top:5px;
+    float:left;
+}
+#header_container #righttop #help a{
+	color: #e9f2f7;
+    font-size: 15px;
+    border-right: 1px dotted #000000;
+    margin-right:10px;
+    padding-right:10px;
+}
+#header_container #righttop #about{
+	padding-left:10px;
+	padding-right:10px;
+	margin-left:10px;
+	margin-right:10px;
+	border-right: 1px dotted #000000;
+	border-left: 1px dotted #000000;
+	float:left;
+	color: #e9f2f7;
+    font-size: 15px;
+    margin-top:5px;
+}
+#header_container #righttop #about a{
+	color: #e9f2f7;
+    font-size: 15px;
+}
+#header_container #righttop #logout{
+	font-size: 15px;
+	color: #e9f2f7;
+    float:left;
+    margin-top:5px;
+    margin-right:10px;
+}
+#header_container #righttop #logout a{
+	font-size: 13px;
+	color: #e9f2f7;
+}
+#header_container #righttop #down_nav{
+    height: 30px;
+    line-height: 30px;
+    margin-top: 18px;
+    z-index: 999;
+    float:right;
+    margin-right:10px;
+}
+#header_container #righttop #down_nav li {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    position: relative;
+}
+
+#header_container #righttop #down_nav li a {
+    background: none repeat scroll 0 0 #d7dadf;
+    border-radius: 8px 8px 0 0;
+    color: #000;
+    display: block;
+    float: left;
+    font-size: 13px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 1px;
+    padding: 0 10px;
+    text-decoration: none;
+}
+#header_container #righttop #down_nav li a:hover {
+    background: none repeat scroll 0 0 #f2eeee;
+}
+#header_container #righttop #down_nav li .second {
+    display: none;
+    left: 0;
+    position: absolute;
+}
+#header_container #righttop #down_nav li .second a {
+    border-radius: 0;
+}
+#footer{
+	background: url("../images/header/headerbg.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+    height:30px;
+    z-index: 9999;
+    margin-top:20px;
+}
+.normaltext{
+	outline:none;
+	background-color: #eef8ff;
+    border: 1px solid #d5dce2;
+    border-radius: 5px;
+    font-size: 14px;
+    height: 35px;
+    line-height: 35px;
+    padding-left: 10px;
+}
+.disabletext{
+	background-color: #F0F0F0;
+	color:#000000;
+	font-weight: bold;
+}
+.disableselect{
+	outline:none;
+	background-color: #F0F0F0;
+    border: 1px solid #d5dce2;
+    border-radius: 5px;
+    font-size: 14px;
+    height: 35px;
+    line-height: 35px;
+    padding-left: 10px;
+}
+.normalselect{
+	outline:none;
+	background-color: #eef8ff;
+    border: 1px solid #d5dce2;
+    border-radius: 5px;
+    font-size: 14px;
+    height: 35px;
+    line-height: 35px;
+    padding-left: 10px;
+}
+.normalselect option{
+    font-size: 14px;
+    padding-left: 10px;
+}
+
+.tableui{
+	border: 1px solid #cbcbcb;
+	width:100%;
+	border-collapse: collapse;
+    border-spacing: 0;
+}
+.tableui th {
+    background: url("../images/th.gif") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    border-bottom: 1px solid #b6cad2;
+    border-right: 1px solid #b6cad2;
+    height: 34px;
+    line-height: 34px;
+    text-align: left;
+    text-indent: 11px;
+    text-align:center;
+    cursor: pointer;
+    font-size:14px;
+}
+.tableui th span {
+   	cursor: pointer;
+}
+.tableui td {
+    border-right: 1px dotted #c7c7c7;
+    line-height: 35px;
+    text-indent: 11px;
+    font-size:14px;
+}
+.tableui tbody tr.odd {
+    background: none repeat scroll 0 0 #f5f8fa;
+}
+.tableui tbody tr:hover {
+    background: none repeat scroll 0 0 #e5ebee;
+}
+.tableui .detail{
+	text-decoration: none;
+	color: #0088cc;
+	outline: none;
+}
+.headerSortUp span {
+	background-image: url("../images/asc.png");
+	background-repeat: no-repeat;
+	padding-left:20px;
+}
+.headerSortDown span{
+	background-image: url("../images/desc.png");
+	background-repeat: no-repeat;
+	padding-left:20px;
+}
+.editlink{
+	background: url("../images/edit.png") no-repeat;
+	padding-left:20px;
+	color: #e9f2f7;
+    font-size: 14px;
+    width:16px;
+    height:16px;
+    color: #0088cc;
+    text-decoration: none;
+}
+.rc-handle-container {
+  position: relative;
+}
+.rc-handle {
+  position: absolute;
+  width: 7px;
+  cursor: ew-resize;
+  margin-left: -3px;
+  z-index: 2;
+}
+table.rc-table-resizing {
+  cursor: ew-resize;
+}
+table.rc-table-resizing thead,
+table.rc-table-resizing thead > th,
+table.rc-table-resizing thead > th > a {
+  cursor: ew-resize;
+}
+.deletelink{
+	background: url("../images/delete.png") no-repeat;
+	padding-left:20px;
+	color: #e9f2f7;
+    font-size: 14px;
+    width:16px;
+    height:16px;
+    color: #0088cc;
+    text-decoration: none;
+}
+.changepasswdlink{
+	background: url("../images/changepasswd.png") no-repeat;
+	padding-left:20px;
+	color: #e9f2f7;
+    font-size: 14px;
+    width:16px;
+    height:16px;
+    color: #0088cc;
+    text-decoration: none;
+}
+.clearuserlink{
+	background: url("../images/clear.png") no-repeat;
+	padding-left:20px;
+	color: #e9f2f7;
+    font-size: 14px;
+    width:16px;
+    height:16px;
+    color: #0088cc;
+    text-decoration: none;
+}
+.chulilink{
+	background: url("../images/chuli.png") no-repeat;
+	padding-left:20px;
+	color: #e9f2f7;
+    font-size: 14px;
+    width:16px;
+    height:16px;
+    color: #0088cc;
+    text-decoration: none;
+}
+.input_tip{
+	font-size:13px;
+	color:green;
+	margin-left:10px;
+}
+
+
+.detail_table{
+	border: 1px solid #cbcbcb;
+	width:100%;
+	border-collapse: collapse;
+    border-spacing: 0;
+}
+.detail_table th {
+    background: #f0f5f7;
+    border-bottom: 1px solid #b6cad2;
+    border-right: 1px solid #b6cad2;
+    height: 34px;
+    line-height: 34px;
+    text-align: left;
+    text-indent: 11px;
+    text-align:center;
+    cursor: pointer;
+    font-size:14px;
+}
+.detail_table th span {
+   	cursor: pointer;
+}
+.detail_table td {
+    border: 1px solid #c7c7c7;
+    line-height: 34px;
+    text-indent: 11px;
+    font-size:14px;
+    cursor: pointer;
+    padding:5px;
+    background: #f5f8fa;
+}
+.detail_table .title_name{
+	background: #f0f5f7;
+	text-align: left;
+    cursor: pointer;
+    font-weight:bold;
+    width: 11%;
+}
+.detail_table a{
+	text-decoration: none;
+	color: #0088cc;
+	outline: none;
+}
+.detaillink{
+	background: url("../images/detail.png") no-repeat;
+	padding-left:20px;
+	color: #e9f2f7;
+    font-size: 14px;
+    width:16px;
+    height:16px;
+    color: #0088cc;
+    text-decoration: none;
+}
+.chefanglink{
+	background: url("../images/chefang.png") no-repeat;
+	padding-left:35px;
+	color: #e9f2f7;
+    font-size: 14px;
+    width:16px;
+    height:16px;
+    color: #0088cc;
+    text-decoration: none;
+}
+.bufanglink{
+	background: url("../images/bufang.png") no-repeat;
+	padding-left:35px;
+	color: #e9f2f7;
+    font-size: 14px;
+    width:16px;
+    height:16px;
+    color: #0088cc;
+    text-decoration: none;
+}
+.addlink{
+	background: url("../images/add.png") no-repeat;
+	padding-left:20px;
+	color: #e9f2f7;
+    font-size: 14px;
+    width:16px;
+    height:16px;
+    color: #0088cc;
+    text-decoration: none;
+}
+.viewgaojingLink{
+	background: url("../images/bell.png") no-repeat;
+	padding-left:20px;
+	color: #e9f2f7;
+    font-size: 14px;
+    width:16px;
+    height:16px;
+    color: #0088cc;
+    text-decoration: none;
+}
+.shebeistatus_shiyong{
+	height: 25px;
+    width: 50px;
+	display:block;
+	background-color: green;
+	color:white;
+	line-height : 25px;
+	text-align:left;
+}
+.shebeistatus_gaojing{
+	height: 25px;
+    width: 50px;
+    color:white;
+	display:block;
+	background-color: red;
+	line-height : 25px;
+	text-align:left;
+}
+
+.shebeistatus_lixian{
+	height: 25px;
+    width: 50px;
+	display:block;
+	background-color: grey;
+	color:white;
+	line-height : 25px;
+	text-align:left;
+	
+}
+.shebeistatus_weiyong{
+	height: 25px;
+    width: 50px;
+	display:block;
+	background-color:#000000;
+	color:white;
+	line-height : 25px;
+	text-align:left;
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

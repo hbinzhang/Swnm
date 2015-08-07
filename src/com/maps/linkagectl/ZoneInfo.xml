@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="zoneInfo">
+<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="ZoneInfo" type="com.entity.linkagectl.ZoneInfo" />
+	<!-- 这样以后改了sql，就不需要去改java代码了 -->
+<!-- id表示select里的sql语句，resultClass表示返回结果的类型 -->
+<!-- parameterClass表示参数的内容 -->
+<!-- #表示这是一个外部调用的需要传进的参数，可以理解为占位符 -->
+	<select id="getZoneInfo" parameterClass="java.lang.Integer"
+		resultClass="ZoneInfo">
+		<![CDATA[ 
+    select 
+     * 
+    from T_LC_ZONEINFO
+    where zoneID = #zoneID:INTEGER# 
+    ]]>
+	</select>
+	<!-- 注意这里的resultClass类型，使用SeAlarm类型取决于queryForList还是queryForObject -->
+	<select id="getAllZoneInfo" resultClass="ZoneInfo">
+		<![CDATA[ 
+    select 
+      * 
+    from T_LC_ZONEINFO
+    ]]>
+	</select>
+
+	<update id="updateZoneInfo" parameterClass="ZoneInfo">
+		<![CDATA[ 
+    UPDATE T_LC_ZONEINFO
+    SET         
+      zoneName=#zoneName#,
+      mgtID=#mgtID#,
+      status=#status#,
+      orientation=#orientation#,
+      startLon=#startLon#,
+      startLat=#startLat#,
+      endLon=#endLon#,
+      endLat=#endLat#,
+      info=#info#
+  WHERE zoneID = #zoneID# 
+]]>
+	</update>
+
+<insert id="insertZoneInfo" parameterClass="ZoneInfo">
+		INSERT INTO T_LC_ZONEINFO (zoneID,zoneName,mgtID,
+		status,orientation,startLon,startLat,endLon,endLat,info) 
+      VALUES (#zoneID#,#zoneName#,#mgtID#,
+      #status#,#orientation#,#startLon#,#startLat#,#endLon#,#endLat#,#info#)
+	</insert>
+	<delete id="deleteZoneInfo" parameterClass="ZoneInfo">
+		delete from T_LC_ZONEINFO where zoneID=#zoneID#
+	</delete>
+
+</sqlMap>

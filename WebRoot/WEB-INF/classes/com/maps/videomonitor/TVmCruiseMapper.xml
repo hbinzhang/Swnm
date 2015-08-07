@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.dao.videomonitor.TVmCruiseMapper">
+	<typeAlias alias="TVmCruise" type="com.entity.videomonitor.TVmCruise" />
+	<resultMap class="TVmCruise" id="BaseResultMap">
+		<result property="cruiseid" jdbcType="NUMBER" column="CRUISEID" />
+		<result property="ipcid" jdbcType="VARCHAR" column="IPCID" />
+		<result property="route" jdbcType="VARCHAR" column="ROUTE" />
+		<result property="cruisename" jdbcType="VARCHAR" column="CRUISENAME" />
+	</resultMap>
+	
+	<resultMap class="TVmCruise" id="BaseResultMapWithSeq" extends="BaseResultMap">
+		<result property="sequences" column="CRUISEID" select="getSequencesByCruise" />
+	</resultMap>
+	<insert id="insertCruise" parameterClass="TVmCruise">
+		<selectKey keyProperty="cruiseid" resultClass="int">
+         	select CRUISESEQ.nextval from dual
+    	</selectKey>
+		
+		insert into T_VM_CRUISE(CRUISEID,IPCID,ROUTE,CRUISENAME)
+		values(#cruiseid#,#ipcid#,#route#,#cruisename#)	
+	</insert>
+	<update id="updateCruise" parameterClass="TVmCruise">
+		update T_VM_CRUISE
+		set CRUISENAME = #cruisename#
+		where CRUISEID=#cruiseid#
+	</update>
+	<delete id="deleteCruiseById" parameterClass="int">
+		delete from T_VM_CRUISE
+		where CRUISEID = #cruiseid#
+	</delete>
+	<select id="selectCruiseByRoute" parameterClass="java.util.Map" resultMap="BaseResultMapWithSeq">
+		select
+		*
+		from T_VM_CRUISE
+		where ROUTE=#cond.route# and IPCID=#cond.ipcid#
+	</select>
+	<select id="selectCruiseByIpcid" parameterClass="java.util.Map" resultMap="BaseResultMapWithSeq">
+		select
+		*
+		from T_VM_CRUISE
+		where
+		IPCID=#cond.ipcid# order by ROUTE
+	</select>
+</sqlMap>

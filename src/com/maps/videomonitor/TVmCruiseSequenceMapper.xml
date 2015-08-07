@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.dao.videomonitor.TVmCruiseSequenceMapper">
+	<typeAlias alias="TVmCruiseSequence" type="com.entity.videomonitor.TVmCruiseSequence" />
+	<resultMap class="TVmCruiseSequence" id="BaseResultMap">
+		<result property="seqid" jdbcType="NUMBER" column="SEQID" />
+		<result property="cruise.cruiseid" jdbcType="NUMBER" column="CRUISEID" />
+		<result property="point" column="POINTID" select="selectPresetByPrimaryKey" />
+		<result property="pausemins" jdbcType="NUMBER" column="PAUSEMINS" />
+		<result property="speed" jdbcType="NUMBER" column="SPEED" />
+		<result property="cruiseorder" jdbcType="NUMBER" column="CRUISEORDER" />
+	</resultMap>
+	
+	<insert id="insertCruiseSequence" parameterClass="TVmCruiseSequence">
+		<selectKey keyProperty="seqid" resultClass="int">
+         	select CRUSEQSEQ.nextval from dual
+    	</selectKey>
+		
+		insert into T_VM_CRUISESEQUENCE(SEQID,CRUISEID,POINTID,PAUSEMINS,SPEED,CRUISEORDER)
+		values(#seqid#,#cruise.cruiseid#,#point.pointid#,#pausemins#,#speed#,#cruiseorder#)	
+	</insert>
+	<delete id="deleteCruiseSequenceByCruise" parameterClass="int">
+		delete from T_VM_CRUISESEQUENCE
+		where CRUISEID = #cruiseid#
+	</delete>
+	<select id="getSequencesByCruise" parameterClass="int" resultMap="BaseResultMap">
+		select
+		*
+		from T_VM_CRUISESEQUENCE
+		where
+		CRUISEID=#cruiseid# order by CRUISEORDER
+	</select>
+</sqlMap>

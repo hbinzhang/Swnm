@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+ <package name="com.actions" extends="struts-default">
+ 	<!-- 1.Login的Action-->
+ 	<!-- <action name="loginUser" class="Loginaction">loginUser 是Spring注入的LoginAction实例  
+ 			<result name="success">/success.jsp</result>
+ 			<result name="error">/error.jsp</result>
+ 			
+ 	</action>
+ 	
+ 	<action name="User" class="Useraction">User是Spring注入的Useraction实例 
+ 			<result name="user">/success.jsp</result>
+ 			<result name="update">/user/edit.jsp</result>
+ 			
+ 	</action> -->
+ </package>
+ 
+ <include file="struts-intercepter.xml" />
+ <include file="struts-authmgt.xml" />
+ 
+  <include file="struts-fence.xml" />
+  <include file="struts-zone.xml" /> 
+ 
+<include file="struts-alarmmgt.xml" />
+<include file="struts-logmgt.xml" />
+<include file="struts-sounddev.xml" />
+<include file="struts-linkagectl.xml" />
+<include file="struts-videomonitor.xml" />
+<include file="struts-gis.xml" />
+<include file="struts-securityinfo.xml" />
+
+</struts> 					

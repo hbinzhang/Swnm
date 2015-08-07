@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="fenceManagerServiceImpl" class="com.service.efence.impl.FenceServiceImpl">
+		<property name="fenceDao" ref="fenceDaoImpl"></property>
+		<property name="serverDao" ref="serverDaoImpl"></property>
+		<property name="defenceZoneMapDao" ref="defenceZoneMapDaoImpl"></property>
+		<property name="integrationZoneMapDao" ref="integrationZoneMapDaoImpl"></property>
+		<property name="positionZoneMapDao" ref="positionZoneMapDaoImpl"></property>
+		<property name="pulseZoneMapDao" ref="pulseZoneMapDaoImpl"></property>
+		<property name="operationUIPushImp" ref="operationUIPushImp"></property>
+		<property name="zoneManagerService" ref="zoneManagerServiceImpl"></property>
+		<property name="organization" ref="OrganizationImp"></property>
+	</bean>
+
+	<bean id="zoneManagerServiceImpl" class="com.service.zone.impl.ZoneServiceImpl">
+		<property name="zoneDao" ref="zoneDaoImpl"></property>
+		<property name="defenceZoneMapDao" ref="defenceZoneMapDaoImpl"></property>
+		<property name="integrationZoneMapDao" ref="integrationZoneMapDaoImpl"></property>
+		<property name="positionZoneMapDao" ref="positionZoneMapDaoImpl"></property>
+		<property name="pulseZoneMapDao" ref="pulseZoneMapDaoImpl"></property>
+		<property name="ipcZoneMapDao" ref="ipcZoneMapDaoOracleImp"></property>
+		<property name="soundZoneMapDao" ref="soundZoneMapDaoOracleImp"></property>
+		<property name="serverDao" ref="serverDaoImpl"></property>
+		<property name="soundDevDao" ref="SoundDevImpl"></property>
+		<property name="operationUIPushImp" ref="operationUIPushImp"></property>
+	</bean>
+	<bean id="ipcZoneMapServiceImpl" class="com.service.zone.impl.IpcZoneMapServiceImpl">
+		<property name="ipcZoneMapDao" ref="ipcZoneMapDaoOracleImp"></property>
+	</bean>
+	<!--videomonitor-->
+	<bean id="ivaConfigServiceImpl" class="com.service.videomonitor.impl.IvaConfigServiceImpl" >
+		<property name="ivaConfigMapper" ref="IvaConfigMapperImpl"></property>
+		<property name="ivaConfigSocketService" ref="ivaService"></property>
+	</bean>
+	<bean id="IpcConfigSynServiceImpl" class="com.rest.impl.IpcConfigSynServiceImpl" >
+		<property name="ipcConfigMapper" ref="IpcConfigMapperImpl"></property>
+	</bean>
+	
+	<bean id="JMSDevWarnSender" class="com.service.videomonitor.jms.JMSDevWarnSender" >
+		<property name="jndiFactory" value="${JNDIFactory}"></property>
+		<property name="providerUrl" value="${providerUrl}"></property>
+		<property name="connFactoryJNDI" value="${connFactoryJNDI}"></property>
+		<property name="alarmQueue" value="${deviceQueueName}"></property>
+	</bean>
+	<bean id="JMSSecWarnSender" class="com.service.videomonitor.jms.JMSSecWarnSender" >
+		<property name="jndiFactory" value="${JNDIFactory}"></property>
+		<property name="providerUrl" value="${providerUrl}"></property>
+		<property name="connFactoryJNDI" value="${connFactoryJNDI}"></property>
+		<property name="alarmQueue" value="${securityQueueName}"></property>
+	</bean>
+	<bean id="AlarmIvaServiceImpl" class="com.service.videomonitor.impl.AlarmIvaServiceImpl" >
+		<property name="jmsDevWarnSender" ref="JMSDevWarnSender"></property>
+		<property name="jmsSecWarnSender" ref="JMSSecWarnSender"></property>
+		<property name="ipcConfigMapper" ref="IpcConfigMapperImpl"></property>
+	</bean>
+	<bean id="deviceManageIVAServiceImpl" class="com.service.videomonitor.impl.DeviceManageIVAServiceImpl" >
+		<property name="ivaMapper" ref="tvmIvaMapperImpl"></property>
+	</bean>
+	
+	<!--authmgt -->
+	<bean id="LoginManagerService" class="com.service.authmgt.impl.LoginManagerServiceImp">
+		<property name="loginDao" ref="LoginImp"></property>
+		<property name="accountDao" ref="AccountImp"></property>
+		<property name="roleDao" ref="RoleImp"></property>
+		<property name="organizationManagerService" ref="OrganizationManagerService"></property>
+	</bean>
+	<bean id="RoleManagerService" class="com.service.authmgt.impl.RoleManagerServiceImp">
+		<property name="roleDao" ref="RoleImp"></property>
+	</bean>
+	<bean id="OrganizationManagerService" class="com.service.authmgt.impl.OrganizationManagerServiceImp">
+		<property name="organizationDao" ref="OrganizationImp"></property>
+		<property name="accountDao" ref="AccountImp"></property>
+	</bean>
+	<bean id="AccountManagerService" class="com.service.authmgt.impl.AccountManagerServiceImp">
+		<property name="accountDao" ref="AccountImp"></property>
+		<property name="organizationDao" ref="OrganizationImp"></property>
+		<property name="sessionManagerService" ref="SessionManagerService"></property>
+		<property name="organizationManagerService" ref="OrganizationManagerService"></property>
+		<property name="roleManagerService" ref="RoleManagerService"></property>
+	</bean>
+	<bean id="SessionManagerService" class="com.service.authmgt.impl.SessionManagerServiceImp">
+		<property name="sessionDao" ref="SessionImp"></property>
+		<property name="organizationManagerService" ref="OrganizationManagerService"></property>
+		<property name="accountManagerService" ref="AccountManagerService"></property>
+	</bean>
+
+	<bean id="SoundDevService" class="com.service.sounddev.database.SoundDevserviceImpl">
+		<property name="soundDevDao" ref="SoundDevImpl"></property>
+	</bean>
+
+<!-- linkagectl -->
+	<bean id="getSeAlarmImp" class="com.service.linkagectl.impl.GetSeAlarmImp"
+		scope="prototype">
+		<property name="warningLevelMap" ref="warningLevelMap"></property>
+		<property name="deviceTypeMap" ref="deviceTypeMap"></property>
+		<property name="seAlarmDao" ref="seAlarmDaoOracleImp"></property>
+		<property name="orgMngService" ref="OrganizationManagerService"></property>
+		<property name="accMgtService" ref="AccountManagerService"></property>
+	</bean>
+
+	<bean id="vidioLinkManager" class="com.service.linkagectl.impl.VidioLinkManagerImp"
+		scope="prototype">
+		<property name="ipcZoneMapDao" ref="ipcZoneMapDaoOracleImp"></property>
+		<property name="alarmVideoService" ref="alarmVideoService"></property>
+	</bean>
+
+	<bean id="soundLinkManager" class="com.service.linkagectl.impl.SoundLinkManagerImp"
+		scope="prototype">
+		<property name="soundZoneMapDao" ref="soundZoneMapDaoOracleImp"></property>
+		<property name="soundSetDao" ref="soundSetDaoOracleImp"></property>
+	</bean>
+
+	<bean id="saveSeAlarmImp" class="com.service.linkagectl.impl.SaveSeAlarmImp"
+		scope="prototype">
+		<property name="seAlarmDao" ref="seAlarmDaoOracleImp"></property>
+	</bean>
+
+	<bean id="saveDeAlarmImp" class="com.service.linkagectl.impl.SaveDeAlarmImp"
+		scope="prototype">
+		<property name="deAlarmDao" ref="deAlarmDaoOracleImp"></property>
+	</bean>
+
+	<bean id="warningLevelMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="1" value="警告" />
+				<entry key="2" value="次要" />
+				<entry key="3" value="主要" />
+				<entry key="4" value="严重" />
+			</map>
+		</constructor-arg>
+	</bean>
+	<bean id="deviceTypeMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="1" value="高压脉冲主机" />
+				<entry key="2" value="一体化探测主机" />
+				<entry key="3" value="防区型振动光纤" />
+				<entry key="4" value="定位型振动光纤" />
+				<entry key="5" value="NVR" />
+				<entry key="6" value="IPC" />
+				<entry key="7" value="智能视频服务器" />
+				<entry key="8" value="音频服务器" />
+				<entry key="9" value="音频终端" />
+				<entry key="10" value="IO控制器" />
+			</map>
+		</constructor-arg>
+	</bean>
+	<bean id="alarmUIPushImp" class="com.service.linkagectl.impl.AlarmUIPushImp">
+		<!-- <property name="alarmKnowledge" ref="alarmKnowledge"></property> -->
+		<property name="alarmKnowledgeDao" ref="alarmKnlgDaoOracleImp"></property>
+		<property name="uiMcSecAlarm" ref="uIMCSecurityAlarm"></property>
+		<property name="alarmZoneInfoDao" ref="zoneInfoDaoOracleImp"></property>
+		<property name="warningLevelMap" ref="warningLevelMap"></property>
+		<property name="deviceTypeMap" ref="deviceTypeMap"></property>
+		<property name="orgMngService" ref="OrganizationManagerService"></property>
+		<property name="accMgtService" ref="AccountManagerService"></property>
+		<property name="devAlarmService" ref="getDevAlarmImp"></property>
+	</bean>
+	<bean id="getDevAlarmImp" class="com.service.linkagectl.impl.GetDevAlarmImp">
+		<property name="orgMngService" ref="OrganizationManagerService"></property>
+		<property name="devAlarmDao" ref="deAlarmDaoOracleImp"></property>
+	</bean>
+	<bean id="operationUIPushImp" class="com.service.linkagectl.impl.OperationUIPushImp">
+		<property name="devAlarmService" ref="getDevAlarmImp"></property>
+		<property name="secAlarmService" ref="getSeAlarmImp"></property>
+	</bean>
+
+	<!-- <bean id="JMSQueueSeAlarmReceive" class="com.service.linkagectl.jms.JMSQueueSeAlarmReceive">
+		<property name="listManager">
+			<list>
+				<ref bean="vidioLinkManager" /> <ref bean="saveSeAlarm" />
+				<ref bean="saveSeAlarmImp" />
+				<ref bean="alarmUIPushImp" />
+				<ref bean="vidioLinkManager" />
+				<ref bean="soundLinkManager" />
+			</list>
+		</property>
+	</bean> -->
+
+<!-- Base64 to jpg begin-->
+    <bean id="base64ToJpg" class="com.service.linkagectl.impl.Base64ToJPG"></bean>
+<!--  Base64 to jpg end -->
+	<bean id="JMSQueueDeAlarmReceive" class="com.service.linkagectl.jms.JMSQueueDeAlarmReceive">
+		<property name="listDeAlarmManager">
+			<list>
+				<!-- <ref bean="vidioLinkManager" /> <ref bean="soundLinkManager" /> 
+					<ref bean="saveSeAlarm" /> <ref bean="seUIPush" /> -->
+				<ref bean="saveDeAlarmImp" />
+				<ref bean="alarmUIPushImp" />
+			</list>
+		</property>
+		<property name="fenceManagerService" ref="fenceManagerServiceImpl" ></property>
+		<property name="zoneService" ref="zoneManagerServiceImpl" ></property>
+	</bean>
+
+	<bean id="operationlogservice" class="com.service.logmgt.impl.OperationLogServiceImp">
+		<property name="operationLogDao" ref="operationlogdao"></property>
+	</bean>
+
+	<bean id="securitylogservice" class="com.service.logmgt.impl.SecurityLogServiceImp">
+		<property name="securityLogDao" ref="securitylogdao"></property>
+	</bean>
+
+	<bean id="alarmqueryservice" class="com.service.alarmmgt.impl.AlarmQueryServiceImp">
+		<property name="alarmQueryDao" ref="alarmquerydao"></property>
+	</bean>
+
+	<bean id="alarmknowledgeservice" class="com.service.alarmmgt.impl.AlarmKnowledgeServiceImp">
+		<property name="alarmKnowledgeInfoDao" ref="alarmknowledgeinfodao"></property>
+	</bean>
+
+	<bean id="alarmstatisticservice" class="com.service.alarmmgt.impl.AlarmStatisticServiceImp">
+		<property name="alarmStatisticDao" ref="alarmstatisticdao"></property>
+	</bean>
+	<bean id="manufacturerServiceImpl" class="com.service.common.impl.ManufacturerServiceImpl">
+		<property name="manufacturerDao" ref="manufacturerDaoImpl"></property>
+	</bean>
+	
+	<!--taskBook -->
+	<bean id="taskbookservice" class="com.service.securityinfo.impl.TaskBookServiceImp">
+		<property name="taskBookDao" ref="taskbookdao"></property>
+	</bean>
+	<!--assessment -->
+	<bean id="assessmentservice" class="com.service.securityinfo.impl.AssessmentServiceImp">
+		<property name="assessmentDao" ref="assessmentdao"></property>
+	</bean>
+	<!--rewardpunishment -->
+	<bean id="rewardpunishmentservice" class="com.service.securityinfo.impl.RewardPunishmentServiceImp">
+			<property name="rewardPunishmentDao" ref="rewardpunishmentdao"></property>
+ 	</bean>
+ 	<!--Rectification -->
+	<bean id="rectificationservice" class="com.service.securityinfo.impl.RectificationServiceImp">
+			<property name="rectificationDao" ref="rectificationdao"></property>
+ 	</bean>
+ 	<!--event -->
+	<bean id="eventservice" class="com.service.securityinfo.impl.EventServiceImp">
+			<property name="eventDao" ref="eventdao"></property>
+ 	</bean>
+</beans>

@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="alarmQuery">
+	<typeAlias alias="deviceAlarm" type="com.entity.alarmmgt.DeviceAlarm" />
+	<typeAlias alias="securityAlarm" type="com.entity.alarmmgt.SecurityAlarm" />
+
+	<resultMap id="commonBeanMap" class="com.entity.CommonBean">
+		<result column="ZONEID" property="id" />
+		<result column="ZONENAME" property="name" />
+	</resultMap>
+	
+	<select id="queryZoneByDepartId" parameterClass="java.lang.String" resultMap="commonBeanMap">
+	 	SELECT ZONEID,ZONENAME
+	 	FROM 
+	 	T_LC_ZONEINFO 
+	 	WHERE MGTID = #departmentId#
+	</select>
+	
+	<select id="getZoneNameById" resultClass="java.lang.String" 
+			parameterClass="java.lang.Integer">
+			SELECT ZONENAME
+			FROM 
+			T_LC_ZONEINFO 
+			WHERE 
+			ZONEID = #zoneId#
+	</select>
+	
+	<select id ="queryZoneInfos" resultMap="commonBeanMap">
+			SELECT ZONEID,ZONENAME
+			FROM 
+			T_LC_ZONEINFO 
+	</select>
+	
+	<select id="querySecurityAlarm" resultClass="securityAlarm" 
+			parameterClass="com.entity.alarmmgt.AlarmQueryCondition">
+		SELECT * FROM(
+			SELECT a.*, rownum rn 
+			FROM 
+			(SELECT t.*,k.ALARMNAME,
+			k.DEVICETYPE,
+			t.CHECKLEVEL ALARMLEVEL,k.ALARMTYPE TYPE
+			FROM 
+			T_ALM_SECURITYALARM t,
+			T_ALM_KNOWLEDGE k
+			WHERE 
+			t.ALARMCODE = k.ALARMCODE 
+			AND
+			k.ALARMTYPE = #type#
+			<dynamic> 
+			<isNotEmpty prepend="AND" property="branchId">  	
+			    t.BRANCHID = #branchId# 	    
+		    </isNotEmpty> 
+		    <isNotEmpty prepend="AND" property="departmentId">
+			    t.DEPARTMENTID = #departmentId#
+		    </isNotEmpty>	
+		    <isNotEqual prepend="AND" property="zoneId" compareValue="-1">
+			    t.ZONEID = #zoneId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="levelId" compareValue="-1">
+			    t.CHECKLEVEL = #levelId#
+		    </isNotEqual>
+		    <isNotEmpty prepend="AND" property="alarmName">
+			    k.ALARMNAME = #alarmName#
+		    </isNotEmpty>	    
+		    <isNotEqual prepend="AND" property="hasEventVideo" compareValue="0">
+			   ((t.VIDIOURL is not null) 
+			   	or
+			   (t.LEFTVIDIOURL is not null)
+			  	or 
+			   (t.RIGHTVIDIOURL is not null))
+		    </isNotEqual>		     
+		    <isNotEmpty prepend="AND" property="beginTime">
+			    t.ALARMTIME >=#beginTime#
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    t.ALARMTIME <=#endTime#
+			     ]]>
+		    </isNotEmpty>  
+		    <isNotEqual prepend="AND" property="deviceTypeId" compareValue="-1">
+			    k.DEVICETYPE = #deviceTypeId#
+		    </isNotEqual>
+		    <isNotEmpty prepend="AND" property="deviceId">
+			    t.DEVICEID like  '%' || #deviceId# || '%' 
+		    </isNotEmpty>
+		    <isNotEqual prepend="AND" property="alarmStatus" compareValue="-1">
+			    t.ALARMSTATUS=#alarmStatus#
+		    </isNotEqual>
+		    </dynamic> 
+		    ORDER BY t.ALARMID
+			)a
+			)b
+		<![CDATA[ 
+		WHERE rn>=#start# AND rn<#end#
+		 ]]>
+	</select>
+	 
+	<select id="getSecurityAlarmCount" resultClass="java.lang.Integer" 
+			parameterClass="com.entity.alarmmgt.AlarmQueryCondition">
+			SELECT count(*)
+			FROM 
+			T_ALM_SECURITYALARM t,
+			T_ALM_KNOWLEDGE k
+			WHERE 
+			t.ALARMCODE = k.ALARMCODE 
+			AND
+			k.ALARMTYPE = #type#
+			<dynamic>
+			<isNotEmpty prepend="AND" property="branchId">  	
+			    t.BRANCHID = #branchId#			    
+		    </isNotEmpty> 
+		    <isNotEmpty prepend="AND" property="departmentId">
+			    t.DEPARTMENTID = #departmentId#
+		    </isNotEmpty>	
+		    <isNotEqual prepend="AND" property="zoneId" compareValue="-1">
+			    t.ZONEID = #zoneId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="levelId" compareValue="-1">
+			     t.CHECKLEVEL = #levelId#
+		    </isNotEqual>
+		    <isNotEmpty prepend="AND" property="alarmName">
+			    k.ALARMNAME = #alarmName#
+		    </isNotEmpty>	    
+		    <isNotEqual prepend="AND" property="hasEventVideo" compareValue="0">
+			   ((t.VIDIOURL is not null) 
+			   	or
+			   (t.LEFTVIDIOURL is not null)
+			  	or 
+			   (t.RIGHTVIDIOURL is not null))
+		    </isNotEqual> 	    
+		    <isNotEmpty prepend="AND" property="beginTime">
+			    t.ALARMTIME >=#beginTime#
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    t.ALARMTIME <=#endTime#
+			     ]]>
+		    </isNotEmpty>  
+		    <isNotEqual prepend="AND" property="deviceTypeId" compareValue="-1">
+			    k.DEVICETYPE = #deviceTypeId#
+		    </isNotEqual>
+		    <isNotEmpty prepend="AND" property="deviceId">
+			    t.DEVICEID like  '%' || #deviceId# || '%' 
+		    </isNotEmpty>
+		    <isNotEqual prepend="AND" property="alarmStatus" compareValue="-1">
+			    t.ALARMSTATUS=#alarmStatus#
+		    </isNotEqual>
+		    </dynamic> 
+	</select>
+	
+	<select id="queryDeviceAlarm" resultClass="deviceAlarm" 
+			parameterClass="com.entity.alarmmgt.AlarmQueryCondition">
+		SELECT * FROM(
+			SELECT a.*, rownum rn 
+			FROM 
+			(SELECT t.*,k.ALARMNAME,
+			k.DEVICETYPE,k.CAUSE,k.RESULT,k.OPERATION,k.ISAFFECT,
+			k.ALARMLEVEL,k.ALARMTYPE TYPE
+			FROM 
+			T_ALM_DEVALARM t,
+			T_ALM_KNOWLEDGE k
+			WHERE 
+			t.ALARMCODE = k.ALARMCODE 
+			AND
+			k.ALARMTYPE = #type#
+			<dynamic>
+			<isNotEmpty prepend="AND" property="branchId">  	
+			    t.BRANCHID = #branchId#			    
+		    </isNotEmpty> 
+		    <isNotEmpty prepend="AND" property="departmentId">
+			    t.DEPARTMENTID = #departmentId#
+		    </isNotEmpty>	
+		    <isNotEqual prepend="AND" property="zoneId" compareValue="-1">
+			    t.ZONEID = #zoneId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="levelId" compareValue="-1">
+			    k.ALARMLEVEL = #levelId#
+		    </isNotEqual>
+		    <isNotEmpty prepend="AND" property="alarmName">
+			    k.ALARMNAME = #alarmName#
+		    </isNotEmpty>	    
+		    <isNotEmpty prepend="AND" property="beginTime">
+			    t.ALARMTIME >=#beginTime#
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    t.ALARMTIME <=#endTime#
+			     ]]>
+		    </isNotEmpty>  
+		    <isNotEqual prepend="AND" property="deviceTypeId" compareValue="-1">
+			    k.DEVICETYPE = #deviceTypeId#
+		    </isNotEqual>
+		    <isNotEmpty prepend="AND" property="deviceId">
+			    t.DEVICEID like  '%' || #deviceId# || '%' 
+		    </isNotEmpty>
+		    <isNotEqual prepend="AND" property="alarmStatus" compareValue="-1">
+			    t.ALARMSTATUS=#alarmStatus#
+		    </isNotEqual>
+		    </dynamic> 
+		    ORDER BY t.ALARMID
+			)a
+			)b
+		<![CDATA[ 
+		WHERE rn>=#start# AND rn<#end#
+		 ]]>
+	</select>
+	
+ 
+	<select id="getDeviceAlarmCount" resultClass="java.lang.Integer" 
+			parameterClass="com.entity.alarmmgt.AlarmQueryCondition">
+			SELECT count(*)
+			FROM 
+			T_ALM_DEVALARM t,
+			T_ALM_KNOWLEDGE k
+			WHERE 
+			t.ALARMCODE = k.ALARMCODE 
+			AND
+			k.ALARMTYPE = #type#
+			<dynamic>		
+			<isNotEmpty prepend="AND" property="branchId">  	
+			    t.BRANCHID = #branchId#			    
+		    </isNotEmpty> 
+		    <isNotEmpty prepend="AND" property="departmentId">
+			    t.DEPARTMENTID = #departmentId#
+		    </isNotEmpty>	
+		    <isNotEqual prepend="AND" property="zoneId" compareValue="-1">
+			    t.ZONEID = #zoneId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="levelId" compareValue="-1">
+			    k.ALARMLEVEL = #levelId#
+		    </isNotEqual>
+		    <isNotEmpty prepend="AND" property="alarmName">
+			    k.ALARMNAME = #alarmName#
+		    </isNotEmpty>	      
+		    <isNotEmpty prepend="AND" property="beginTime">
+			    t.ALARMTIME >=#beginTime#
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    t.ALARMTIME <=#endTime#
+			     ]]>
+		    </isNotEmpty>  
+		    <isNotEqual prepend="AND" property="deviceTypeId" compareValue="-1">
+			    k.DEVICETYPE = #deviceTypeId#
+		    </isNotEqual>
+		    <isNotEmpty prepend="AND" property="deviceId">
+			    t.DEVICEID like  '%' || #deviceId# || '%' 
+		    </isNotEmpty>
+		    <isNotEqual prepend="AND" property="alarmStatus" compareValue="-1">
+			    t.ALARMSTATUS=#alarmStatus#
+		    </isNotEqual>
+		    </dynamic> 		
+	</select> 
+	
+	<select id="queryDeviceAlarmByStatus" resultClass="deviceAlarm" 
+			parameterClass="deviceAlarm">	
+			SELECT * FROM(
+			SELECT a.*, rownum rn 
+			from(	
+			SELECT t.ALARMID,t.ALARMCODE,t.DEVICEID,t.ALARMTIME,
+			t.ZONEID,nvl(z.zoneName,t.zoneID) as zoneName,t.BRANCHID,t.DEPARTMENTID,t.INFO,k.CAUSE,
+			k.OPERATION,k.ALARMNAME,k.DEVICETYPE,k.ALARMLEVEL,
+			k.ISAFFECT,k.RESULT,k.ALARMTYPE type
+			FROM 
+			T_ALM_DEVALARM t 
+			left join T_ALM_KNOWLEDGE k on t.ALARMCODE = k.ALARMCODE
+			left join T_LC_ZONEINFO z on t.zoneID = z.zoneID				
+			WHERE 
+			t.ALARMSTATUS=#alarmStatus#
+      		<dynamic>		
+				<isNotEmpty prepend="AND" property="branchId">  	
+				    t.BRANCHID = #branchId#			    
+			    </isNotEmpty> 
+			    <isNotEmpty prepend="AND" property="departmentId">
+			     	t.DEPARTMENTID = #departmentId#
+		    	</isNotEmpty>	
+        	</dynamic> 
+			ORDER BY ALARMID desc
+			)a) r
+			<![CDATA[ 
+			WHERE rn>=1 AND rn<=100
+			 ]]>
+	</select>
+	
+	<update id="updateDeviceAlarm" parameterClass="deviceAlarm">
+		UPDATE T_ALM_DEVALARM 
+		set  
+		ALARMSTATUS=#alarmStatus#,
+		MANAGERTIME=#managerTime#,
+		PEOPLEID=#peopleId#
+		WHERE ALARMID=#alarmId#
+	</update>
+	
+    <select id="monitorDeviceAlarmCount" resultClass="java.lang.Integer" 
+			parameterClass="deviceAlarm">
+		SELECT COUNT(*) 
+		FROM 
+		T_ALM_DEVALARM t
+		WHERE 
+		t.ALARMSTATUS=#alarmStatus#
+        <dynamic>		
+			<isNotEmpty prepend="AND" property="branchId">  	
+				t.BRANCHID = #branchId#			    
+			</isNotEmpty> 
+			<isNotEmpty prepend="AND" property="departmentId">
+				t.DEPARTMENTID = #departmentId#
+		    </isNotEmpty>	
+        </dynamic>     			
+	</select>
+	
+	<select id="monitorSecurityAlarmCount" resultClass="java.lang.Integer" 
+			parameterClass="securityAlarm">
+		SELECT COUNT(*) 
+		FROM  
+		T_ALM_SECURITYALARM t
+		WHERE 
+		t.ALARMSTATUS=#alarmStatus#
+		AND
+		t.REPORT = #report#
+      	<dynamic>		
+			<isNotEmpty prepend="AND" property="branchId">  	
+				t.BRANCHID = #branchId#			    
+			</isNotEmpty> 
+			<isNotEmpty prepend="AND" property="departmentId">
+				t.DEPARTMENTID = #departmentId#
+		    </isNotEmpty>	
+        </dynamic> 
+	</select>
+	
+	<select id="querySecAlarmById" resultClass="securityAlarm" 
+			parameterClass="java.lang.Integer">	
+		SELECT *			
+		FROM 
+		T_ALM_SECURITYALARM 
+		WHERE 
+		ALARMID = #alarmId#
+	</select>
+	
+	<select id="queryDeviceAlarmById" resultClass="deviceAlarm" 
+			parameterClass="java.lang.Integer">	
+		SELECT *			
+		FROM 
+		T_ALM_DEVALARM 
+		WHERE 
+		ALARMID = #alarmId#
+	</select>
+	
+	<select id="queryBranchDevAlarmByStatus" resultClass="deviceAlarm" 
+			parameterClass="deviceAlarm">	
+		<![CDATA[ 
+		select * from (
+    	select 
+	    a.ALARMID,a.ALARMCODE,a.ALARMTIME,
+	    a.zoneID, nvl(z.zoneName,a.ZONEID) as zoneName,a.DEVICEID ,a.alarmStatus,a.BRANCHID,a.INFO,a.DEPARTMENTID,
+	    k.alarmType type,k.deviceType,k.CAUSE,k.RESULT,k.alarmName,k.alarmLevel,k.OPERATION,k.ISAFFECT 
+		from T_ALM_DEVALARM a left join T_ALM_KNOWLEDGE k on a.alarmCode=k.alarmCode
+	    left join T_LC_ZONEINFO z on a.zoneID = z.zoneID 
+		WHERE 
+		a.BRANCHID=#branchId# and a.alarmStatus=0  
+		order by a.ALARMID desc 
+    	) WHERE ROWNUM <=100
+    	]]>
+	</select>
+	
+	<select id="queryDepDevAlarmByStatus" resultClass="deviceAlarm" 
+			parameterClass="deviceAlarm">	
+		<![CDATA[ 
+		select * from (
+    	select 
+	    a.ALARMID,a.ALARMCODE,a.ALARMTIME,
+	    a.zoneID, nvl(z.zoneName,a.ZONEID) as zoneName,a.DEVICEID ,a.alarmStatus,a.BRANCHID,a.INFO,a.DEPARTMENTID,
+	    k.alarmType type,k.deviceType,k.CAUSE,k.RESULT,k.alarmName,k.alarmLevel,k.OPERATION,k.ISAFFECT 
+		from T_ALM_DEVALARM a left join T_ALM_KNOWLEDGE k on a.alarmCode=k.alarmCode
+	    left join T_LC_ZONEINFO z on a.zoneID = z.zoneID 
+		WHERE 
+		a.DEPARTMENTID=#departmentId# and a.alarmStatus=0  
+		order by a.ALARMID desc 
+    	) WHERE ROWNUM <=100
+    	]]>
+	</select>
+	
+	<select id="queryCompDevAlarmByStatus" resultClass="deviceAlarm" 
+			parameterClass="deviceAlarm">	
+		<![CDATA[ 
+		select * from (
+    	select 
+	    a.ALARMID,a.ALARMCODE,a.ALARMTIME,
+	    a.zoneID, nvl(z.zoneName,a.ZONEID) as zoneName,a.DEVICEID ,a.alarmStatus,a.BRANCHID,a.INFO,a.DEPARTMENTID,
+	    k.alarmType type,k.deviceType,k.CAUSE,k.RESULT,k.alarmName,k.alarmLevel,k.OPERATION,k.ISAFFECT 
+		from T_ALM_DEVALARM a left join T_ALM_KNOWLEDGE k on a.alarmCode=k.alarmCode
+	    left join T_LC_ZONEINFO z on a.zoneID = z.zoneID 
+		WHERE 
+    	a.alarmStatus=0  
+    	order by a.ALARMID desc 
+    	) WHERE ROWNUM <=100
+    	]]>
+	</select>
+	
+	<select id="statDAlarmCountUnHandled4Branch" resultClass="java.lang.Integer" 
+			parameterClass="java.lang.String">	
+		select DECODE(alarmNum, null,0,alarmNum) 
+		from(
+			select k.ALARMLEVEL,count(*) alarmNum
+			from T_ALM_DEVALARM t, 
+			T_ALM_KNOWLEDGE k		
+			where 
+			t.ALARMCODE = k.ALARMCODE and 
+			t.alarmStatus=0 and t.BRANCHID = #branchId#
+			group by k.ALARMLEVEL order by k.ALARMLEVEL desc) c,
+			(
+			select 1 as a from dual
+			UNION
+			select 2 as a from dual
+			UNION
+			select 3 as a from dual
+			UNION
+			select 4 as a from dual
+			) d
+		where c.ALARMLEVEL(+)= d.a 
+		order by d.a desc
+	</select>
+	
+	<select id="statDAlarmCountUnHandled4Dep" resultClass="java.lang.Integer" 
+			parameterClass="java.lang.String">	
+		select DECODE(alarmNum, null,0,alarmNum) 
+		from(
+			select k.ALARMLEVEL,count(*) alarmNum
+			from T_ALM_DEVALARM t, 
+			T_ALM_KNOWLEDGE k		
+			where 
+			t.ALARMCODE = k.ALARMCODE and 
+			t.alarmStatus=0 and t.DEPARTMENTID = #departmentId#
+			group by k.ALARMLEVEL order by k.ALARMLEVEL desc) c,
+			(
+			select 1 as a from dual
+			UNION
+			select 2 as a from dual
+			UNION
+			select 3 as a from dual
+			UNION
+			select 4 as a from dual
+			) d
+		where c.ALARMLEVEL(+)= d.a 
+		order by d.a desc		
+	</select>
+	
+</sqlMap>
+

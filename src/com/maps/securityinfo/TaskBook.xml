@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="taskBook">
+	<typeAlias alias="taskBook" type="com.entity.securityinfo.TaskBook" />
+	<typeAlias alias="taskBookCondition" type="com.entity.securityinfo.TaskBookCondition" />
+
+	<insert id="createTaskBook" parameterClass="taskBook">
+		INSERT INTO T_SEC_TASKBOOK
+		(
+			  PLANORGID,
+			  NAME,
+			  TARGET,
+			  TYPE,
+			  CONTENT,
+			  PLANORGPERSON,
+			  INCHARGEORGID,
+			  INCHARGEORGPERSON,
+			  STATE,
+			  PLANTIME,
+			  ISSUETIME,
+			  STARTTIME,
+			  ENDTIME,
+			  NOTE
+		)
+		VALUES
+		(
+			#planOrgId#,
+			#name#,
+			#target#,
+			#type#,
+			#content#,
+			#planOrgPerson#,	
+			#inChargeOrgId#,
+			#inChargeOrgPerson#,
+			#state#,
+			#planTime#,
+			#issueTime#,
+			#startTime#,
+			#endTime#,
+			#note#
+		)
+	</insert>	
+	
+	<update id="updateTaskBook" parameterClass="taskBook">
+		UPDATE T_SEC_TASKBOOK 
+		SET 
+		TARGET=#target#,
+		TYPE=#type#,
+		CONTENT=#content#,
+		INCHARGEORGID=#inChargeOrgId#,
+		INCHARGEORGPERSON=#inChargeOrgPerson#,
+        PLANTIME=#planTime#,  
+        STARTTIME = #startTime#,
+		ENDTIME=#endTime#,
+        NOTE=#note#
+		WHERE 
+		PLANORGID=#planOrgId# AND NAME=#name#
+	</update>
+	
+	<select id="queryTaskBookByName" resultClass="taskBook" parameterClass="taskBook">
+		SELECT   
+		  PLANORGID,
+		  NAME,
+		  TARGET,
+		  TYPE,
+		  CONTENT,
+		  PLANORGPERSON,
+		  INCHARGEORGID,
+		  INCHARGEORGPERSON,
+		  STATE,
+		  PLANTIME,
+		  ISSUETIME,
+		  STARTTIME,
+		  ENDTIME,
+		  NOTE
+     	FROM T_SEC_TASKBOOK 
+		WHERE 
+		PLANORGID=#planOrgId# AND NAME=#name#
+	</select>
+	
+	<delete id="deleteTaskBookByName" parameterClass="taskBook">
+		DELETE T_SEC_TASKBOOK WHERE PLANORGID=#planOrgId# AND NAME=#name#
+	</delete>
+	
+	<select id="queryTbByIssueTime" resultClass="taskBook" parameterClass="taskBookCondition">
+		SELECT   
+		  PLANORGID,
+		  NAME,
+		  TARGET,
+		  TYPE,
+		  CONTENT,
+		  PLANORGPERSON,
+		  INCHARGEORGID,
+		  INCHARGEORGPERSON,
+		  STATE,
+		  PLANTIME,
+		  ISSUETIME,
+		  STARTTIME,
+		  ENDTIME,
+		  NOTE
+     	FROM T_SEC_TASKBOOK 
+		WHERE 
+		PLANORGID = #planOrgId# 
+		<dynamic> 
+			<isNotNull prepend="AND" property="beginTime">
+			    ISSUETIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    ISSUETIME <=#endTime#
+			     ]]>
+		    </isNotNull> 
+		    <isNotEqual prepend="AND" property="type" compareValue="-1">
+			    TYPE = #type#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="state" compareValue="-1">
+			    STATE = #state#
+		    </isNotEqual>
+		    <isNotNull prepend="AND" property="inChargeOrgId">
+			    INCHARGEORGID = #inChargeOrgId#
+		    </isNotNull>	    
+		</dynamic> 
+		    ORDER BY PLANTIME desc
+	</select>
+	
+	<select id="queryTbByStartTime" resultClass="taskBook" parameterClass="taskBookCondition">
+		SELECT   
+		  PLANORGID,
+		  NAME,
+		  TARGET,
+		  TYPE,
+		  CONTENT,
+		  PLANORGPERSON,
+		  INCHARGEORGID,
+		  INCHARGEORGPERSON,
+		  STATE,
+		  PLANTIME,
+		  ISSUETIME,
+		  STARTTIME,
+		  ENDTIME,
+		  NOTE
+     	FROM T_SEC_TASKBOOK 
+		WHERE 
+		PLANORGID = #planOrgId# 
+		<dynamic> 
+			<isNotNull prepend="AND" property="beginTime">
+			    STARTTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    STARTTIME <=#endTime#
+			     ]]>
+		    </isNotNull> 
+		    <isNotEqual prepend="AND" property="type" compareValue="-1">
+			    TYPE = #type#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="state" compareValue="-1">
+			    STATE = #state#
+		    </isNotEqual>
+		    <isNotNull prepend="AND" property="inChargeOrgId">
+			    INCHARGEORGID = #inChargeOrgId#
+		    </isNotNull>	    
+		</dynamic> 
+		    ORDER BY PLANTIME desc
+	</select>
+	
+	<select id="queryTbByEndTime" resultClass="taskBook" parameterClass="taskBookCondition">
+		SELECT   
+		  PLANORGID,
+		  NAME,
+		  TARGET,
+		  TYPE,
+		  CONTENT,
+		  PLANORGPERSON,
+		  INCHARGEORGID,
+		  INCHARGEORGPERSON,
+		  STATE,
+		  PLANTIME,
+		  ISSUETIME,
+		  STARTTIME,
+		  ENDTIME,
+		  NOTE
+     	FROM T_SEC_TASKBOOK 
+		WHERE 
+		PLANORGID = #planOrgId# 
+		<dynamic> 
+			<isNotNull prepend="AND" property="beginTime">
+			    ENDTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    ENDTIME <=#endTime#
+			     ]]>
+		    </isNotNull> 
+		    <isNotEqual prepend="AND" property="type" compareValue="-1">
+			    TYPE = #type#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="state" compareValue="-1">
+			    STATE = #state#
+		    </isNotEqual>
+		    <isNotNull prepend="AND" property="inChargeOrgId">
+			    INCHARGEORGID = #inChargeOrgId#
+		    </isNotNull>	    
+		</dynamic> 
+		    ORDER BY PLANTIME desc
+	</select>
+	
+	<update id="publishTaskBook" parameterClass="taskBook">
+		UPDATE T_SEC_TASKBOOK 
+		SET 
+		ISSUETIME=#issueTime#,
+		STATE=#state#
+		WHERE 
+		PLANORGID=#planOrgId# AND NAME=#name#
+	</update>
+	
+	<update id="closeTaskBook" parameterClass="taskBook">
+		UPDATE T_SEC_TASKBOOK 
+		SET 
+		STATE=#state#
+		WHERE 
+		PLANORGID=#planOrgId# AND NAME=#name#
+	</update>
+	
+</sqlMap>
+

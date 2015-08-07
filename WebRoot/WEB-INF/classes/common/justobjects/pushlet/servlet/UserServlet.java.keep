@@ -1,0 +1,51 @@
+/*package common.justobjects.pushlet.servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class UserServlet extends HttpServlet {
+
+	*//**
+	 * 
+	 *//*
+	private static final long serialVersionUID = 1L;
+
+	// 锟斤拷锟斤拷一锟斤拷全锟斤拷Map
+	private Map<String, UserBean> mapUser = new Hashtable<String, UserBean>();
+
+	@Override
+	protected void service(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		String cmd = request.getParameter("cmd");
+		if ("addORupdate".equals(cmd)) {
+			this.addORupdate(request, response);
+		}
+	}
+
+	// 锟斤拷雍锟斤拷锟�锟斤拷锟斤拷 锟斤拷锟斤拷时锟斤拷锟�	protected void addORupdate(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+			String id = request.getParameter("p_from");
+			UserBean user = new UserBean();
+			user.setName(request.getParameter("name"));
+			user.setUtime(request.getParameter("p_time"));
+			mapUser.put(id, user);
+			try {
+				PrintWriter out = response.getWriter();
+				out.println("<div id=\"cw"+id+"\">"+user.getName()+"</div>");
+				out.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+	}
+
+}
+*/

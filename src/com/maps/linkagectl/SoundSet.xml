@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="soundSet">
+<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="SoundSet" type="com.entity.linkagectl.SoundSet" />
+	<!-- 这样以后改了sql，就不需要去改java代码了 -->
+<!-- id表示select里的sql语句，resultClass表示返回结果的类型 -->
+<!-- parameterClass表示参数的内容 -->
+<!-- #表示这是一个外部调用的需要传进的参数，可以理解为占位符 -->
+	<select id="getSoundSetFromAlarmCode" parameterClass="java.lang.String"
+		resultClass="SoundSet">
+		<![CDATA[ 
+    select 
+     T_VM_SOUNDSET.path,T_VM_SOUNDSET.info
+    from T_VM_SOUNDSET,T_ALM_KNOWLEDGE
+    where T_ALM_KNOWLEDGE.alarmCode = #alarmCode# 
+       and T_VM_SOUNDSET.alarmLevel=T_ALM_KNOWLEDGE.alarmLevel
+    ]]>
+	</select>
+	
+	<!-- 注意这里的resultClass类型，使用SeAlarm类型取决于queryForList还是queryForObject -->
+	<select id="getSoundSet" parameterClass="java.lang.String" resultClass="SoundSet"> 
+		<![CDATA[ 
+    select 
+      * 
+    from T_VM_SOUNDSET 
+	where alarmLevel = #alarmLevel#
+    ]]>
+	</select>
+	
+	<!-- 注意这里的resultClass类型，使用SeAlarm类型取决于queryForList还是queryForObject -->
+	<select id="getAllSoundSet" resultClass="SoundSet">
+		<![CDATA[ 
+    select 
+      * 
+    from T_VM_SOUNDSET
+    ]]>
+	</select>
+
+	<update id="updateSoundSet" parameterClass="SoundSet">
+		<![CDATA[ 
+    UPDATE T_VM_SOUNDSET
+    SET         
+      path=#path#,   
+      info=#info#
+  WHERE alarmLevel = #alarmLevel# 
+]]>
+	</update>
+
+<insert id="insertSoundSet" parameterClass="SoundSet">
+		INSERT INTO T_VM_SOUNDSET (alarmLevel,path,info) 
+      VALUES (#alarmLevel#,#path#,#info#)
+	</insert>
+	<delete id="deleteSoundSet" parameterClass="java.lang.String">
+		delete from T_VM_SOUNDSET where alarmLevel=#alarmLevel#
+	</delete>
+
+</sqlMap>

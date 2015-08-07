@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="com.actions.gis" namespace="/gis" extends="struts-default,json-default">
+	
+		<action name="querySecurityZoneAction" method="querySecurityZoneByOrgID" class="querySecurityZoneAction">
+		    <result name="success" type="json">
+                <param name="root">securityZoneList4Ajax</param>
+            </result>
+            <result name="error" type="json">
+                <param name="root">securityZoneList4Ajax</param>
+            </result>   
+		</action>
+		<action name="queryFenceAction" method="queryFenceByOrgID" class="queryFenceAction">
+            <result name="success" type="json">
+                <param name="root">fenceList4Ajax</param>
+            </result>
+            <result name="error" type="json">
+                <param name="root">fenceList4Ajax</param>
+            </result>   
+		</action>
+		<action name="queryCameraAction" method="queryCameraByOrgID" class="queryCameraAction">
+            <result name="success" type="json">
+                <param name="root">cameraList4Ajax</param>
+            </result>
+            <result name="error" type="json">
+                <param name="root">cameraList4Ajax</param>
+            </result>   
+		</action>
+		<action name="queryWarning4SecurityAction" method="queryWarningNotProcessed" class="queryWarning4SecurityAction">
+            <result name="success" type="json">
+                <param name="root">securityAlarmList4Ajax</param>
+            </result>
+            <result name="error" type="json">
+                <param name="root">securityAlarmList4Ajax</param>
+            </result>   
+		</action>
+		<action name="queryWarning4DeviceAction" method="queryWarningNotProcessed" class="queryWarning4DeviceAction">
+            <result name="success" type="json">
+                <param name="root">deviceAlarmList4Ajax</param>
+            </result>
+            <result name="error" type="json">
+                <param name="root">deviceAlarmList4Ajax</param>
+            </result>   
+        </action>
+        <action name="queryOrganizationAction" method="queryOrganizationsByAccountId" class="queryOrganizationAction">
+            <result name="success" type="json">
+                <param name="root">orgList4Ajax</param>
+            </result>
+            <result name="error" type="json">
+                <param name="root">orgList4Ajax</param>
+            </result>   
+        </action>
+        <action name="queryOrgInfoById" method="queryOrganizationsInfoById" class="queryOrganizationAction">
+            <result name="success" type="json">
+                <param name="root">resultAjaxObj</param>
+            </result>
+            <result name="error" type="json">
+                <param name="root">resultAjaxObj</param>
+            </result>   
+        </action>
+        <!-- action name="queryBranchAction" method="queryBranchLocationByOrgID" class="QueryBranchAction">
+            <result name="success" type="json">
+                <param name="root">branchInfo</param>
+            </result>
+            <result name="error" type="json">
+                <param name="root">branchInfo</param>
+            </result>   
+        </action-->
+	</package>
+</struts>

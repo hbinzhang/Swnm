@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="fence" extends="com.actions,json-default,auth-interceptor" namespace="/fence" >
+		
+		<action name="findBranchInfoByMngID" method="findBranchInfoByMngID" class="FenceManagerAction">
+		</action>
+		<action name="goAddPage" method="goAddPage" class="FenceManagerAction">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success">/WEB-INF/views/efence/weilanadd.jsp</result>
+		</action>
+		<action name="isIdRepeat" method="isIdRepeat" class="FenceManagerAction">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="findAlarmInfo" method="findAlarmInfo" class="FenceManagerAction">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="queryDetailByID" method="queryDetailByID" class="FenceManagerAction">
+			<result name="success">/detail.jsp</result>
+			<result name="error">/WEB-INF/views/error.jsp</result>
+		</action>
+		<action name="queryFence" method="queryFence" class="FenceManagerAction">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success">/WEB-INF/views/efence/weilan.jsp</result>
+			<result name="error">/WEB-INF/views/error.jsp</result>
+		</action>
+		<!--
+		<action name="addFence" method="addFence" class="FenceManagerAction">
+			<result name="success" type="chain">queryFence</result>
+			<result name="error">/success.jsp</result>
+		</action>
+		-->
+		<action name="addFence" method="addFence" class="FenceManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>	
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="delFence" method="delFence" class="FenceManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>	
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="goModFence" method="goModFence" class="FenceManagerAction">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success">/WEB-INF/views/efence/weilanedit.jsp</result>
+			<result name="error">/WEB-INF/views/error.jsp</result>
+		</action>
+		<action name="doModFence" method="doModFence" class="FenceManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>	
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="batchImportFence" method="batchImportFence" class="FenceManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>	
+			<result name="success" type="json">
+				<param name="contentType">text/plain</param>
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="contentType">text/plain</param>
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+	</package>
+</struts>

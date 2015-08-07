@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="com.actions.alarmmgt" namespace="/alarmmgt" extends="struts-default,json-default,auth-interceptor">
+ <!-- 	<interceptors>
+ 		<interceptor name="LogInterceptor" class="com.util.logmgt.LogInterceptor"/>
+ 		<interceptor-stack name="myStack">
+ 			<interceptor-ref name="defaultStack"/>
+ 		 	<interceptor-ref name="LogInterceptor"/>
+ 		</interceptor-stack>		
+ 	</interceptors>	 -->  
+ 	
+ 	<action name="queryAlarmCount" class="queryAlarmCountAction"  method="queryAlarmCount" >
+ 			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>
+    		<result name="error" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>	
+	</action>
+ 	
+ 	<action name="updateAlarmKnowledge" class="alarmKnowledgeAction"  method="updateAlarmKnowledge" >
+    		<interceptor-ref name="authInterceptorStack"/>	
+    		<result name="success" type="redirectAction">
+				<param name="actionName">queryAllAlarmKnowledge</param>
+			</result>	
+	 		<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>
+    <action name="queryAllAlarmKnowledge" class="alarmKnowledgeAction"  method="queryAllAlarmKnowledge" >
+    		<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success">/WEB-INF/views/alarmmgt/zhishiku.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>
+	
+	<action name="goupdateAlarmKnowledge" class="alarmKnowledgeAction"  method="goupdateAlarmKnowledge" >
+    		<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success">/WEB-INF/views/alarmmgt/updatezhishiku.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>		 
+	
+<!-- <action name="validateLength" class="alarmKnowledgeAction"  method="validateLength" >
+    		<result name="success" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>
+    		<result name="error" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>	
+	</action> -->		 
+	
+ 	<action name="queryAlarm" class="alarmQueryAction"  method="queryAlarm" >
+ 			<interceptor-ref name="noAuthInterceptorStack"/>
+ 			<result name="success" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>
+    		<result name="error" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>	
+	</action>	
+	<action name="exportAlarm" class="alarmQueryAction"  method="exportAlarm" >
+	 	 <interceptor-ref name="authInterceptorStack"/>	
+         <result name="success" type="stream">
+    			<param name="contentType">application/vnd.ms-excel</param>
+   				<param name="inputName">inputStream</param>
+   				<param name="contentDisposition">attachment; filename="${fileName}"</param>
+    			<param name="bufferSize">10240</param>
+  		</result>
+	</action>	
+	<action name="initAlarm" class="alarmQueryAction"  method="initAlarm" >
+ 			<interceptor-ref name="noAuthInterceptorStack"/>
+ 			<result name="success">/WEB-INF/views/alarmmgt/gaojingchaxun.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>
+	<action name="queryDepartByBranch" class="alarmQueryAction"  method="queryDepartByBranch" >
+ 			<interceptor-ref name="noAuthInterceptorStack"/>
+ 			<result name="success" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>
+    		<result name="error" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>	
+	</action>
+	<action name="queryZoneByDepart" class="alarmQueryAction"  method="queryZoneByDepart" >
+ 			<interceptor-ref name="noAuthInterceptorStack"/>
+ 			<result name="success" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>
+    		<result name="error" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>	
+	</action>
+	<action name="queryAlarmNameByDevType" class="alarmQueryAction"  method="queryAlarmNameByDevType" >
+ 			<interceptor-ref name="noAuthInterceptorStack"/>
+ 			<result name="success" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>
+    		<result name="error" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>	
+	</action>
+	<action name="queryAlarmPictureUrl" class="alarmQueryAction"  method="queryAlarmPictureUrl" >
+    		<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success">/WEB-INF/views/alarmmgt/shijiantupian.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>		
+	</action>	
+	<action name="queryAlarmVideoUrl" class="alarmQueryAction"  method="queryAlarmVideoUrl" >
+    		<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success">/WEB-INF/views/alarmmgt/shijianshipin.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>		
+	</action>
+	
+	<action name="statisticAlarm" class="alarmStatisticAction"  method="statisticAlarm" >
+ 			<interceptor-ref name="noAuthInterceptorStack"/>
+ 			<result name="success" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>
+    		<result name="error" type="json">
+    		    <param name="root">ajaxObject</param>
+    		</result>	
+	</action>
+	<action name="exportStatisticAlarm" class="alarmStatisticAction"  method="exportStatisticAlarm" >
+ 			 <interceptor-ref name="authInterceptorStack"/>	
+ 			 <result name="success" type="stream">
+    			<param name="contentType">application/vnd.ms-excel</param>
+   				<param name="inputName">inputStream</param>
+   				<param name="contentDisposition">attachment; filename="${fileName}"</param>
+    			<param name="bufferSize">10240</param>
+  		</result>
+	</action>
+	<action name="initStatisticAlarm" class="alarmStatisticAction"  method="initStatisticAlarm" >
+ 			<interceptor-ref name="noAuthInterceptorStack"/>
+ 			<result name="success">/WEB-INF/views/alarmmgt/gaojingtongji.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>
+	
+	<action name="queryDeviceAlarm" class="deviceAlarmMonitorAction"  method="queryDeviceAlarm" >
+ 			<interceptor-ref name="noAuthInterceptorStack"/>
+ 			<result name="success">/WEB-INF/views/alarmmgt/gaojingjianshi.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>
+	<action name="handleDeviceAlarm" class="deviceAlarmMonitorAction"  method="handleDeviceAlarm" >
+    		<interceptor-ref name="authInterceptorStack"/>	
+    		<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>		
+	</action>		 	
+	</package>	 
+</struts>

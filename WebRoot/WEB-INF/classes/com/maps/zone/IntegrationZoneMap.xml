@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="IntegrationZoneMapInfo">
+
+	<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="IntegrationZoneMapBean" type="com.entity.zone.IntegrationZoneMapBean" />
+	<!-- 这样以后改了sql，就不需要去改java代码了 -->
+	<!-- id表示select里的sql语句，resultClass表示返回结果的类型 -->
+	<!-- parameterClass表示参数的内容 -->
+	<!-- #表示这是一个外部调用的需要传进的参数，可以理解为占位符 -->
+
+	<update id="modIntegrationZoneMap" parameterClass="IntegrationZoneMapBean">
+		update T_LC_INTEGRATIONZONEMAP
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="point"> POINT = #point#</isNotNull>
+			<isNotNull prepend="," property="info">INFO = #info#</isNotNull>
+		</dynamic>
+		where ZONEID=#zoneID# and HOSTID=#hostID#
+	</update>
+
+	<insert id="insertIntegrationZoneMap" parameterClass="IntegrationZoneMapBean">
+		INSERT INTO T_LC_INTEGRATIONZONEMAP 
+		(
+			INTEGRATIONZONEID, 
+			HOSTID, 
+			ZONEID, 
+			POINT, 
+			INFO
+		) 
+		VALUES
+		 (
+			 #integrationZoneID#,
+			 #hostID#,
+			 #zoneID#,
+			 #point#,
+			 #info#
+		 )
+
+	</insert>
+	
+	<delete id="delIntegrationZoneMap" parameterClass="IntegrationZoneMapBean">
+		delete from T_LC_INTEGRATIONZONEMAP where ZONEID=#zoneID# and HOSTID=#hostID#
+	</delete>
+	<delete id="delIntegrationZoneMapByZoneID" parameterClass="java.lang.Integer">
+		delete from T_LC_INTEGRATIONZONEMAP where ZONEID=#zoneID#
+	</delete>
+	<delete id="delIntegrationZoneMapByHostID" parameterClass="java.lang.String">
+		delete from T_LC_INTEGRATIONZONEMAP where HOSTID=#hostID#
+	</delete>
+	<select id="getIntegrationZoneMapByZoneID" resultClass="IntegrationZoneMapBean" parameterClass="java.lang.Integer">
+	select * from T_LC_INTEGRATIONZONEMAP where ZONEID=#zoneID#
+	</select>
+	<select id="getIntegrationZoneMapByZoneIdAndHostId" resultClass="IntegrationZoneMapBean" parameterClass="IntegrationZoneMapBean">
+	select * from T_LC_INTEGRATIONZONEMAP where ZONEID=#zoneID# and HOSTID=#hostID#
+	</select>
+	<select id="getZoneIDsByHostID01" resultClass="java.lang.Integer" parameterClass="java.lang.String">
+	select ZONEID from T_LC_INTEGRATIONZONEMAP where HOSTID=#hostID#
+	</select>
+
+</sqlMap>

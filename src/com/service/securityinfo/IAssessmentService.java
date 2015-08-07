@@ -1,0 +1,33 @@
+package com.service.securityinfo;
+
+import java.util.List;
+
+import com.entity.securityinfo.Assessment;
+import com.entity.securityinfo.CheckInfo;
+import com.entity.securityinfo.TaskBookCondition;
+
+public interface IAssessmentService {
+
+	List queryAssessment(String orgId);
+
+	void createAssessment(Assessment assessment);
+
+	Object queryAssessmentByName(Assessment assessment);
+
+	void updateAssessment(Assessment assessment);
+
+	void evaluateAssessment(Assessment assessment);
+
+	void deleteAssessment(Assessment assessment);
+
+	List queryAssessResult4Org(TaskBookCondition condition);
+
+	List queryCheckInfoByName(CheckInfo checkInfo);
+
+	void createCheckInfo(CheckInfo checkInfo);
+
+	void deleteCheckInfoByName(CheckInfo checkInfo);
+
+	Object queryCheckInfoByNmAndTime(CheckInfo checkInfo);
+
+}

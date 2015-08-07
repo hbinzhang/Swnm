@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="event">
+	<typeAlias alias="event" type="com.entity.securityinfo.Event" />
+	<typeAlias alias="eventCondition" type="com.entity.securityinfo.EventCondition" />
+
+	<insert id="createEvent" parameterClass="event">
+		INSERT INTO T_SEC_EVENT
+		(
+			  BELONGTOORGID,
+			  NAME,
+			  TIME,
+			  POSITION,
+			  EVENTBELONGTOORG,
+			  EVENTLEVEL,
+			  REASON,
+			  PROCESS,
+			  RESULT,
+			  INFLUENCERANGE,
+			  INCHARGEORG,
+			  INCHARGEPERSON,
+			  REMEDIALMEASURES,
+			  REMEDIALRESULT,
+			  POSTEVALUATION
+		)
+		VALUES
+		(
+			#belongToOrgId#,
+			#name#,
+			#time#,
+			#position#,
+			#eventBelongToOrg#,
+			#eventLevel#,
+			#reason#,
+			#process#,
+			#result#,
+			#influenceRange#,
+			#inChargeOrg#,
+			#inChargePerson#,
+			#remedialMeasures#,
+			#remedialResult#,
+			#postEvaluation#
+		)
+	</insert>	
+	
+	<select id="queryEvent" resultClass="event" parameterClass="eventCondition">
+		SELECT 
+ 		   	  BELONGTOORGID,
+			  NAME,
+			  TIME,
+			  POSITION,
+			  EVENTBELONGTOORG,
+			  EVENTLEVEL,
+			  REASON,
+			  PROCESS,
+			  RESULT,
+			  INFLUENCERANGE,
+			  INCHARGEORG,
+			  INCHARGEPERSON,
+			  REMEDIALMEASURES,
+			  REMEDIALRESULT,
+			  POSTEVALUATION
+		FROM T_SEC_EVENT
+		WHERE 
+		BELONGTOORGID=#belongToOrgId#
+		<dynamic> 
+		    <isNotNull prepend="AND" property="beginTime">
+			    TIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    TIME <=#endTime#
+			     ]]>
+		    </isNotNull> 
+		    <isNotEmpty prepend="AND" property="name">
+			    NAME like  '%' || #name# || '%' 
+		    </isNotEmpty>
+		     <isNotEmpty prepend="AND" property="position">
+			    POSITION like  '%' || #position# || '%' 
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="inChargeOrg">
+			    INCHARGEORG like  '%' || #inChargeOrg# || '%' 
+		    </isNotEmpty>
+		     <isNotEmpty prepend="AND" property="eventLevel">
+			    EVENTLEVEL like  '%' || #eventLevel# || '%' 
+		    </isNotEmpty>
+		</dynamic> 
+		ORDER BY TIME desc
+	</select>
+	
+	<update id="updateEvent" parameterClass="event">
+		UPDATE T_SEC_EVENT 
+		SET 	
+		TIME=#time#,
+		POSITION=#position#,
+		EVENTBELONGTOORG=#eventBelongToOrg#,
+		EVENTLEVEL=#eventLevel#,
+		REASON=#reason#,
+		PROCESS=#process#,
+		RESULT=#result#,
+		INFLUENCERANGE=#influenceRange#,
+		INCHARGEORG=#inChargeOrg#,
+		INCHARGEPERSON=#inChargePerson#,
+		REMEDIALMEASURES=#remedialMeasures#,
+		REMEDIALRESULT=#remedialResult#,
+		POSTEVALUATION=#postEvaluation#
+		WHERE 
+		BELONGTOORGID=#belongToOrgId# AND NAME=#name#
+	</update>
+	
+	<select id="queryEventByName" resultClass="event" parameterClass="event">
+		SELECT 
+ 		   	  BELONGTOORGID,
+			  NAME,
+			  TIME,
+			  POSITION,
+			  EVENTBELONGTOORG,
+			  EVENTLEVEL,
+			  REASON,
+			  PROCESS,
+			  RESULT,
+			  INFLUENCERANGE,
+			  INCHARGEORG,
+			  INCHARGEPERSON,
+			  REMEDIALMEASURES,
+			  REMEDIALRESULT,
+			  POSTEVALUATION
+		FROM T_SEC_EVENT
+		WHERE 
+		BELONGTOORGID=#belongToOrgId# AND NAME=#name#
+	</select>
+	
+	<delete id="deleteEvent" parameterClass="event">
+		DELETE 
+		T_SEC_EVENT 
+		WHERE BELONGTOORGID = #belongToOrgId# AND NAME=#name#
+	</delete>
+
+</sqlMap>
+

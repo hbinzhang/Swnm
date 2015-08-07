@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DefenceZoneMapInfo">
+
+	<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="PulseZoneMapBean" type="com.entity.zone.PulseZoneMapBean" />
+	<!-- 这样以后改了sql，就不需要去改java代码了 -->
+	<!-- id表示select里的sql语句，resultClass表示返回结果的类型 -->
+	<!-- parameterClass表示参数的内容 -->
+	<!-- #表示这是一个外部调用的需要传进的参数，可以理解为占位符 -->
+
+	<update id="modPulseZoneMap" parameterClass="PulseZoneMapBean">
+	    update T_LC_PULSEZONEMAP    
+	    <dynamic prepend="set" >
+		<isNotNull prepend=","  property="subZone" >SUBZONE = #subZone#</isNotNull>
+		<isNotNull prepend=","  property="info" >INFO = #info#</isNotNull>
+	    </dynamic>    
+    	where ZONEID = #zoneID# and HOSTID=#hostID# 
+
+	</update>
+
+	<insert id="insertPulseZoneMap" parameterClass="PulseZoneMapBean">
+		INSERT INTO T_LC_PULSEZONEMAP 
+		(
+			PULSEZONEID, 
+			ZONEID, 
+			HOSTID, 
+			SUBZONE, 
+			INFO
+		) 
+		VALUES
+		 (
+			 #pulseZoneID#,
+			 #zoneID#,
+			 #hostID#,
+			 #subZone#,
+			 #info#
+		 )
+	</insert>
+
+	<delete id="delPulseZoneMapByZoneID" parameterClass="java.lang.Integer">
+		delete from T_LC_PULSEZONEMAP where ZONEID=#zoneID#
+	</delete>
+	
+	<delete id="delPulseZoneMapByHostID" parameterClass="java.lang.String">
+		delete from T_LC_PULSEZONEMAP where HOSTID=#hostID#
+	</delete>
+	
+	<delete id="delPulseZoneMap" parameterClass="PulseZoneMapBean">
+		delete from T_LC_PULSEZONEMAP where HOSTID=#hostID# and ZONEID=#zoneID#
+	</delete>
+	
+	<select id="getPulseZoneMapByZoneID" resultClass="PulseZoneMapBean" parameterClass="java.lang.Integer">
+	
+	select * from T_LC_PULSEZONEMAP where ZONEID=#zoneID#
+	
+	</select>
+	
+	<select id="getPulseZoneMapByZoneIdAndHostId" resultClass="PulseZoneMapBean" parameterClass="PulseZoneMapBean">
+	
+	select * from T_LC_PULSEZONEMAP where ZONEID=#zoneID# and HOSTID=#hostID#
+	
+	</select>
+	
+	<select id="getZoneIDsByHostID03" resultClass="java.lang.Integer" parameterClass="java.lang.String">
+	
+	select ZONEID from T_LC_PULSEZONEMAP where HOSTID=#hostID#
+	
+	</select>
+
+</sqlMap>

@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="com.actions.videomonitor" namespace="/videomonitor" extends="struts-default,json-default,auth-interceptor">
+	
+		<action name="loadIpc" class="deviceManageIPCAction" method="loadIPC">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success">/WEB-INF/views/shebei/ipc.jsp</result>
+		</action>
+		<action name="checkIpcIdExist" class="deviceManageIPCAction" method="checkIpcIdExist">
+			<result type="json">
+				<param name="root">tip</param>
+			</result>
+		</action>
+		<action name="addIpc" class="deviceManageIPCAction" method="addIPC">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadIpc</result>
+			<result name="inputAdd" type="redirectAction">loadAddIpc</result>
+			<result name="input" type="redirectAction">loadUpdateIpc</result>
+		</action>
+		<action name="updateIpc" class="deviceManageIPCAction" method="updateIPC">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadIpc</result>
+			<result name="inputAdd" type="redirectAction">loadAddIpc</result>
+			<result name="input" type="redirectAction">loadUpdateIpc</result>
+		</action>
+		<action name="deleteIpc" class="deviceManageIPCAction" method="deleteIPC">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result type="json">
+				<param name="root">tip</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">tip</param>
+			</result>
+		</action>
+		<action name="loadUpdateIpc" class="deviceManageIPCAction" method="loadUpdateIPC">
+			<param name="isadd">false</param>
+			<result name="success">/WEB-INF/views/shebei/ipcadd.jsp</result>
+		</action>
+		<action name="loadAddIpc" class="deviceManageIPCAction" method="loadAddIPC">
+			<param name="isadd">true</param>
+			<result name="success">/WEB-INF/views/shebei/ipcadd.jsp</result>
+		</action>
+		<action name="loadIpcAjax" class="deviceManageIPCAction" method="loadIPCAjax">
+			<result type="json">
+				<param name="root">ipcsjson</param>
+			</result>
+		</action>	
+		
+		<action name="setPlayCookie" class="videoPreviewAction" method="setPlayCookie">
+			<result type="json">
+				<param name="root">setCookieRes</param>
+			</result>
+		</action>
+		
+		<action name="loadNvr" class="deviceManageNVRAction" method="loadNVR">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success">/WEB-INF/views/shebei/nvr.jsp</result>
+		</action>
+		<action name="loadAddNvr" class="deviceManageNVRAction" method="loadAddNVR">
+			<param name="isadd">true</param>
+			<result name="success">/WEB-INF/views/shebei/nvradd.jsp</result>
+		</action>
+		<action name="checkNvrIdExist" class="deviceManageNVRAction" method="checkNvrIdExist">
+			<result type="json">
+				<param name="root">tip</param>
+			</result>
+		</action>
+		<action name="addNvr" class="deviceManageNVRAction" method="addNVR">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadNvr</result>
+			<result name="inputAdd" type="redirectAction">loadAddNvr</result>
+			<result name="input" type="redirectAction">loadUpdateNvr</result>
+		</action>
+		<action name="updateNvr" class="deviceManageNVRAction" method="updateNVR">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadNvr</result>
+			<result name="inputAdd" type="redirectAction">loadAddNvr</result>
+			<result name="input" type="redirectAction">loadUpdateNvr</result>
+		</action>
+		<action name="deleteNvr" class="deviceManageNVRAction" method="deleteNVR">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadNvr</result>
+			<result name="error" type="redirectAction">loadNvr</result>
+		</action>
+		<action name="loadUpdateNvr" class="deviceManageNVRAction" method="loadUpdateNVR">
+			<param name="isadd">false</param>
+			<result name="success">/WEB-INF/views/shebei/nvradd.jsp</result>
+		</action>
+		<action name="loadIpcsByOrgIdAjax" class="deviceManageNVRAction" method="getIpcsByOrgId">
+			<result type="json">
+				<param name="root">ipcsjson</param>
+			</result>
+		</action>
+		
+		<action name="loadDecoder" class="deviceManageDecoderAction" method="loadDecoder">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success">/WEB-INF/views/shebei/decoder.jsp</result>
+		</action>
+		
+		<action name="loadAddDecoder" class="deviceManageDecoderAction" method="loadAddDecoder">
+			<param name="isadd">true</param>
+			<result name="success">/WEB-INF/views/shebei/decoderadd.jsp</result>
+		</action>
+		
+		<action name="loadUpdateDecoder" class="deviceManageDecoderAction" method="loadUpdateDecoder">
+			<param name="isadd">false</param>
+			<result name="success">/WEB-INF/views/shebei/decoderadd.jsp</result>
+		</action>
+		
+		<action name="checkDecoderIdExist" class="deviceManageDecoderAction" method="checkDecoderIdExist">
+			<result type="json">
+				<param name="root">tip</param>
+			</result>
+		</action>
+		
+		<action name="addDecoder" class="deviceManageDecoderAction" method="addDecoder">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadDecoder</result>
+			<result name="inputAdd" type="redirectAction">loadAddDecoder</result>
+			<result name="input" type="redirectAction">loadUpdateDecoder</result>
+		</action>
+		<action name="updateDecoder" class="deviceManageDecoderAction" method="updateDecoder">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadDecoder</result>
+			<result name="inputAdd" type="redirectAction">loadAddDecoder</result>
+			<result name="input" type="redirectAction">loadUpdateDecoder</result>
+		</action>
+		
+		<action name="deleteDecoder" class="deviceManageDecoderAction" method="deleteDecoder">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadDecoder</result>
+			<result name="error" type="redirectAction">loadDecoder</result>
+		</action>
+		
+		<action name="loadDecoderAjax" class="deviceManageDecoderAction" method="loadDecoderAjax">
+			<result type="json">
+				<param name="root">decodersjson</param>
+			</result>
+		</action>
+		
+		<action name="loadVideoPreview" class="videoPreviewAction" method="loadVideoPreview">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result>/WEB-INF/views/shipin/preview.jsp</result>
+		</action>
+		
+		<action name="loadPlayback" class="playbackAction" method="loadVideoPlayback">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result>/WEB-INF/views/shipin/playback.jsp</result>
+		</action>
+		
+		<action name="loadVideoWall" class="videoWallAction" method="loadVideoWall">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result>/WEB-INF/views/shipin/videowall.jsp</result>
+		</action>
+		
+		<action name="setVideoWallCookie" class="videoWallAction" method="setVideoWallCookie">
+			<result type="json">
+				<param name="root">setCookieRes</param>
+			</result>
+		</action>
+		
+		<action name="searchAlarmVideo" class="alarmVideoAction" method="searchAlarmVideo">
+			<result type="json">
+				<param name="root">ipcsjson</param>
+			</result>
+		</action>
+		
+		<action name="testCITN" class="alarmVideoAction" method="testConfigIpcToNvr">
+			<result name="success">/WEB-INF/views/shebei/ipc.jsp</result>
+		</action>
+		
+		<action name="testConfigIpcToNvrEx" class="alarmVideoAction" method="testConfigIpcToNvrEx">
+			<result name="success">/WEB-INF/views/shebei/ipc.jsp</result>
+		</action>
+		
+		<action name="testConfigNTP" class="alarmVideoAction" method="testConfigNTP">
+			<result name="success">/WEB-INF/views/shebei/ipc.jsp</result>
+		</action>
+		
+		<action name="testConfigTimezone" class="alarmVideoAction" method="testConfigTimezone">
+			<result name="success">/WEB-INF/views/shebei/ipc.jsp</result>
+		</action>
+		
+		<action name="testPtzControl" class="alarmVideoAction" method="testPtzControl">
+			<result name="success">/WEB-INF/views/shebei/ipc.jsp</result>
+		</action>
+		
+		<action name="addConfig" class="ivaIpcConfigAddAction" method="execute">
+			<result name="success">/WEB-INF/views/shebei/ipc.jsp</result>
+		</action>
+		
+		<action name="loadIpcConfig" class="ivaIpcConfigLoadAction" method="loadIpcInfo">
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		
+		<!-- peicaiyun add -->
+		<action name="loadIva" class="deviceManageIvaAction" method="loadIva">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success">/WEB-INF/views/shebei/iva.jsp</result>
+		</action>
+		
+		<action name="loadAddIva" class="deviceManageIvaAction" method="loadAddIva">
+			<param name="isadd">true</param>
+			<result name="success">/WEB-INF/views/shebei/ivaadd.jsp</result>
+		</action>
+		
+		<action name="loadUpdateIva" class="deviceManageIvaAction" method="loadUpdateIva">
+			<param name="isadd">false</param>
+			<result name="success">/WEB-INF/views/shebei/ivaadd.jsp</result>
+		</action>
+		
+		<action name="checkIvaIdExist" class="deviceManageIvaAction" method="checkIvaIdExist">
+			<result type="json">
+				<param name="root">tip</param>
+			</result>
+		</action>
+		<action name="addIva" class="deviceManageIvaAction" method="addIva">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadIva</result>
+			<result name="inputAdd" type="redirectAction">loadAddIva</result>
+			<result name="input" type="redirectAction">loadUpdateIva</result>
+		</action>
+		<action name="updateIva" class="deviceManageIvaAction" method="updateIva">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadIva</result>
+			<result name="inputAdd" type="redirectAction">loadAddIva</result>
+			<result name="input" type="redirectAction">loadUpdateIva</result>
+		</action>
+		
+		<action name="deleteIva" class="deviceManageIvaAction" method="deleteIva">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadIva</result>
+			<result name="error" type="redirectAction">loadIva</result>
+		</action>
+		
+		<action name="loadIvaAjax" class="deviceManageIvaAction" method="loadIvaAjax">
+			<result type="json">
+				<param name="root">ivasjson</param>
+			</result>
+		</action>
+		
+		<action name="loadIvaServerInfo" class="ivaIpcConfigLoadAction" method="loadIvaServerInfo">
+			<result name="success">/WEB-INF/views/shebei/ipc.jsp</result>
+		</action>
+		
+		<action name="queryPointByIpcId" class="ipcQueryPointAction" method="execute">
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="queryIvaByPage" class="ivaIpcConfigLoadAction" method="queryIvaByPage">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success">/WEB-INF/views/shebei/ivaconfig.jsp</result>
+		</action>
+		<action name="batchImportIpc" class="DeviceManagerUploadAction" method="batchImportIpc">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadIpc</result>
+		</action>
+		<action name="batchImportNvr" class="DeviceManagerUploadAction" method="batchImportNvr">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadNvr</result>
+		</action>
+		<action name="batchImportIva" class="DeviceManagerUploadAction" method="batchImportIva">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success">/WEB-INF/views/shebei/ivaconfig.jsp</result>
+		</action>
+		<action name="batchImportDecoder" class="DeviceManagerUploadAction" method="batchImportDecoder">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="redirectAction">loadDecoder</result>
+		</action>
+
+		<action name="loadIVAConfig">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success">/WEB-INF/views/shebei/ivaconfig.jsp</result>
+		</action>
+		
+		<action name="loadCheckPluginVersion">
+			<result name="success">/WEB-INF/views/shipin/pluginversion.html</result>
+		</action>
+		
+		<action name="gotoPreset" class="videoPreviewAction" method="gotoPreset">
+			<result name="success" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+		</action>
+		
+		<action name="savePreset" class="videoPreviewAction" method="savePreset">
+			<result name="success" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+		</action>
+		<action name="loadPresetByPage" class="videoPreviewAction" method="loadPresetByPage">
+			<result name="success" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+		</action>
+		<action name="deletePreset" class="videoPreviewAction" method="deletePreset">
+			<result name="success" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+		</action>
+		
+		<action name="startCruise" class="videoPreviewAction" method="startCruise">
+			<result name="success" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+		</action>
+		
+		<action name="stopCruise" class="videoPreviewAction" method="stopCruise">
+			<result name="success" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+		</action>
+		
+		<action name="saveCruise" class="videoPreviewAction" method="saveCruise">
+			<result name="success" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+		</action>
+		
+		<action name="loadCruiseByIpcid" class="videoPreviewAction" method="loadCruiseByIpcid">
+			<result name="error" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+			<result name="success" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+		</action>
+				
+		<action name="deleteCruiseById" class="videoPreviewAction" method="deleteCruiseById">
+			<result name="error" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+			<result name="success" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+		</action>
+		
+		<action name="saveRound" class="videoPreviewAction" method="saveRound">
+			<result name="success" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+		</action>
+		
+		<action name="loadRounds" class="videoPreviewAction" method="loadRounds">
+			<result name="error" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+			<result name="success" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+		</action>
+				
+		<action name="deleteRoundById" class="videoPreviewAction" method="deleteRoundById">
+			<result name="error" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+			<result name="success" type="json">
+				<param name="root">ajaxRes</param>
+			</result>
+		</action>
+ </package> 
+ 
+ 
+</struts> 					

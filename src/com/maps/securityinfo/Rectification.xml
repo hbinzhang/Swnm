@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="rectification">
+	<typeAlias alias="rectification" type="com.entity.securityinfo.Rectification" />
+	<typeAlias alias="rectificationCondition" type="com.entity.securityinfo.RectificationCondition" />
+
+	<insert id="createRectification" parameterClass="rectification">
+		INSERT INTO T_SEC_RECTIFICATION
+		(
+			  BELONGTOORGID,
+			  NAME,
+			  INITIATINGORG,
+			  TIME,
+			  IMPLEMENTORG,
+			  IMPLEMENTPERSON,
+			  ACTIONS,
+			  RESULT,
+			  NOTE
+		)
+		VALUES
+		(
+			#belongToOrgId#,
+			#name#,
+			#initiatingOrg#,
+			#time#,
+			#implementOrg#,
+			#implementPerson#,
+			#actions#,
+			#result#,
+			#note#
+		)
+	</insert>	
+	
+	<select id="queryRectification" resultClass="rectification" parameterClass="rectificationCondition">
+		SELECT 
+ 		   	  BELONGTOORGID,
+			  NAME,
+			  INITIATINGORG,
+			  TIME,
+			  IMPLEMENTORG,
+			  IMPLEMENTPERSON,
+			  ACTIONS,
+			  RESULT,
+			  NOTE
+		FROM T_SEC_RECTIFICATION
+		WHERE 
+		BELONGTOORGID=#belongToOrgId#
+		<dynamic> 
+		    <isNotEmpty prepend="AND" property="time">
+			    TIME like  '%' || #time# || '%' 
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="name">
+			    NAME like  '%' || #name# || '%' 
+		    </isNotEmpty>
+		     <isNotEmpty prepend="AND" property="initiatingOrg">
+			    INITIATINGORG like  '%' || #initiatingOrg# || '%' 
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="implementOrg">
+			    IMPLEMENTORG like  '%' || #implementOrg# || '%' 
+		    </isNotEmpty>
+		</dynamic> 
+		ORDER BY TIME desc
+	</select>
+	
+	<update id="updateRectification" parameterClass="rectification">
+		UPDATE T_SEC_RECTIFICATION 
+		SET 
+		INITIATINGORG=#initiatingOrg#,		
+		TIME=#time#,
+		IMPLEMENTORG=#implementOrg#,
+		IMPLEMENTPERSON=#implementPerson#,
+		ACTIONS=#actions#,
+		RESULT=#result#,
+		NOTE=#note#
+		WHERE 
+		BELONGTOORGID=#belongToOrgId# AND NAME=#name#
+	</update>
+	
+	<select id="queryRectificationByName" resultClass="rectification" parameterClass="rectification">
+		SELECT 
+ 		   	  BELONGTOORGID,
+			  NAME,
+			  INITIATINGORG,
+			  TIME,
+			  IMPLEMENTORG,
+			  IMPLEMENTPERSON,
+			  ACTIONS,
+			  RESULT,
+			  NOTE
+		FROM T_SEC_RECTIFICATION
+		WHERE 
+		BELONGTOORGID=#belongToOrgId# AND NAME=#name#
+	</select>
+	
+	<delete id="deleteRectification" parameterClass="rectification">
+		DELETE 
+		T_SEC_RECTIFICATION 
+		WHERE BELONGTOORGID = #belongToOrgId# AND NAME=#name#
+	</delete>
+
+</sqlMap>
+

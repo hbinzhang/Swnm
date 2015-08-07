@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="alarmStatistic">
+	<typeAlias alias="alarmStatistic" type="com.entity.alarmmgt.AlarmStatisticInfo" />
+	
+	<select id="statisticSecurityAlarm" resultClass="alarmStatistic" 
+			parameterClass="com.entity.alarmmgt.AlarmStatisticCondition">
+		SELECT * FROM(
+		SELECT r.*, rownum rn 
+		FROM 		
+		(SELECT DECODE(ALARMNUM, NULL, 0, ALARMNUM) ALARMNUM, $columnStr$
+			FROM 
+			(SELECT $groupByStr$ from 
+				(SELECT BEGINTIME, ENDTIME FROM table(
+					FN_INSERT_TMP_TIME(
+					#beginTime#,#endTime#,#timeGranularity#))) e $sqlStr$
+			) b,				
+			(SELECT count(*) ALARMNUM, $groupByStr$
+				FROM 
+				(
+					select BEGINTIME, ENDTIME  FROM table(
+						FN_INSERT_TMP_TIME(
+								#beginTime#,#endTime#,#timeGranularity#)))a,
+				T_ALM_SECURITYALARM t, 
+				T_ALM_KNOWLEDGE k		
+				WHERE 
+				k.ALARMTYPE = #type#
+				AND
+				t.ALARMCODE=k.ALARMCODE	
+				<dynamic>
+					<isNotEmpty prepend="AND" property="branchId">  	
+					    t.BRANCHID = #branchId#			    
+				    </isNotEmpty> 
+				    <isNotEmpty prepend="AND" property="departmentId">
+					    t.DEPARTMENTID = #departmentId#
+				    </isNotEmpty>	
+				    <isNotEqual prepend="AND" property="zoneId" compareValue="-1">
+					    t.ZONEID = #zoneId#
+				    </isNotEqual>
+				    <isNotEqual prepend="AND" property="levelId" compareValue="-1">
+					    t.CHECKLEVEL = #levelId#
+				    </isNotEqual> 						
+					<isNotEqual prepend="AND" property="deviceTypeId" compareValue="-1">
+					    k.DEVICETYPE = #deviceTypeId#
+				    </isNotEqual>
+				    <isNotEmpty prepend="AND" property="beginTime">
+			    		t.ALARMTIME >=BEGINTIME
+		    		</isNotEmpty>
+		   	 		<isNotEmpty prepend="AND" property="endTime">
+		    			<![CDATA[ 
+			    		t.ALARMTIME <=ENDTIME
+			     		]]>
+		   			 </isNotEmpty>  	
+			     </dynamic> 	
+				GROUP BY $groupByStr$	
+			)c		
+		WHERE b.BEGINTIME =c.BEGINTIME(+) $whereStr$	
+		ORDER BY BEGINTIME
+		)r
+		)w
+		<![CDATA[ 
+		WHERE rn>=#start# AND rn<#end#
+	 	]]>	 							
+	</select>
+	 
+	 
+	<select id="statisticDeviceAlarm" resultClass="alarmStatistic" 
+			parameterClass="com.entity.alarmmgt.AlarmStatisticCondition">				
+		SELECT * FROM(
+		SELECT r.*, rownum rn 
+		FROM 		
+		(
+		SELECT DECODE(ALARMNUM, NULL, 0, ALARMNUM) ALARMNUM, $columnStr$
+			FROM 
+			(SELECT $groupByStr$ from 
+				(SELECT BEGINTIME, ENDTIME FROM table(
+					FN_INSERT_TMP_TIME(
+					#beginTime#,#endTime#,#timeGranularity#))) e $sqlStr$
+			) b,				
+			(SELECT count(*) ALARMNUM, $groupByStr$
+				FROM 
+				(
+					SELECT BEGINTIME, ENDTIME  FROM table(
+						FN_INSERT_TMP_TIME(
+								#beginTime#,#endTime#,#timeGranularity#)))a,
+				T_ALM_DEVALARM t, 
+				T_ALM_KNOWLEDGE k		
+				WHERE 
+				k.ALARMTYPE = #type#
+				AND
+				t.ALARMCODE=k.ALARMCODE	
+				<dynamic>
+					<isNotEmpty prepend="AND" property="branchId">  	
+					    t.BRANCHID = #branchId#			    
+				    </isNotEmpty> 
+				    <isNotEmpty prepend="AND" property="departmentId">
+					    t.DEPARTMENTID = #departmentId#
+				    </isNotEmpty>	
+				    <isNotEqual prepend="AND" property="zoneId" compareValue="-1">
+					    t.ZONEID = #zoneId#
+				    </isNotEqual>
+				    <isNotEqual prepend="AND" property="levelId" compareValue="-1">
+					    k.ALARMLEVEL = #levelId#
+				    </isNotEqual> 						
+					<isNotEqual prepend="AND" property="deviceTypeId" compareValue="-1">
+					    k.DEVICETYPE = #deviceTypeId#
+				    </isNotEqual>
+				    <isNotEmpty prepend="AND" property="beginTime">
+			    		t.ALARMTIME >=BEGINTIME
+		    		</isNotEmpty>
+		   	 		<isNotEmpty prepend="AND" property="endTime">
+		    			<![CDATA[ 
+			    		t.ALARMTIME <=ENDTIME
+			     		]]>
+		   			 </isNotEmpty>  	
+			     </dynamic> 	
+				GROUP BY $groupByStr$	
+			)c		
+		WHERE b.BEGINTIME =c.BEGINTIME(+) $whereStr$
+		ORDER BY BEGINTIME 	
+		)r  
+		)w
+		<![CDATA[ 
+		WHERE rn>=#start# AND rn<#end#
+	 	]]>	 
+	</select>
+	
+	<select id="getStatisSecAlarmCount" resultClass="java.lang.Integer" 
+			parameterClass="com.entity.alarmmgt.AlarmStatisticCondition">
+		SELECT count(*)
+			FROM 
+			(SELECT $groupByStr$ from 
+				(SELECT BEGINTIME, ENDTIME FROM table(
+					FN_INSERT_TMP_TIME(
+					#beginTime#,#endTime#,#timeGranularity#))) e $sqlStr$
+			) b,				
+			(SELECT count(*) ALARMNUM, $groupByStr$
+				FROM 
+				(
+					select BEGINTIME, ENDTIME  FROM table(
+						FN_INSERT_TMP_TIME(
+								#beginTime#,#endTime#,#timeGranularity#)))a,
+				T_ALM_SECURITYALARM t, 
+				T_ALM_KNOWLEDGE k		
+				WHERE 
+				k.ALARMTYPE = #type#
+				AND
+				t.ALARMCODE=k.ALARMCODE	
+				<dynamic>
+					<isNotEmpty prepend="AND" property="branchId">  	
+					    t.BRANCHID = #branchId#			    
+				    </isNotEmpty> 
+				    <isNotEmpty prepend="AND" property="departmentId">
+					    t.DEPARTMENTID = #departmentId#
+				    </isNotEmpty>	
+				    <isNotEqual prepend="AND" property="zoneId" compareValue="-1">
+					    t.ZONEID = #zoneId#
+				    </isNotEqual>
+				    <isNotEqual prepend="AND" property="levelId" compareValue="-1">
+					    t.CHECKLEVEL = #levelId#
+				    </isNotEqual> 						
+					<isNotEqual prepend="AND" property="deviceTypeId" compareValue="-1">
+					    k.DEVICETYPE = #deviceTypeId#
+				    </isNotEqual>
+				    <isNotEmpty prepend="AND" property="beginTime">
+			    		t.ALARMTIME >=BEGINTIME
+		    		</isNotEmpty>
+		   	 		<isNotEmpty prepend="AND" property="endTime">
+		    			<![CDATA[ 
+			    		t.ALARMTIME <=ENDTIME
+			     		]]>
+		   			 </isNotEmpty>  	
+			     </dynamic> 	
+				GROUP BY $groupByStr$	
+			)c		
+		WHERE b.BEGINTIME =c.BEGINTIME(+) $whereStr$								
+	</select>
+	 
+	 
+	<select id="getStatisDevAlarmCount" resultClass="java.lang.Integer"  
+			parameterClass="com.entity.alarmmgt.AlarmStatisticCondition">				
+		SELECT count(*)
+			FROM 
+			(SELECT $groupByStr$ from 
+				(SELECT BEGINTIME, ENDTIME FROM table(
+					FN_INSERT_TMP_TIME(
+					#beginTime#,#endTime#,#timeGranularity#))) e $sqlStr$
+			) b,				
+			(SELECT count(*) ALARMNUM, $groupByStr$
+				FROM 
+				(
+					SELECT BEGINTIME, ENDTIME  FROM table(
+						FN_INSERT_TMP_TIME(
+								#beginTime#,#endTime#,#timeGranularity#)))a,
+				T_ALM_DEVALARM t, 
+				T_ALM_KNOWLEDGE k		
+				WHERE 
+				k.ALARMTYPE = #type#
+				AND
+				t.ALARMCODE=k.ALARMCODE	
+				<dynamic>
+					<isNotEmpty prepend="AND" property="branchId">  	
+					    t.BRANCHID = #branchId#			    
+				    </isNotEmpty> 
+				    <isNotEmpty prepend="AND" property="departmentId">
+					    t.DEPARTMENTID = #departmentId#
+				    </isNotEmpty>	
+				    <isNotEqual prepend="AND" property="zoneId" compareValue="-1">
+					    t.ZONEID = #zoneId#
+				    </isNotEqual>
+				    <isNotEqual prepend="AND" property="levelId" compareValue="-1">
+					    k.ALARMLEVEL = #levelId#
+				    </isNotEqual> 						
+					<isNotEqual prepend="AND" property="deviceTypeId" compareValue="-1">
+					    k.DEVICETYPE = #deviceTypeId#
+				    </isNotEqual>
+				    <isNotEmpty prepend="AND" property="beginTime">
+			    		t.ALARMTIME >=BEGINTIME
+		    		</isNotEmpty>
+		   	 		<isNotEmpty prepend="AND" property="endTime">
+		    			<![CDATA[ 
+			    		t.ALARMTIME <=ENDTIME
+			     		]]>
+		   			 </isNotEmpty>  	
+			     </dynamic> 	
+				GROUP BY $groupByStr$	
+			)c		
+		WHERE b.BEGINTIME =c.BEGINTIME(+) $whereStr$	
+	</select>
+</sqlMap>
+

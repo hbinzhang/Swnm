@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="securityLog">
+	<typeAlias alias="securityLog" type="com.entity.logmgt.SecurityLog" />
+	
+	<insert id="createSecurityLog" parameterClass="securityLog">
+		INSERT INTO T_AUT_SECURITYLOG
+		(
+		  SLSID,
+		  OPTIME,
+		  ACCOUNTID,
+		  ORGANIZATIONID,
+		  COMMANDID,
+		  OPRESULT,
+		  OPDETAIL,
+		  HOSTNAME,
+		  HOSTIP
+		)
+		VALUES
+		(
+		  #slsId#,
+		  #opTime#,
+		  #accountId#,
+		  #organizationId#,
+		  #commandId#,
+		  #opResult#,
+		  #opDetail#,
+		  #hostName#,
+		  #hostIp#
+		)
+	</insert>	
+
+	<select id="getSecurityLogId" resultClass="Integer">
+		SELECT T_AUT_SECURITYLOG_ID_SEQ.NEXTVAL AS SLSID FROM DUAL
+	</select>	
+	
+	<delete id="deleteSecLogById" parameterClass="java.lang.Long">
+		DELETE T_AUT_SECURITYLOG WHERE SLSID = #slsId#
+	</delete>
+	
+	<select id="getSecLogCountByOrgId" resultClass="java.lang.Integer" 
+			parameterClass="com.entity.logmgt.SecurityLogCondition">
+			SELECT count(*)
+			FROM 
+			T_AUT_SECURITYLOG		
+			<dynamic prepend="WHERE">   
+		    <isNotNull prepend="AND" property="beginTime">
+			    OPTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    OPTIME <=#endTime#
+			     ]]>
+		    </isNotNull>  
+		    <isNotNull prepend="AND" property="organizationId">
+			    ORGANIZATIONID=#organizationId#
+		    </isNotNull>
+		    <isNotEqual prepend="AND" property="commandId" compareValue="-1">
+			    COMMANDID=#commandId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="opResult" compareValue="-1">
+			    OPRESULT=#opResult#
+		    </isNotEqual>  
+		    </dynamic> 
+	</select>
+	
+	<select id="querySecLogByOrgId" resultClass="securityLog" 
+			parameterClass="com.entity.logmgt.SecurityLogCondition">
+		SELECT * FROM(
+			SELECT a.*, rownum rn 
+			FROM 
+			(SELECT t.* FROM 	
+			T_AUT_SECURITYLOG t	
+			<dynamic prepend="WHERE">   
+		    <isNotNull prepend="AND" property="beginTime">
+			    OPTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    OPTIME <=#endTime#
+			     ]]>
+		    </isNotNull>  
+		    <isNotNull prepend="AND" property="organizationId">
+			    ORGANIZATIONID=#organizationId#
+		    </isNotNull>
+		    <isNotEqual prepend="AND" property="commandId" compareValue="-1">
+			    COMMANDID=#commandId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="opResult" compareValue="-1">
+			    OPRESULT=#opResult#
+		    </isNotEqual>  
+		    </dynamic> 
+		    ORDER BY OPTIME
+			)a
+			)b
+		<![CDATA[ 
+		WHERE rn>=#start# AND rn<#end#
+		 ]]>
+	</select>
+	
+	<select id="querySecLogByAccId" resultClass="securityLog" 
+			parameterClass="com.entity.logmgt.SecurityLogCondition">
+		SELECT * FROM(
+			SELECT a.*, rownum rn 
+			FROM 
+			(SELECT t.* FROM 	
+			T_AUT_SECURITYLOG t	
+			<dynamic prepend="WHERE">   
+		    <isNotNull prepend="AND" property="beginTime">
+			    OPTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    OPTIME <=#endTime#
+			     ]]>
+		    </isNotNull>  
+		    <isNotEmpty prepend="AND" property="accountId">
+			    ACCOUNTID=#accountId#
+		    </isNotEmpty>
+		    <isNotEqual prepend="AND" property="commandId" compareValue="-1">
+			    COMMANDID=#commandId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="opResult" compareValue="-1">
+			    OPRESULT=#opResult#
+		    </isNotEqual>  
+		    </dynamic> 
+		    ORDER BY OPTIME	   
+			)a
+			)b
+		<![CDATA[ 
+		WHERE rn>=#start# AND rn<#end#
+		 ]]>
+	</select>
+	
+	<select id="getSecLogCountByAccId" resultClass="java.lang.Integer" 
+			parameterClass="com.entity.logmgt.SecurityLogCondition">
+			SELECT count(*)
+			FROM 
+			T_AUT_SECURITYLOG		
+			<dynamic prepend="WHERE">   
+		    <isNotNull prepend="AND" property="beginTime">
+			    OPTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    OPTIME <=#endTime#
+			     ]]>
+		    </isNotNull>  
+		    <isNotEmpty prepend="AND" property="accountId">
+			    ACCOUNTID=#accountId#
+		    </isNotEmpty>
+		    <isNotEqual prepend="AND" property="commandId" compareValue="-1">
+			    COMMANDID=#commandId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="opResult" compareValue="-1">
+			    OPRESULT=#opResult#
+		    </isNotEqual>  
+		    </dynamic> 
+	</select>
+	
+	<select id="querySecLogByOrgsAndAccId" resultClass="securityLog" 
+			parameterClass="com.entity.logmgt.SecurityLogCondition">
+		SELECT * FROM(
+			SELECT a.*, rownum rn 
+			FROM 
+			(SELECT t.* FROM 	
+			T_AUT_SECURITYLOG t	
+			WHERE
+			ORGANIZATIONID in $organs$	  			
+			<dynamic>
+		    <isNotNull prepend="AND" property="beginTime">
+			    OPTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    OPTIME <=#endTime#
+			     ]]>
+		    </isNotNull>  
+		    <isNotEmpty prepend="AND" property="accountId">
+			    ACCOUNTID=#accountId#
+		    </isNotEmpty>
+		    <isNotEqual prepend="AND" property="commandId" compareValue="-1">
+			    COMMANDID=#commandId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="opResult" compareValue="-1">
+			    OPRESULT=#opResult#
+		    </isNotEqual>  
+		    </dynamic> 
+		    ORDER BY OPTIME
+			)a
+			)b
+		<![CDATA[ 
+		WHERE rn>=#start# AND rn<#end#
+		 ]]>
+	</select>
+	
+	<select id="getSecLogCountByOrgsAndAccId" resultClass="java.lang.Integer" 
+			parameterClass="com.entity.logmgt.SecurityLogCondition">
+			SELECT count(*)
+			FROM 
+			T_AUT_SECURITYLOG	
+			WHERE
+			ORGANIZATIONID in $organs$	  			
+			<dynamic>
+		    <isNotNull prepend="AND" property="beginTime">
+			    OPTIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    OPTIME <=#endTime#
+			     ]]>
+		    </isNotNull>  
+		    <isNotEmpty prepend="AND" property="accountId">
+			    ACCOUNTID=#accountId#
+		    </isNotEmpty>
+		    <isNotEqual prepend="AND" property="commandId" compareValue="-1">
+			    COMMANDID=#commandId#
+		    </isNotEqual>
+		    <isNotEqual prepend="AND" property="opResult" compareValue="-1">
+			    OPRESULT=#opResult#
+		    </isNotEqual>  
+		    </dynamic> 
+	</select>
+	
+	<delete id="deleteSecLogByTime" parameterClass="com.entity.logmgt.SecurityLogCondition">
+		DELETE T_AUT_SECURITYLOG 
+		WHERE  
+		<![CDATA[ 
+		OPTIME >=#beginTime# AND OPTIME <#endTime#
+		 ]]>
+	</delete>
+	
+</sqlMap>
+

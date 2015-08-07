@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+
+
+	<!--authmgt -->
+	<bean id="LoginManagerService" class="com.service.authmgt.impl.LoginManagerServiceImp">
+		<property name="loginDao" ref="LoginImp"></property>
+		<property name="accountDao" ref="AccountImp"></property>
+		<property name="roleDao" ref="RoleImp"></property>
+		<property name="organizationManagerService" ref="OrganizationManagerService"></property>
+	</bean>
+	<bean id="RoleManagerService" class="com.service.authmgt.impl.RoleManagerServiceImp">
+		<property name="roleDao" ref="RoleImp"></property>
+	</bean>
+	<bean id="OrganizationManagerService" class="com.service.authmgt.impl.OrganizationManagerServiceImp">
+		<property name="organizationDao" ref="OrganizationImp"></property>
+		<property name="accountDao" ref="AccountImp"></property>
+	</bean>
+	<bean id="AccountManagerService" class="com.service.authmgt.impl.AccountManagerServiceImp">
+		<property name="accountDao" ref="AccountImp"></property>
+		<property name="organizationDao" ref="OrganizationImp"></property>
+		<property name="sessionManagerService" ref="SessionManagerService"></property>
+		<property name="organizationManagerService" ref="OrganizationManagerService"></property>
+		<property name="roleManagerService" ref="RoleManagerService"></property>
+	</bean>
+	<bean id="SessionManagerService" class="com.service.authmgt.impl.SessionManagerServiceImp">
+		<property name="sessionDao" ref="SessionImp"></property>
+		<property name="organizationManagerService" ref="OrganizationManagerService"></property>
+		<property name="accountManagerService" ref="AccountManagerService"></property>
+	</bean>
+
+	<bean id="SoundDevService" class="com.service.sounddev.database.SoundDevserviceImpl">
+		<property name="soundDevDao" ref="SoundDevImpl"></property>
+	</bean>
+
+	<bean id="operationlogservice" class="com.service.logmgt.impl.OperationLogServiceImp">
+		<property name="operationLogDao" ref="operationlogdao"></property>
+	</bean>
+
+	<bean id="securitylogservice" class="com.service.logmgt.impl.SecurityLogServiceImp">
+		<property name="securityLogDao" ref="securitylogdao"></property>
+	</bean>
+	<bean id="manufacturerServiceImpl" class="com.service.common.impl.ManufacturerServiceImpl">
+		<property name="manufacturerDao" ref="manufacturerDaoImpl"></property>
+	</bean>
+
+	<bean id="alarmqueryservice" class="com.service.alarmmgt.impl.AlarmQueryServiceImp">
+		<property name="alarmQueryDao" ref="alarmquerydao"></property>
+	</bean>
+
+</beans>

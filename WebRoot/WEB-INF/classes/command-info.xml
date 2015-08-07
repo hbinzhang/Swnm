@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<commands>
+	<!-- 
+	<command name="querySecurityLog" id="101010001" display_name="查询安全日志" module_id="1" logtype="0"/>
+	<command name="initSecurityLog" id="101010003" display_name="初始化安全日志查询条件" module_id="1" logtype="0"/>
+	<command name="queryOperationLog" id="101020001" display_name="查询操作日志" module_id="1" logtype="0"/>
+	<command name="initOperationLog" id="101020003" display_name="初始化操作日志查询条件" module_id="1" logtype="0"/>
+ 	-->	
+ 	<!-- <command name="deleteSecurityLog" id="101010002" display_name="删除安全日志" module_id="1"/>
+	<command name="deleteOperationLog" id="101020002" display_name="删除操作日志" module_id="1"/>	 -->
+	<!-- 	
+		<command name="queryAllAlarmKnowledge" id="102010001" display_name="查询告警知识库" module_id="2" logtype="0"/>
+		<command name="queryAlarm" id="102020001" display_name="查询告警" module_id="2" logtype="0"/>
+		<command name="initAlarm" id="102020003" display_name="初始化告警查询条件" module_id="2" logtype="0"/>
+		<command name="queryDepartByBranch" id="102020004" display_name="根据分公司查询管理处" module_id="2" logtype="0"/>	
+		<command name="queryZoneByDepart" id="102020005" display_name="根据管理处查询防区" module_id="2" logtype="0"/>
+		<command name="queryAlarmNameByDevType" id="102020006" display_name="根据设备类型查询告警名称" module_id="2" logtype="0"/>	
+		<command name="statisticAlarm" id="102030001" display_name="统计分析告警" module_id="2" logtype="0"/>
+		<command name="initStatisticAlarm" id="102030003" display_name="初始化告警统计分析条件" module_id="2" logtype="0"/>
+		<command name="queryDeviceAlarm" id="102040001" display_name="监视设备告警" module_id="2" logtype="0"/>
+	 -->	
+ 	<command name="updateAlarmKnowledge" id="102010002" display_name="修改告警基本信息" module_id="2"/>
+	<command name="exportAlarm" id="102020002" display_name="导出告警" module_id="2"/>
+	<command name="exportStatisticAlarm" id="102030002" display_name="导出告警统计分析结果" module_id="2"/>
+	<command name="handleDeviceAlarm" id="102040002" display_name="处理设备告警" module_id="2"/>
+	
+	<!--linkagectl  -->
+	<command name="checkSecurityAlarm" id="107010001" display_name="复核安防告警" module_id="7"/>
+	<command name="confirmSecurityAlarm" id="107010002" display_name="确认安防告警" module_id="7"/>
+	<command name="reportSecurityAlarm" id="107010003" display_name="上报安防告警" module_id="7"/>
+	<command name="playRecord" id="107020001" display_name="自动语音播放" module_id="7"/>
+	<command name="speakVoice" id="107020002" display_name="语音喊话" module_id="7"/>
+	<command name="warningPush" id="107030001" display_name="告警推送" module_id="7"/>
+	<!--<command name="getUnprocWarning" id="107030002" display_name="获取未处理告警" module_id="7"/> -->	
+	
+	<!--Role -->
+	<!--<command name="queryAllRoles" id="103010002" display_name="查询角色" module_id="3"/>-->
+	<command name="createRole" id="103010003" display_name="创建角色" module_id="1"/>
+	<command name="updateRole" id="103010004" display_name="修改角色" module_id="1"/>
+	<command name="deleteRole" id="103010005" display_name="删除角色" module_id="1"/>
+	<!--Account -->
+	<!--<command name="queryAccountsByAccountId" id="103020002" display_name="查询账号" module_id="3"/>-->
+	<command name="createAccount" id="103020003" display_name="创建账号" module_id="1"/>
+	<command name="updateAccount" id="103020004" display_name="修改账号" module_id="1"/>
+	<command name="deleteAccount" id="103020005" display_name="删除账号" module_id="1"/>
+	<command name="resetAccountPassword" id="103020006" display_name="重置密码" module_id="1"/>
+	<command name="updateAccountPassword" id="103020007" display_name="修改密码" module_id="1"/>
+	<!--Organization -->
+	<!--<command name="queryOrganizationsByAccountId" id="103030002" display_name="查询机构" module_id="3"/>-->
+	<command name="createOrganization" id="103030003" display_name="创建机构" module_id="1"/>
+	<command name="updateOrganization" id="103030004" display_name="修改机构" module_id="1"/>
+	<!--Login -->
+	<command name="login" id="103050001" display_name="登录" module_id="1"/>
+	<command name="logout" id="103050002" display_name="注销" module_id="1"/>
+	<!--Session -->
+	<!--<command name="querySessionsByOrganizationId" id="103060003" display_name="通过机构查询会话" module_id="3"/>
+	<command name="querySessionsByAccountId" id="103060004" display_name="通过工号查询会话" module_id="3"/>-->
+	<command name="deleteSession" id="103060005" display_name="删除会话" module_id="1"/>
+	
+	<!--SoundDev -->
+	<!-- 	<command name="querySoundDev" id="104810001" display_name="查询音频设备" module_id="48" logtype="0"/> -->	
+	<command name="updateSoundDev" id="104810002" display_name="编辑音频设备" module_id="4" />
+	<command name="deleteSoundDev" id="104810003" display_name="删除音频设备" module_id="4" />
+	<command name="addSoundDev" id="104810004" display_name="添加音频设备" module_id="4" />
+	<command name="batchImportSoundDev" id="104810005" display_name="批量导入音频设备" module_id="4" />
+	
+	<!-- efence -->
+	<command name="addFence" id="105010001" display_name="增加电子围栏" module_id="5"/>
+	<command name="delFence" id="105010002" display_name="删除电子围栏" module_id="5"/>
+	<command name="doModFence" id="105010003" display_name="修改电子围栏" module_id="5"/>
+	<command name="batchImportFence" id="105030002" display_name="批量导入电子围栏" module_id="5"/>
+	
+	<!--zoneInfo-->
+	<command name="addZone" id="109010001" display_name="增加主防区信息" module_id="9"/>
+	<command name="addFenceInfo" id="109010002" display_name="增加防区电子围栏映射信息" module_id="9"/>
+	<command name="delIpcMapInfo" id="109010004" display_name="删除防区摄像头映射信息" module_id="9"/>
+	<command name="delFenceMapInfo" id="109010005" display_name="删除防区围栏映射信息" module_id="9"/>
+	<command name="addIpcInfo" id="109010006" display_name="增加防区摄像头映射信息" module_id="9"/>
+	<command name="delZone" id="109010003" display_name="删除防区" module_id="9"/>
+	<command name="doModZone" id="109020001" display_name="修改防区主信息" module_id="9"/>
+	<command name="updateFenceMapInfo" id="109020004" display_name="修改防区围栏映射信息" module_id="9"/>
+	<command name="zoneCtrl" id="109020003" display_name="撤/布防操作" module_id="9"/>
+	<command name="batchImportZone" id="109020005" display_name="批量导入防区信息" module_id="9"/>
+	
+	<!-- videomonitor -->
+	<command name="addIpc" id="104010001" display_name="增加摄像机" module_id="4"/>
+	<command name="updateIpc" id="104010002" display_name="修改摄像机" module_id="4"/>
+	<command name="deleteIpc" id="104010003" display_name="删除摄像机" module_id="4"/>
+	<command name="addNvr" id="104020001" display_name="增加Nvr" module_id="4"/>
+	<command name="updateNvr" id="104020002" display_name="修改Nvr" module_id="4"/>
+	<command name="deleteNvr" id="104020003" display_name="删除Nvr" module_id="4"/>
+	<command name="addDecoder" id="104030001" display_name="增加解码器" module_id="4"/>
+	<command name="updateDecoder" id="104030002" display_name="修改解码器" module_id="4"/>
+	<command name="deleteDecoder" id="104030003" display_name="删除解码器" module_id="4"/>
+	
+	<!-- securityinfo -->
+	<!-- taskbook -->
+	<command name="createTaskBook" id="110010001" display_name="创建安防任务" module_id="10"/>
+	<command name="updateTaskBook" id="110010002" display_name="编辑安防任务" module_id="10"/>
+	<command name="publishTaskBook" id="110010003" display_name="发布安防任务" module_id="10"/>
+	<command name="closeTaskBook" id="110010004" display_name="关闭安防任务" module_id="10"/>	
+	<command name="deleteTaskBook" id="110010005" display_name="删除安防任务" module_id="10"/>
+	<!-- assessment -->
+	<command name="createAssessment" id="110020001" display_name="创建考核指标" module_id="10"/>
+	<command name="updateAssessment" id="110020002" display_name="编辑考核指标" module_id="10"/>
+	<command name="evaluateAssessment" id="110020003" display_name="评估考核指标" module_id="10"/>
+	<command name="deleteAssessment" id="110020004" display_name="删除考核指标" module_id="10"/>	
+	<command name="noticeAssessment" id="110020005" display_name="通知考核指标" module_id="10"/>
+	<!--checkinfo -->
+	<command name="createCheckInfo" id="110020006" display_name="创建检查情况" module_id="10"/>	
+	<command name="deleteCheckInfo" id="110020007" display_name="删除检查情况" module_id="10"/>
+	<!--rewardpunishment -->
+	<command name="createRewardPunishment" id="110030001" display_name="创建奖惩记录" module_id="10"/>	
+	<command name="updateRewardPunishment" id="110030002" display_name="编辑奖惩记录" module_id="10"/>
+	<command name="deleteRewardPunishment" id="110030003" display_name="删除奖惩记录" module_id="10"/>
+	<!--Rectification -->
+	<command name="createRectification" id="110040001" display_name="创建整改记录" module_id="10"/>	
+	<command name="updateRectification" id="110040002" display_name="编辑整改记录" module_id="10"/>
+	<command name="deleteRectification" id="110040003" display_name="删除整改记录" module_id="10"/>
+</commands>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+
+	<!--authmgt -->
+	<bean id="loginAction" class="com.actions.authmgt.LoginAction">
+		<property name="loginManagerService" ref="LoginManagerService"></property>
+		<property name="securityLogService" ref="securitylogservice"></property>
+	</bean>
+	<!-- <bean id="operationAuthorizationAction" class="com.actions.authmgt.OperationAuthorizationAction"> 
+		</bean> -->
+	<bean id="roleManagerAction" class="com.actions.authmgt.RoleManagerAction">
+		<property name="roleManagerService" ref="RoleManagerService"></property>
+		<property name="operationLogService" ref="operationlogservice"></property>
+	</bean>
+	<bean id="organizationManagerAction" class="com.actions.authmgt.OrganizationManagerAction">
+		<property name="organizationManagerService" ref="OrganizationManagerService"></property>
+		<property name="operationLogService" ref="operationlogservice"></property>
+	</bean>
+	<bean id="accountManagerAction" class="com.actions.authmgt.AccountManagerAction">
+		<property name="accountManagerService" ref="AccountManagerService"></property>
+		<property name="operationLogService" ref="operationlogservice"></property>
+	</bean>
+	<bean id="sessionManagerAction" class="com.actions.authmgt.SessionManagerAction">
+		<property name="sessionManagerService" ref="SessionManagerService"></property>
+		<property name="operationLogService" ref="operationlogservice"></property>
+	</bean>
+
+	<bean id="securityLogAction" class="com.actions.logmgt.SecurityLogAction">
+		<property name="securityLogService" ref="securitylogservice"></property>
+		<property name="organManagerService" ref="OrganizationManagerService"></property>
+		<property name="operationLogService" ref="operationlogservice"></property>
+	</bean>
+	<bean id="operationLogAction" class="com.actions.logmgt.OperationLogAction">
+		<property name="operationLogService" ref="operationlogservice"></property>
+		<property name="organManagerService" ref="OrganizationManagerService"></property>
+	</bean>
+
+	<bean id="SoundDevaction_Query" class="com.actions.devmgt.sound.SoundDevQueryByConditionAction">
+		<property name="soundDevService" ref="SoundDevService" />
+		<property name="operationLogService" ref="operationlogservice" />
+		<property name="organManagerService" ref="OrganizationManagerService" />
+	</bean>
+	<bean id="SoundDevaction_Update" class="com.actions.devmgt.sound.SoundDevUpdateAction">
+		<property name="soundDevService" ref="SoundDevService" />
+		<property name="operationLogService" ref="operationlogservice" />
+		<property name="organManagerService" ref="OrganizationManagerService" />
+	</bean>
+	<bean id="SoundDevaction_Add" class="com.actions.devmgt.sound.SoundDevAddAction">
+		<property name="soundDevService" ref="SoundDevService" />
+		<property name="operationLogService" ref="operationlogservice" />
+	</bean>
+	<bean id="SoundDevaction_Delete" class="com.actions.devmgt.sound.SoundDevDeleteAction">
+		<property name="soundDevService" ref="SoundDevService" />
+		<property name="operationLogService" ref="operationlogservice" />
+	</bean>
+	<bean id="SoundDevaction_QueryAllManufacter"
+		class="com.actions.devmgt.sound.SoundDevQueryAllManufacterAction">
+		<property name="soundDevService" ref="SoundDevService"></property>
+	</bean>
+	<bean id="SoundDevaction_QueryAllAudioServer"
+		class="com.actions.devmgt.sound.SoundDevQueryAllAudioServerAction">
+		<property name="soundDevService" ref="SoundDevService"></property>
+	</bean>
+	<bean id="SoundDevaction_QueryAllAdapterNotAttachedController"
+		class="com.actions.devmgt.sound.SounddevAddIOControllerAttachedQueryAction">
+		<property name="soundDevService" ref="SoundDevService"></property>
+	</bean>
+	<bean id="SoundDevaction_QueryAllIPCIDNotAttached"
+		class="com.actions.devmgt.sound.SoundDevQueryAllIPCIDNotAttachedAction">
+		<property name="soundDevService" ref="SoundDevService"></property>
+	</bean>
+	<bean id="SoundDevaction_BatchImport" class="com.actions.devmgt.sound.SoundDevBatchImportAction">
+		<property name="soundDevService" ref="SoundDevService"></property>
+	</bean>
+	<bean id="SoundDevaction_QueryAdapterByIPCId"
+		class="com.actions.devmgt.sound.SoundDevQQueryAdapterByIPCIdAction">
+		<property name="soundDevService" ref="SoundDevService"></property>
+	</bean>
+	<bean id="sounddevaddadapterattachedquery_action"
+		class="com.actions.devmgt.sound.SoundDevAddAdapterAttachedQueryAction">
+		<property name="soundDevService" ref="SoundDevService"></property>
+		<property name="organManagerService" ref="OrganizationManagerService"></property>
+	</bean>
+	<bean id="SoundDevaction_QueryById"
+		class="com.actions.devmgt.sound.SoundDevQueryById">
+		<property name="soundDevService" ref="SoundDevService"></property>
+		<property name="organManagerService" ref="OrganizationManagerService"></property>
+	</bean>
+</beans>

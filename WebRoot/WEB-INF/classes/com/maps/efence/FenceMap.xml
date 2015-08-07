@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FenceInfo">
+
+	<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="FenceInfo" type="com.entity.efence.FenceBean" />
+	<typeAlias alias="page" type="com.common.page.Page" />
+
+	<typeAlias alias="Fence" type="com.nsbd.fence.FenceInfo" />
+	<!-- 这样以后改了sql，就不需要去改java代码了 -->
+	<!-- id表示select里的sql语句，resultClass表示返回结果的类型 -->
+	<!-- parameterClass表示参数的内容 -->
+	<!-- #表示这是一个外部调用的需要传进的参数，可以理解为占位符 -->
+
+	<sql id="findFenceByPageCondition">
+		<isNotEmpty property="objCondition">
+			<isNotEmpty property="objCondition.subComID">
+				<![CDATA[
+					 AND SUBCOMID = #objCondition.subComID#
+		    	]]>
+			</isNotEmpty>
+			<isNotEmpty property="objCondition.mntMentID">
+				<![CDATA[
+				    AND mntMentID =#objCondition.mntMentID#    
+		    	]]>
+			</isNotEmpty>
+			<isNotEmpty property="objCondition.hostID">
+				<![CDATA[
+				    AND HOSTID =#objCondition.hostID#    
+		    	]]>
+			</isNotEmpty>
+			<isNotEmpty property="objCondition.fenceType">
+				<![CDATA[
+				    AND FENCETYPE =#objCondition.fenceType#    
+		    	]]>
+			</isNotEmpty>
+		</isNotEmpty>
+	</sql>
+
+	<select id="queryFenceByPage" resultClass="FenceInfo"
+		parameterClass="page">
+	<![CDATA[
+		select HOSTID,VENDORID,FENCETYPE,FENCENAME,
+		       IP,PORT,FENCESTATUS,INSTALLTIME,MNTMENTID,
+		       SUBCOMID,HARDWAREVER,SORFWAREVER,REMARKS,
+		       ICONID,DEVID,subComName,mntMentName,EFLONGITUDE,EFLATITUDE,VENDORNAME
+		from 
+		(
+		 select rownum r, t.* 
+		 from 
+		  (
+		    select fence.*,t_org.subComName,t_org.mntMentName,manu.VENDORNAME
+
+						from T_EF_FENCEINFO fence left join (SELECT p_org.ORGID branchID,c_org.ORGID mgtID,p_org.ORGNAME subComName,c_org.ORGNAME mntMentName 
+
+									from T_AUT_ORGANIZATION p_org join T_AUT_ORGANIZATION c_org on c_org.SUPORGID=p_org.ORGID where p_org.SUPORGID is not null) t_org
+
+						on fence.MNTMENTID=t_org.mgtID and fence.SUBCOMID=t_org.branchID left join T_VM_MANUFACTURER manu on manu.VENDORID=fence.VENDORID
+		   where 1=1
+	]]>
+		<dynamic>
+			<include refid="findFenceByPageCondition" />
+		</dynamic>
+	<![CDATA[
+		  ) t
+		  where rownum <= (#offset# * #size#)
+		)where r>  ((#offset#-1) * #size#)
+	 ]]>
+	</select>
+
+	<select id="findFenceByCount" parameterClass="page" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM T_EF_FENCEINFO where 1=1
+		]]>
+		<dynamic>
+			<include refid="findFenceByPageCondition" />
+		</dynamic>
+	</select>
+	
+	<select id="findHostIDsByFenceType" resultClass="java.lang.String"
+		parameterClass="java.util.Map">
+		
+		select HOSTID from T_EF_FENCEINFO
+		
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="fenceType">
+				fenceType = #fenceType#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="subComID">
+				subComID = #subComID#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="mntMentID">
+				mntMentID = #mntMentID#
+			</isNotEmpty>
+		</dynamic>
+		
+	</select>
+
+	<select id="getHostIDs" resultClass="java.lang.String"
+		parameterClass="FenceInfo">
+		
+		select HOSTID from T_EF_FENCEINFO 
+		
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="subComID">
+				subComID = #subComID#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="mntMentID">
+				mntMentID = #mntMentID#
+			</isNotEmpty>
+		</dynamic>
+
+	</select>
+	
+	<select id="findSubComByMngID" resultClass="java.lang.String" parameterClass="FenceInfo">
+		
+		select distinct subComID from T_EF_FENCEINFO where mntMentID = #mntMentID#
+
+	</select>
+	
+	<select id="getFencesBySubComIdOrMngId" resultClass="FenceInfo"
+		parameterClass="FenceInfo">
+		
+		select HOSTID,VENDORID,FENCETYPE,FENCENAME,
+		IP,PORT,FENCESTATUS,INSTALLTIME,MNTMENTID,
+		SUBCOMID,HARDWAREVER,SORFWAREVER,REMARKS,
+		ICONID,DEVID,EFLONGITUDE,EFLATITUDE
+		from T_EF_FENCEINFO
+		<dynamic prepend="where" >
+			<isNotEmpty prepend="and" property="subComID">
+				subComID = #subComID#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="mntMentID">
+				mntMentID = #mntMentID#
+			</isNotEmpty>
+		</dynamic>
+
+	</select>
+
+	<select id="getAllHostID" resultClass="java.lang.String">
+		select HOSTID from T_EF_FENCEINFO
+	</select>
+
+	<select id="getFenceByHostID" resultClass="FenceInfo">
+	
+		select fence.*,t_org.subComName,t_org.mntMentName,manu.VENDORNAME 
+
+		from T_EF_FENCEINFO fence left join (SELECT p_org.ORGID branchID,c_org.ORGID mgtID,p_org.ORGNAME subComName,c_org.ORGNAME mntMentName 
+
+					from T_AUT_ORGANIZATION p_org join T_AUT_ORGANIZATION c_org on c_org.SUPORGID=p_org.ORGID where p_org.SUPORGID is not null) t_org
+
+		on fence.MNTMENTID=t_org.mgtID and fence.SUBCOMID=t_org.branchID left join T_VM_MANUFACTURER manu on manu.VENDORID=fence.VENDORID
+		where HOSTID=#hostID#
+	</select>
+
+	<update id="updateFenceStatus" parameterClass="Fence">
+
+		update T_EF_FENCEINFO set fenceStatus = #status#
+		where HOSTID = #hostID#
+
+	</update>
+
+	<update id="modFence" parameterClass="FenceInfo">
+		update T_EF_FENCEINFO
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="vendorID">VENDORID =
+				#vendorID#</isNotNull>
+			<isNotNull prepend="," property="fenceType">fenceType =
+				#fenceType#</isNotNull>
+			<isNotNull prepend="," property="port">port = #port#
+			</isNotNull>
+			<isNotNull prepend="," property="fenceStatus">fenceStatus =
+				#fenceStatus#</isNotNull>
+			<isNotNull prepend="," property="mntMentID">mntMentID =
+				#mntMentID#</isNotNull>
+			<isNotNull prepend="," property="subComID">subComID =
+				#subComID#</isNotNull>
+			<isNotNull prepend="," property="iconID">iconID = #iconID#
+			</isNotNull>
+			<isNotNull prepend="," property="devID">devID = #devID#</isNotNull>
+			<isNotNull prepend="," property="fenceName"> fenceName = #fenceName#
+			</isNotNull>
+			<isNotNull prepend="," property="ip"> ip = #ip# </isNotNull>
+			<isNotNull prepend="," property="hardwareVer"> hardwareVer =
+				#hardwareVer# </isNotNull>
+			<isNotNull prepend="," property="sorfwareVer"> SORFWAREVER =
+				#sorfwareVer# </isNotNull>
+			<isNotNull prepend="," property="remarks"> remarks = #remarks#
+			</isNotNull>
+			<isNotNull prepend="," property="efLongitude"> efLongitude = #efLongitude#
+			</isNotNull>
+			<isNotNull prepend="," property="efLatitude"> efLatitude = #efLatitude#
+			</isNotNull>
+		</dynamic>
+		where HOSTID = #hostID#
+	</update>
+
+	<insert id="insertFence" parameterClass="FenceInfo">
+		INSERT INTO
+		T_EF_FENCEINFO
+		(
+		HOSTID,VENDORID,FENCETYPE,FENCENAME,
+		IP,PORT,FENCESTATUS,INSTALLTIME,MNTMENTID,
+		SUBCOMID,HARDWAREVER,SORFWAREVER,REMARKS,
+		ICONID,DEVID,EFLONGITUDE,EFLATITUDE
+		)
+		VALUES
+		(
+		#hostID#,#vendorID#, #fenceType#,#fenceName#,
+		#ip#,#port#, #fenceStatus#,to_date(#installTime#, 'yyyy-mm-dd hh24:mi:ss'),
+		#mntMentID#,#subComID#, #hardwareVer#,#sorfwareVer#,
+		#remarks#,#iconID#,#devID#,#efLongitude#,#efLatitude#
+		)
+	</insert>
+
+	<delete id="deleteFence" parameterClass="java.lang.String">
+		delete from
+		T_EF_FENCEINFO where
+		HOSTID=#id#
+	</delete>
+	<update id="updateFenceStatusByMngID" parameterClass="java.util.Map">
+
+		update T_EF_FENCEINFO set fenceStatus = #fenceStatus#
+		where MNTMENTID = #mngID#
+
+	</update>
+
+</sqlMap>

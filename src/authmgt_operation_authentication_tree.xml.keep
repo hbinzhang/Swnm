@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation_tree name="root" display_name="操作授权" index="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<operation_group name="Authmgt" display_name="权限管理">
+		<operation name="createAccount" display_name="创建帐号"/>
+		<operation name="updateAccount" display_name="修改帐号"/>
+		<operation name="resetAccountPassword" display_name="重置密码"/>
+		<operation name="updateAccountPassword" display_name="修改密码"/>
+		<operation name="deleteAccount" display_name="删除帐号"/>
+		<operation name="createRole" display_name="创建角色"/>
+		<operation name="updateRole" display_name="修改角色"/>
+		<operation name="deleteRole" display_name="删除角色"/>
+		<operation name="createOrganization" display_name="创建机构"/>
+		<operation name="updateOrganization" display_name="修改机构"/>
+		<operation name="deleteSession" display_name="删除会话"/>
+	</operation_group>	
+	<operation_group name="Alarmmgt" display_name="告警管理">				
+<!-- 	<operation name="queryDeviceAlarm" display_name="监视设备告警"/>	 -->		
+		<operation name="handleDeviceAlarm" display_name="处理设备告警"/>			
+<!-- 	<operation name="queryAllAlarmKnowledge" display_name="查询告警知识库"/>	-->	
+		<operation name="updateAlarmKnowledge" display_name="修改告警基本信息"/>			
+<!-- 	<operation name="queryAlarm" display_name="查询告警"/> -->		
+		<operation name="exportAlarm" display_name="导出告警"/>			
+<!-- 	<operation name="statisticAlarm" display_name="统计分析告警"/>	 -->		
+		<operation name="exportStatisticAlarm" display_name="导出告警统计分析结果"/>			
+	</operation_group>
+		<operation_group name="fence" display_name="电子围栏管理">
+			<operation name="addFence" display_name="增加电子围栏"/>		    		    
+			<operation name="delFence" display_name="删除电子围栏"/>					
+			<operation name="doModFence" display_name="修改电子围栏"/>			    	    
+			<operation name="batchImportFence" display_name="批量导入电子围栏"/>			
+		</operation_group>	
+	<operation_group name="linkage" display_name="综合监控">
+		 <operation name="findAllUIMcAlarmInfo" display_name="视频复核">	
+		 </operation>
+	</operation_group>				
+	<!-- 	<operation_group name="Logmgt" display_name="日志管理">
+		<operation name="querySecurityLog" display_name="查询安全日志"/>				
+			<operation name="deleteSecurityLog" display_name="删除安全日志"/>					
+		<operation name="queryOperationLog" display_name="查询操作日志"/>			
+			<operation name="deleteOperationLog" display_name="删除操作日志"/>			
+		</operation_group> -->
+	<operation_group name="SoundDev" display_name="音频设备管理">
+		<operation name="addSoundDev" display_name="添加音频设备" />
+		<operation name="updateSoundDev" display_name="编辑音频设备" />
+		<operation name="deleteSoundDev" display_name="删除音频设备" />
+		<operation name="batchImportSoundDev" display_name="批量导入音频设备" />
+	</operation_group>	
+		<operation_group name="zone" display_name="防区管理">
+			<operation name="delFenceMapInfo" display_name="删除电子围栏映射"/>		    		    
+			<operation name="delIpcMapInfo" display_name="删除摄像头映射"/>					
+			<operation name="addFenceInfo" display_name="增加电子围栏映射"/>			    	    
+			<operation name="addIpcInfo" display_name="增加摄像头映射"/>
+			<operation name="addZone" display_name="增加防区"/>		    		    
+			<operation name="delZone" display_name="删除防区"/>					
+			<operation name="doModZone" display_name="修改防区"/>			    	    
+			<operation name="updateFenceMapInfo" display_name="修改电子围栏映射"/>
+			<operation name="zoneCtrl" display_name="撤/布防区"/>					
+			<operation name="batchImportZone" display_name="批量导入防区"/>			    	    
+		</operation_group>	
+		<operation_group name="Videomonitor" display_name="视频设备管理">
+			<operation name="addIpc" display_name="添加摄像机"/>	
+			<operation name="updateIpc" display_name="修改摄像机"/>					
+			<operation name="deleteIpc" display_name="删除摄像机"/>	
+			<operation name="batchImportIpc" display_name="批量导入IPC"/>
+			<operation name="addNvr" display_name="添加NVR"/>	
+			<operation name="updateNvr" display_name="修改NVR"/>			
+			<operation name="deleteNvr" display_name="删除NVR"/>	
+			<operation name="batchImportNvr" display_name="批量导入NVR"/>
+			<operation name="addDecoder" display_name="添加解码器"/>		
+			<operation name="updateDecoder" display_name="修改解码器"/>			
+			<operation name="deleteDecoder" display_name="删除解码器"/>		
+			<operation name="batchImportDecoder" display_name="批量导入解码器"/>
+			<operation name="addIva" display_name="添加智能视频设备"/>		
+			<operation name="updateIva" display_name="修改智能视频设备"/>			
+			<operation name="deleteIva" display_name="删除智能视频设备"/>						    	    
+		</operation_group>
+		
+		<operation_group name="securityinfo" display_name="安防信息">
+			<operation name="createTaskBook" display_name="创建安防任务"/>	
+			<operation name="updateTaskBook" display_name="编辑安防任务"/>					
+			<operation name="publishTaskBook" display_name="发布安防任务"/>	
+			<operation name="closeTaskBook" display_name="关闭安防任务"/>
+			<operation name="deleteTaskBook" display_name="删除安防任务"/>	
+			<operation name="createAssessment" display_name="创建考核指标"/>			
+			<operation name="updateAssessment" display_name="编辑考核指标"/>	
+			<operation name="evaluateAssessment" display_name="评估考核指标"/>
+			<operation name="deleteAssessment" display_name="删除考核指标"/>		
+			<operation name="noticeAssessment" display_name="通知考核指标"/>			
+			<operation name="createCheckInfo" display_name="创建检查情况"/>		
+			<operation name="deleteCheckInfo" display_name="删除检查情况"/>
+			<operation name="createRewardPunishment" display_name="创建奖惩记录"/>		
+			<operation name="updateRewardPunishment" display_name="编辑奖惩记录"/>			
+			<operation name="deleteRewardPunishment" display_name="删除奖惩记录"/>
+			<operation name="createRectification" display_name="创建整改记录"/>		
+			<operation name="updateRectification" display_name="编辑整改记录"/>			
+			<operation name="deleteRectification" display_name="删除整改记录"/>					    	    
+		</operation_group>
+		
+</operation_tree>
+

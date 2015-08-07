@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="operationlogservice" class="com.service.logmgt.impl.OperationLogServiceImp">
+		<property name="operationLogDao" ref="operationlogdao"></property>
+	</bean>
+
+	<bean id="securitylogservice" class="com.service.logmgt.impl.SecurityLogServiceImp">
+		<property name="securityLogDao" ref="securitylogdao"></property>
+	</bean>
+
+	<bean id="OrganizationManagerService" class="com.service.authmgt.impl.OrganizationManagerServiceImp">
+		<property name="organizationDao" ref="OrganizationImp"></property>
+		<property name="accountDao" ref="AccountImp"></property>
+	</bean>
+	
+</beans>

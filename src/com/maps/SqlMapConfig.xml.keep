@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig 
+    PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" errorTracingEnabled="true" maxRequests="32"
+		maxSessions="10" maxTransactions="5" useStatementNamespaces="false" />
+
+	 <!-- 各个表和类对应的配置，这个不-->    
+  <!-- 具体的配置，也不变，还用ibatis原来的配置-->   	
+	<sqlMap resource="com/maps/authmgt/authmgt.xml" />
+	<sqlMap resource="com/maps/linkagectl/SeAlarm.xml" />
+	<sqlMap resource="com/maps/linkagectl/DeAlarm.xml" />
+	<sqlMap resource="com/maps/linkagectl/IpcZoneMap.xml" />
+	<sqlMap resource="com/maps/linkagectl/AlarmKnowledge.xml" />
+	<sqlMap resource="com/maps/linkagectl/SoundZoneMap.xml" />
+	<sqlMap resource="com/maps/linkagectl/ZoneInfo.xml" />
+	<sqlMap resource="com/maps/linkagectl/SoundSet.xml" />
+	<sqlMap resource="com/maps/efence/FenceMap.xml" />
+	<sqlMap resource="com/maps/efence/FenceAlarmMap.xml" />
+	<sqlMap resource="com/maps/zone/ZoneMap.xml" />
+	<sqlMap resource="com/maps/zone/ZoneAlarmMap.xml" />
+	<sqlMap resource="com/maps/zone/IPCMap.xml" />
+	<sqlMap resource="com/maps/zone/DefenceZoneMap.xml" />
+	<sqlMap resource="com/maps/zone/IntegrationZoneMap.xml" />
+	<sqlMap resource="com/maps/zone/PositionZoneMap.xml" />
+	<sqlMap resource="com/maps/zone/PulseZoneMap.xml" />
+	<sqlMap resource="com/maps/mgtserver/Server.xml" />
+	
+	<sqlMap resource="com/maps/alarmmgt/AlarmQuery.xml" />
+	<sqlMap resource="com/maps/alarmmgt/AlarmKnowledgeInfo.xml" />
+	<sqlMap resource="com/maps/alarmmgt/AlarmStatistic.xml" />
+		
+	<sqlMap resource="com/maps/logmgt/OperationLog.xml" />
+	<sqlMap resource="com/maps/logmgt/SecurityLog.xml" />
+	<sqlMap resource="com/maps/devmgt/sound/SoundDevMap.xml" />
+	<sqlMap resource="com/maps/common/ManufacturerMap.xml" />
+	
+	<sqlMap resource="com/maps/videomonitor/TVmIpcMapper.xml"/>
+	<sqlMap resource="com/maps/videomonitor/TVmNvrMapper.xml"/>
+	<sqlMap resource="com/maps/videomonitor/TVmManufacturerMapper.xml"/>
+	<sqlMap resource="com/maps/videomonitor/TVmDecoderMapper.xml"/>
+	<sqlMap resource="com/maps/videomonitor/TVmIvaIpcMapper.xml"/>
+	<sqlMap resource="com/maps/videomonitor/TVmIpcConfigMapper.xml"/>
+	<sqlMap resource="com/maps/videomonitor/TVmIvaMapper.xml"/>
+	
+	<sqlMap resource="com/maps/securityinfo/TaskBook.xml"/>
+	
+</sqlMapConfig>

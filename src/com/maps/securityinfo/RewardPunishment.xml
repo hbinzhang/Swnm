@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="rewardPunishment">
+	<typeAlias alias="rewardPunishment" type="com.entity.securityinfo.RewardPunishment" />
+	<typeAlias alias="rewardPunishmentCondition" type="com.entity.securityinfo.RewardPunishmentCondition" />
+
+	<insert id="createRewardPunishment" parameterClass="rewardPunishment">
+		INSERT INTO T_SEC_REWARDPUNISHMENT
+		(
+			  BELONGTOORGID,
+			  NAME,
+			  RPORG,
+			  DESCRIPTION,
+			  TIME,
+			  RPLEVEL,
+			  IMPLEMENTORG,
+			  NOTE
+		)
+		VALUES
+		(
+			#belongToOrgId#,
+			#name#,
+			#rpOrg#,
+			#description#,
+			#time#,
+			#rplevel#,
+			#implementOrg#,
+			#note#
+		)
+	</insert>	
+	
+	<select id="queryRewardPunishment" resultClass="rewardPunishment" parameterClass="rewardPunishmentCondition">
+		SELECT 
+ 		   	  BELONGTOORGID,
+			  NAME,
+			  RPORG,
+			  DESCRIPTION,
+			  TIME,
+			  RPLEVEL,
+			  IMPLEMENTORG,
+			  NOTE
+		FROM T_SEC_REWARDPUNISHMENT
+		WHERE 
+		BELONGTOORGID=#belongToOrgId#
+		<dynamic> 
+			<isNotNull prepend="AND" property="beginTime">
+			    TIME >=#beginTime#
+		    </isNotNull>
+		    <isNotNull prepend="AND" property="endTime">
+		    	<![CDATA[ 
+			    TIME <=#endTime#
+			     ]]>
+		    </isNotNull> 
+		    <isNotEmpty prepend="AND" property="name">
+			    NAME like  '%' || #name# || '%' 
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="implementOrg">
+			    IMPLEMENTORG like  '%' || #implementOrg# || '%' 
+		    </isNotEmpty>
+		</dynamic> 
+		ORDER BY TIME desc
+	</select>
+	
+	<update id="updateRewardPunishment" parameterClass="rewardPunishment">
+		UPDATE T_SEC_REWARDPUNISHMENT 
+		SET 
+		RPORG=#rpOrg#,
+		DESCRIPTION=#description#,
+		TIME=#time#,
+		RPLEVEL=#rplevel#,
+		IMPLEMENTORG=#implementOrg#,
+		NOTE=#note#
+		WHERE 
+		BELONGTOORGID=#belongToOrgId# AND NAME=#name#
+	</update>
+	
+	<select id="queryRewardPunishByName" resultClass="rewardPunishment" parameterClass="rewardPunishment">
+		SELECT 
+ 		   	  BELONGTOORGID,
+			  NAME,
+			  RPORG,
+			  DESCRIPTION,
+			  TIME,
+			  RPLEVEL,
+			  IMPLEMENTORG,
+			  NOTE
+		FROM T_SEC_REWARDPUNISHMENT
+		WHERE 
+		BELONGTOORGID=#belongToOrgId# AND NAME=#name#
+	</select>
+	
+	<delete id="deleteRewardPunishment" parameterClass="rewardPunishment">
+		DELETE 
+		T_SEC_REWARDPUNISHMENT 
+		WHERE BELONGTOORGID = #belongToOrgId# AND NAME=#name#
+	</delete>
+
+</sqlMap>
+

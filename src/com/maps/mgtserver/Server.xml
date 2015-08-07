@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ServerInfo">
+
+	<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="ServerInfo" type="com.entity.mgtserver.ServerBean" />
+	<!-- 这样以后改了sql，就不需要去改java代码了 -->
+	<!-- id表示select里的sql语句，resultClass表示返回结果的类型 -->
+	<!-- parameterClass表示参数的内容 -->
+	<!-- #表示这是一个外部调用的需要传进的参数，可以理解为占位符 -->
+
+	<select id="getMgtIPByMgtID" resultClass="java.lang.String" parameterClass="java.lang.String" >
+	
+		select EFENCEIP from T_BS_SERVER where ORGID=#mgtID#
+	
+	</select>
+	
+	<select id="getMgtIdByMgtIP" resultClass="java.lang.String" parameterClass="java.lang.String" >
+	
+		select ORGID from T_BS_SERVER where EFENCEIP=#mngIP#
+	
+	</select>
+	
+	<select id="getAllServer" resultClass="ServerInfo">
+		select * from T_BS_SERVER
+	</select>
+	<select id="hasServerByMgtID" resultClass="java.lang.String" parameterClass="java.lang.String" >
+		select ORGID from T_BS_SERVER where ORGID=#mngId#
+	</select>
+
+</sqlMap>

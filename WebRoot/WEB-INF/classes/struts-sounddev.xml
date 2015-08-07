@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="com.actions.devmgt.sound" extends="struts-default,json-default,,auth-interceptor">
+		<action name="sounddevEnter" class="SoundDevaction_Query"
+			method="enter">
+			<interceptor-ref name="noAuthInterceptorStack" />
+			<interceptor-ref name="noAuthInterceptorStack" />
+			<result name="success">/WEB-INF/views/shebei/yinpin.jsp</result>
+		</action>
+		<action name="sounddevAddEnter" class="SoundDevaction_Add"
+			method="enter">
+			<interceptor-ref name="noAuthInterceptorStack" />
+			<result name="success">/WEB-INF/views/shebei/yinpinadd.jsp</result>
+		</action>
+		<action name="sounddevQuery" class="SoundDevaction_Query">
+			<interceptor-ref name="noAuthInterceptorStack" />
+			<result name="success">/WEB-INF/views/shebei/yinpin.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+		<action name="sounddevaddadapterattachedquery" class="sounddevaddadapterattachedquery_action">
+			<interceptor-ref name="noAuthInterceptorStack" />
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="sounddevUpdate" class="SoundDevaction_Update">
+			<interceptor-ref name="authInterceptorStack" />
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="sounddevUpdateEnter" class="SoundDevaction_Update"
+			method="enter">
+			<interceptor-ref name="noAuthInterceptorStack" />
+			<result name="success">/WEB-INF/views/shebei/yinpinedit.jsp</result>
+		</action>
+		<action name="sounddevAdd" class="SoundDevaction_Add">
+			<interceptor-ref name="authInterceptorStack" />
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="sounddevDelete" class="SoundDevaction_Delete">
+			<interceptor-ref name="authInterceptorStack" />
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="sounddevBatchImport" class="SoundDevaction_BatchImport">
+			<interceptor-ref name="authInterceptorStack" />
+			<interceptor-ref name="fileUploadStack" />
+			<result name="success" type="json">
+				<param name="contentType">text/plain</param>
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="contentType">text/plain</param>
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="sounddevQueryAllManufacter" class="SoundDevaction_QueryAllManufacter">
+			<interceptor-ref name="noAuthInterceptorStack" />
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="sounddevQueryAllAudioServer" class="SoundDevaction_QueryAllAudioServer">
+			<interceptor-ref name="noAuthInterceptorStack" />
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="sounddevQueryAllAdapterNotAttachedController"
+			class="SoundDevaction_QueryAllAdapterNotAttachedController">
+			<interceptor-ref name="noAuthInterceptorStack" />
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="SounddevQueryAllIPCIDNotAttached" class="SoundDevaction_QueryAllIPCIDNotAttached">
+			<interceptor-ref name="noAuthInterceptorStack" />
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="SounddevQueryAdapterByIPCId" class="SoundDevaction_QueryAdapterByIPCId">
+			<interceptor-ref name="noAuthInterceptorStack" />
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="SounddevQueryById" class="SoundDevaction_QueryById">
+			<interceptor-ref name="noAuthInterceptorStack" />
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="SoundDevQueryIPCByMgtId" class="SoundDevaction_SoundDevQueryIPCByMgtId">
+			<interceptor-ref name="noAuthInterceptorStack" />
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+	</package>
+</struts> 					

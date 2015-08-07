@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="checkinfo">
+	<typeAlias alias="checkInfo" type="com.entity.securityinfo.CheckInfo" />
+
+	<insert id="createCheckInfo" parameterClass="checkInfo">
+		INSERT INTO T_SEC_INDEXCHECK
+		(
+			  ORGID,
+			  INDEXNAME,
+			  TIME,
+			  RECORDPERSON,
+			  NOTE
+		)
+		VALUES
+		(
+			#orgId#,
+			#indexName#,
+			#time#,
+			#recordPerson#,
+			#note#
+		)
+	</insert>	
+	
+	<select id="queryCheckInfoByName" resultClass="checkInfo" parameterClass="checkInfo">
+		SELECT 
+ 		  ORGID,
+		  INDEXNAME,
+		  TIME,
+		  RECORDPERSON,
+		  NOTE	 
+		FROM T_SEC_INDEXCHECK
+		WHERE 
+		ORGID=#orgId#
+		AND 
+		INDEXNAME= #indexName#
+		ORDER BY ORGID,INDEXNAME, TIME desc
+	</select>
+		
+	<delete id="deleteCheckInfoByName" parameterClass="checkInfo">
+		DELETE 
+		T_SEC_INDEXCHECK 
+		WHERE ORGID = #orgId# AND INDEXNAME=#indexName# AND TIME = #time#
+	</delete>
+	
+	<select id="queryCheckInfoByNmAndTime" resultClass="checkInfo" parameterClass="checkInfo">
+		SELECT 
+ 		  ORGID,
+		  INDEXNAME,
+		  TIME,
+		  RECORDPERSON,
+		  NOTE	 
+		FROM T_SEC_INDEXCHECK
+		WHERE 
+		ORGID=#orgId# AND 
+		INDEXNAME= #indexName# AND TIME = #time#
+	</select>
+</sqlMap>
+

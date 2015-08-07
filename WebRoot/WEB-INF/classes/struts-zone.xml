@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="zone" extends="com.actions,json-default,auth-interceptor" namespace="/zone" >
+		
+		<action name="checkPreSetUnique" method="checkPreSetUnique" class="ZoneManagerAction">
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="isIdRepeat" method="isIdRepeat" class="ZoneManagerAction">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="delFenceMapInfo" method="delFenceMapInfo" class="ZoneManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>	
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="findHostIDsByFenceType" method="findHostIDsByFenceType" class="ZoneManagerAction">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		
+		<action name="delIpcMapInfo" method="delIpcMapInfo" class="ZoneManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>	
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		
+		<action name="addFenceInfo" method="addFenceInfo" class="ZoneManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		
+		<action name="addIpcInfo" method="addIpcInfo" class="ZoneManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>	
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		
+		<action name="queryAlarmInfo" method="queryAlarmInfo" class="ZoneManagerAction">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="queryZoneDetailByID" method="queryZoneDetailByID" class="ZoneManagerAction">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success">/WEB-INF/views/zone/fangquinfo.jsp</result>
+			<result name="error">/WEB-INF/views/error.jsp</result>
+		</action>
+		<action name="queryZoneByPage" method="queryZoneByPage" class="ZoneManagerAction">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success">/WEB-INF/views/zone/fangqu.jsp</result>
+			<result name="error">/WEB-INF/views/error.jsp</result>
+		</action>
+		<action name="goAddZone" method="goAddZone" class="ZoneManagerAction">
+			<interceptor-ref name="noAuthInterceptorStack"/>
+			<result name="success">/WEB-INF/views/zone/fangquadd.jsp</result>
+			<result name="error">/WEB-INF/views/error.jsp</result>
+		</action>
+		<action name="addZone" method="addZone" class="ZoneManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>	
+			<result name="success">/WEB-INF/views/zone/fangqushebeiadd.jsp</result>
+			<result name="error">/WEB-INF/views/zone/fangquadd.jsp</result>
+		</action>
+		<action name="addDeviceInfo" method="addDeviceInfo" class="ZoneManagerAction">
+			<result name="success">/success.jsp</result>
+			<result name="error">/WEB-INF/views/error.jsp</result>
+		</action>
+		<action name="delZone" method="delZone" class="ZoneManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>	
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="goModZone" method="goModZone" class="ZoneManagerAction">
+			<result name="success">/success.jsp</result>
+			<result name="error">/WEB-INF/views/error.jsp</result>
+		</action>
+		<action name="doModZone" method="doModZone" class="ZoneManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>	
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="updateFenceMapInfo" method="updateFenceMapInfo" class="ZoneManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>	
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="updateIpcMapInfo" method="updateIpcInfo" class="ZoneManagerAction">
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		
+		<action name="zoneCtrl" method="zoneCtrl" class="ZoneManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>	
+			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+		<action name="batchImportZone" method="batchImportZone" class="ZoneManagerAction">
+			<interceptor-ref name="authInterceptorStack"/>	
+			<result name="success" type="json">
+				<param name="contentType">text/plain</param>
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="contentType">text/plain</param>
+				<param name="root">ajaxObject</param>
+			</result>
+		</action>
+	</package>
+</struts>

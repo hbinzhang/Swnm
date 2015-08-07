@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="assessment">
+	<typeAlias alias="assessment" type="com.entity.securityinfo.Assessment" />
+	<typeAlias alias="taskBookCondition" type="com.entity.securityinfo.TaskBookCondition" />
+
+	<insert id="createAssessment" parameterClass="assessment">
+		INSERT INTO T_SEC_EVALUATIONINDEX
+		(
+			  ORGID,
+			  NAME,
+			  ORGPERSON,
+			  TARGET,
+			  PERCENT,
+			  RESULT,
+			  REVIEWER,
+			  NOTE
+		)
+		VALUES
+		(
+			#orgId#,
+			#name#,
+			#orgPerson#,
+			#target#,
+			#percent#,
+			#result#,	
+			#reviewer#,
+			#note#
+		)
+	</insert>	
+	
+	<update id="updateAssessment" parameterClass="assessment">
+		UPDATE T_SEC_EVALUATIONINDEX 
+		SET 
+		ORGPERSON=#orgPerson#,
+		TARGET=#target#,
+		PERCENT=#percent#,
+		REVIEWER=#reviewer#
+		WHERE 
+		ORGID = #orgId# AND NAME=#name#
+	</update>
+	
+	<delete id="deleteAssessment" parameterClass="assessment">
+		DELETE 
+		T_SEC_EVALUATIONINDEX 
+		WHERE ORGID = #orgId# AND NAME=#name#
+	</delete>
+	
+	<select id="queryAssessment" resultClass="assessment" parameterClass="java.lang.String">
+		SELECT   
+		   ORGID,
+		   NAME,
+		   ORGPERSON,
+		   TARGET,
+		   PERCENT,
+		   RESULT,
+		   REVIEWER,
+		   NOTE
+     	FROM T_SEC_EVALUATIONINDEX 
+		WHERE 
+		ORGID = #orgId# 
+		ORDER BY ORGPERSON desc
+	</select>
+	
+	<select id="queryAssessmentByName" resultClass="assessment" parameterClass="assessment">
+		SELECT   
+		   ORGID,
+		   NAME,
+		   ORGPERSON,
+		   TARGET,
+		   PERCENT,
+		   RESULT,
+		   REVIEWER,
+		   NOTE
+     	FROM T_SEC_EVALUATIONINDEX 
+		WHERE 
+		ORGID = #orgId# AND NAME = #name# 		
+	</select>
+	
+	<update id="evaluateAssessment" parameterClass="assessment">
+		UPDATE T_SEC_EVALUATIONINDEX 
+		SET 
+		RESULT=#result#,
+		NOTE=#note#
+		WHERE 
+		ORGID = #orgId# AND NAME=#name#
+	</update>
+	
+	<select id="queryAssessResult4Org" resultClass="assessment" parameterClass="taskBookCondition">
+		SELECT 
+ 		   E.ORGID, 
+		   E.NAME,
+		   E.PERCENT,
+		   E.RESULT
+		FROM T_SEC_EVALUATIONINDEX E, T_SEC_TASKBOOK T
+		WHERE 
+		T.PLANORGID =#planOrgId# 
+		AND E.ORGID=#inChargeOrgId#
+		AND T.INCHARGEORGID = E.ORGID 
+		AND E.NAME = T.NAME 
+	</select>
+	
+</sqlMap>
+

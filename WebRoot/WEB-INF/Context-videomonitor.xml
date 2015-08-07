@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	 <bean id="ipcDao" class="com.dao.videomonitor.impl.TVmIpcMapperImpl">  
+        <!-- SqlSessionFactory property is autowired -->  
+        <property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property> 
+    </bean> 
+    
+    <bean id="nvrDao" class="com.dao.videomonitor.impl.TVmNvrMapperImpl">  
+        <!-- SqlSessionFactory property is autowired -->  
+        <property name="sqlmapclienttemplate" ref="sqlMapClientTemplate" />  
+    </bean> 
+    
+    <bean id="manufactureDao" class="com.dao.videomonitor.impl.TVmManufacturerMapperImpl">  
+        <!-- SqlSessionFactory property is autowired -->  
+        <property name="sqlmapclienttemplate" ref="sqlMapClientTemplate" />  
+    </bean> 
+	
+	<bean id="deviceManageIPCService" class="com.service.videomonitor.impl.DeviceManageIPCServiceImpl">
+		<property name="orgDao" ref="OrganizationImp"></property>
+		<property name="manufactureDao" ref="manufactureDao"></property>
+		<property name="ipcDao" ref="ipcDao"></property>
+	</bean>
+	
+	<bean id="deviceManageNVRService" class="com.service.videomonitor.impl.DeviceManageNVRServiceImpl">
+		<property name="orgDao" ref="OrganizationImp"></property>
+		<property name="manufactureDao" ref="manufactureDao"></property>
+		<property name="nvrDao" ref="nvrDao"></property>
+		<property name="ipcDao" ref="ipcDao"></property>
+	</bean>
+	
+	<bean id="deviceManageIPCAction" class="com.actions.videomonitor.DeviceManageIPCAction" scope="prototype">
+		<property name="operationLogService" ref="operationlogservice"></property>
+		<property name="ipcService" ref="deviceManageIPCService"></property>
+		<property name="nvrService" ref="deviceManageNVRService"></property>
+	</bean>
+	
+	<bean id="deviceManageNVRAction" class="com.actions.videomonitor.DeviceManageNVRAction" scope="prototype">
+		<property name="operationLogService" ref="operationlogservice"></property>
+		<property name="nvrService" ref="deviceManageNVRService"></property>
+		<property name="ipcService" ref="deviceManageIPCService"></property>
+	</bean>
+	
+	<bean id="alarmVideoService" class="com.service.videomonitor.impl.AlarmVideoServiceImpl">
+		<property name="ipcZoneMapDao" ref="ipcZoneMapDaoOracleImp"></property>
+		<property name="ipcDao" ref="ipcDao"></property>
+	</bean>
+	
+	<bean id="alarmVideoAction" class="com.actions.videomonitor.AlarmVideoAction" scope="prototype">
+		<property name="alarmVideoService" ref="alarmVideoService"></property>
+	</bean>
+	
+	<bean id="decoderDao" class="com.dao.videomonitor.impl.TVmDecoderMapperImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate" /> 
+	</bean>
+	
+	<bean id="deviceManageDecoderService" class="com.service.videomonitor.impl.DeviceManageDecoderServiceImpl">
+		<property name="orgDao" ref="OrganizationImp"></property>
+		<property name="manufactureDao" ref="manufactureDao"></property>
+		<property name="decoderDao" ref="decoderDao" /> 
+	</bean>
+	
+	<bean id="deviceManageDecoderAction" class="com.actions.videomonitor.DeviceManageDecoderAction" scope="prototype">
+		<property name="operationLogService" ref="operationlogservice"></property>
+		<property name="decoderService" ref="deviceManageDecoderService"></property>
+	</bean>
+	
+	<bean id="ivaService" class="com.service.videomonitor.impl.IVAConfigSocketServiceImpl">
+	</bean>
+
+	<bean id="deviceManageIvaService" class="com.service.videomonitor.impl.DeviceManageIVAServiceImpl">
+	<property name="ivaMapper" ref="tvmIvaMapperImpl"></property>
+	</bean>
+	 	 
+	<bean id="deviceManageIvaAction" class="com.actions.videomonitor.DeviceManageIvaAction" scope="prototype">
+		<property name="operationLogService" ref="operationlogservice"></property>
+		<property name="ivaService" ref="deviceManageIvaService"></property>
+	</bean>
+	
+	<bean id="videoPreviewAction" class="com.actions.videomonitor.VideoPreviewAction" scope="prototype">
+		<property name="pluginVersion" value="${NSSPluginVersion}"></property>
+		<property name="presetService" ref="presetService"></property>
+		<property name="cruiseService" ref="cruiseService"></property>
+		<property name="roundService" ref="roundService"></property>
+	</bean>
+	
+	<bean id="videoWallAction" class="com.actions.videomonitor.VideoWallAction" scope="prototype">
+		<property name="pluginVersion" value="${NSSPluginVersion}"></property>
+	</bean>
+	
+	<bean id="playbackAction" class="com.actions.videomonitor.PlaybackAction" scope="prototype">
+		<property name="pluginVersion" value="${NSSPluginVersion}"></property>
+	</bean>
+	
+	<bean id="presetDao" class="com.dao.videomonitor.impl.TVmPresetpositionMapperImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate" /> 
+	</bean>
+	
+	<bean id="presetService" class="com.service.videomonitor.impl.PresetServiceImpl">
+		<property name="presetDao" ref="presetDao"></property>
+		<property name="ipcDao" ref="ipcDao"></property>
+	</bean>
+	
+	<bean id="cruiseDao" class="com.dao.videomonitor.impl.TVmCruiseMapperImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate" /> 
+	</bean>
+	
+	<bean id="cruiseSequenceDao" class="com.dao.videomonitor.impl.TVmCruiseSequenceMapperImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate" /> 
+	</bean>
+	
+	<bean id="cruiseService" class="com.service.videomonitor.impl.CruiseServiceImpl">
+		<property name="cruiseDao" ref="cruiseDao"></property>
+		<property name="cruiseSequenceDao" ref="cruiseSequenceDao"></property>
+		<property name="ipcDao" ref="ipcDao"></property>
+	</bean>
+	
+	<bean id="roundDao" class="com.dao.videomonitor.impl.TVmRoundMapperImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate" /> 
+	</bean>
+	
+	<bean id="roundSequenceDao" class="com.dao.videomonitor.impl.TVmRoundSequenceMapperImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate" /> 
+	</bean>
+	
+	<bean id="roundService" class="com.service.videomonitor.impl.RoundServiceImpl">
+		<property name="roundDao" ref="roundDao"></property>
+		<property name="roundSequenceDao" ref="roundSequenceDao"></property>
+	</bean>
+	
+	<bean id="alarmManagerService" class="com.service.videomonitor.impl.AlarmManagerServiceImpl">
+	</bean>
+
+    <!-- add by yangzhu for ArgGIS get IPCs -->
+    <bean id="getCamerasByUserId" class="com.service.videomonitor.impl.GetCamerasByUserIDImpl"	>
+        <property name="ipcDao" ref="ipcDao"></property>
+        <property name="userOrg" ref="OrganizationManagerService"></property>
+    </bean>
+</beans>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="alarmKnowledge" class="com.entity.linkagectl.AlarmKnowledge">
+	</bean>
+	
+
+	<bean id="ipcZoneMapDaoOracleImp" class="com.dao.linkagectl.impl.IpcZoneMapDaoOracleImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+
+	<bean id="soundZoneMapDaoOracleImp" class="com.dao.linkagectl.impl.SoundZoneMapDaoOracleImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+
+	<bean id="seAlarmDaoOracleImp" class="com.dao.linkagectl.impl.SeAlarmDaoOracleImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+		<property name="orgMngService" ref="OrganizationManagerService"></property>
+	</bean>
+	<bean id="deAlarmDaoOracleImp" class="com.dao.linkagectl.impl.DeAlarmDaoOracleImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="alarmKnlgDaoOracleImp" class="com.dao.linkagectl.impl.AlarmKnlgDaoOracleImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="zoneInfoDaoOracleImp" class="com.dao.linkagectl.impl.ZoneInfoDaoOracleImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="uIMCSecurityAlarm" class="com.entity.linkagectl.UIMCSecurityAlarm">
+	</bean>
+	
+	<bean id="soundSetDaoOracleImp" class="com.dao.linkagectl.impl.SoundSetDaoOracleImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+
+	<bean id="fenceDaoImpl" class="com.dao.efence.impl.FenceDaoImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+
+	<bean id="zoneDaoImpl" class="com.dao.zone.impl.ZoneDaoImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+
+	<bean id="defenceZoneMapDaoImpl" class="com.dao.zone.impl.DefenceZoneMapDaoImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+
+	<bean id="integrationZoneMapDaoImpl" class="com.dao.zone.impl.IntegrationZoneMapDaoImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="positionZoneMapDaoImpl" class="com.dao.zone.impl.PositionZoneMapDaoImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="pulseZoneMapDaoImpl" class="com.dao.zone.impl.PulseZoneMapDaoImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="serverDaoImpl" class="com.dao.mgtserver.impl.ServerDaoImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+
+	<bean id="LoginImp" class="com.dao.authmgt.impl.LoginImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="RoleImp" class="com.dao.authmgt.impl.RoleImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="OrganizationImp" class="com.dao.authmgt.impl.OrganizationImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="AccountImp" class="com.dao.authmgt.impl.AccountImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="SessionImp" class="com.dao.authmgt.impl.SessionImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="SoundDevImpl" class="com.dao.devmgt.sound.SoundDevImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+
+	<bean id="operationlogdao" class="com.dao.logmgt.impl.OperationLogDaoImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+
+	<bean id="securitylogdao" class="com.dao.logmgt.impl.SecurityLogDaoImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+
+	<bean id="alarmquerydao" class="com.dao.alarmmgt.impl.AlarmQueryDaoImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+
+	<bean id="alarmknowledgeinfodao" class="com.dao.alarmmgt.impl.AlarmKnowledgeDaoImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+
+	<bean id="alarmstatisticdao" class="com.dao.alarmmgt.impl.AlarmStatisticDaoImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="manufacturerDaoImpl" class="com.dao.common.impl.ManufacturerDaoImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<!-- videomonitor -->
+	<bean id="IvaConfigMapperImpl" class="com.dao.videomonitor.impl.IvaConfigMapperImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="IpcConfigMapperImpl" class="com.dao.videomonitor.impl.IpcConfigMapperImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<bean id="tvmIvaMapperImpl" class="com.dao.videomonitor.impl.TvmIvaMapperImpl">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	
+	<!--taskBook -->
+	<bean id="taskbookdao" class="com.dao.securityinfo.impl.TaskBookDaoImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<!--assessment -->
+	<bean id="assessmentdao" class="com.dao.securityinfo.impl.AssessmentDaoImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<!--rewardpunishment -->
+	<bean id="rewardpunishmentdao" class="com.dao.securityinfo.impl.RewardPunishmentDaoImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<!--Rectification -->
+	<bean id="rectificationdao" class="com.dao.securityinfo.impl.RectificationDaoImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+	<!--event -->
+	<bean id="eventdao" class="com.dao.securityinfo.impl.EventDaoImp">
+		<property name="sqlmapclienttemplate" ref="sqlMapClientTemplate"></property>
+	</bean>
+</beans>

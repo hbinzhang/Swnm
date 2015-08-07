@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="com.actions.securityinfo" namespace="/securityinfo" extends="struts-default,json-default,auth-interceptor">
+ 	
+ 	<!--taskbook -->	
+	<action name="queryTaskBook" class="taskBookAction"  method="queryTaskBook" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/taskbook/list.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>		
+ 	<action name="entryCreateTaskBook" class="taskBookAction"  method="entryCreateTaskBook" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/taskbook/add.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>	
+ 	<action name="createTaskBook" class="taskBookAction"  method="createTaskBook" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+	</action>	
+ 	<action name="entryUpdateTaskBook" class="taskBookAction"  method="entryUpdateTaskBook" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/taskbook/edit.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action> 	
+ 	<action name="updateTaskBook" class="taskBookAction"  method="updateTaskBook" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+	</action>
+ 	<action name="publishTaskBook" class="taskBookAction"  method="publishTaskBook" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>		
+	</action>	
+ 	<action name="deleteTaskBook" class="taskBookAction"  method="deleteTaskBook" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>		
+	</action>
+	<action name="closeTaskBook" class="taskBookAction"  method="closeTaskBook" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>		
+	</action> 	
+ 	<action name="queryInChargeOrgsByPorg" class="taskBookAction"  method="queryInChargeOrgsByPorg" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>		
+	</action> 	 	
+ 	<action name="checkTaskNameExist" class="taskBookAction" method="checkTaskNameExist">
+			<result type="json">
+				<param name="root">tip</param>
+			</result>
+	</action>
+	<action name="queryInChargeOrgPersonByOrg" class="taskBookAction"  method="queryInChargeOrgPersonByOrg" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>		
+	</action> 
+	
+	<!--assessment -->
+ 	<action name="queryAssessment" class="assessmentAction"  method="queryAssessment" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/assessment/list.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>		
+	<action name="entryCreateAssessment" class="assessmentAction"  method="entryCreateAssessment" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/assessment/add.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>
+	<action name="createAssessment" class="assessmentAction"  method="createAssessment" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+	</action>
+	<action name="entryUpdateAssessment" class="assessmentAction"  method="entryUpdateAssessment" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/assessment/edit.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>
+	<action name="updateAssessment" class="assessmentAction"  method="updateAssessment" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+	</action>
+	<action name="entryEvaluation" class="assessmentAction"  method="entryEvaluation" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/assessment/evaluation.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>
+	<action name="evaluateAssessment" class="assessmentAction"  method="evaluateAssessment" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+	</action>
+	<action name="deleteAssessment" class="assessmentAction"  method="deleteAssessment" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>		
+	</action>
+	<action name="noticeAssessment" class="assessmentAction"  method="noticeAssessment" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>		
+	</action>
+	<action name="queryAssessResult4Org" class="assessmentAction"  method="queryAssessResult4Org" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/assessment/orgresult.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>	
+	<action name="checkAssessmentExist" class="assessmentAction"  method="checkAssessmentExist" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result type="json">
+				<param name="root">assessTip</param>
+			</result>
+	</action>
+	
+	<!--checkinfo -->
+	<action name="entryCheckInfo" class="assessmentAction"  method="entryCheckInfo" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/assessment/checkinfo.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>	
+	<action name="createCheckInfo" class="assessmentAction"  method="createCheckInfo" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>	
+	</action>
+	<action name="queryCheckInfoByName" class="assessmentAction"  method="queryCheckInfoByName" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/assessment/checkinfo.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>
+	<action name="deleteCheckInfo" class="assessmentAction"  method="deleteCheckInfo" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>	
+	</action>
+	<action name="checkCheckInfoExist" class="assessmentAction"  method="checkCheckInfoExist" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result type="json">
+				<param name="root">tip</param>
+			</result>
+	</action>
+	<action name="queryOrgPersonByOrg" class="assessmentAction"  method="queryOrgPersonByOrg" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>		
+	</action> 
+	<action name="queryAssessNameByOrg" class="assessmentAction"  method="queryAssessNameByOrg" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+	</action>
+	
+	<!-- RewardPunishment -->
+	<action name="queryRewardPunishment" class="rewardPunishmentAction"  method="queryRewardPunishment" >
+ 			<interceptor-ref name="noAuthInterceptorStack"/>  
+  			<result name="success">/WEB-INF/views/securityinfo/rewardpunishment/list.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action> 
+	<action name="entryCreateRewardPunish" class="rewardPunishmentAction"  method="entryCreateRewardPunish" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/rewardpunishment/add.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>
+	<action name="createRewardPunishment" class="rewardPunishmentAction"  method="createRewardPunishment" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+	</action>
+	<action name="entryUpdateRewardPunish" class="rewardPunishmentAction"  method="entryUpdateRewardPunish" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/rewardpunishment/edit.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action> 
+	<action name="updateRewardPunishment" class="rewardPunishmentAction"  method="updateRewardPunishment" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+	</action>
+	<action name="deleteRewardPunishment" class="rewardPunishmentAction"  method="deleteRewardPunishment" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>	
+	</action>
+	<action name="checkRPNameExist" class="rewardPunishmentAction"  method="checkRPNameExist" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result type="json">
+				<param name="root">tip</param>
+			</result>
+	</action>
+	
+	<!-- Rectification -->	
+	<action name="queryRectification" class="rectificationAction"  method="queryRectification" >
+  			<result name="success">/WEB-INF/views/securityinfo/rectification/list.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action> 
+		<action name="entryCreateRectification" class="rectificationAction"  method="entryCreateRectification" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/rectification/add.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>
+	<action name="createRectification" class="rectificationAction"  method="createRectification" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+	</action>
+	<action name="entryUpdateRectification" class="rectificationAction"  method="entryUpdateRectification" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/rectification/edit.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action> 
+	<action name="updateRectification" class="rectificationAction"  method="updateRectification" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+	</action>
+	<action name="deleteRectification" class="rectificationAction"  method="deleteRectification" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>	
+	</action>
+	<action name="checkRectificationNameExist" class="rectificationAction"  method="checkRectificationNameExist" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result type="json">
+				<param name="root">tip</param>
+			</result>
+	</action>
+	
+	<!-- event -->	
+	<action name="queryEvent" class="eventAction"  method="queryEvent" >
+  			<result name="success">/WEB-INF/views/securityinfo/event/list.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action> 
+		<action name="entryCreateEvent" class="eventAction"  method="entryCreateEvent" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/event/add.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action>
+	<action name="createEvent" class="eventAction"  method="createEvent" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+	</action>
+	<action name="entryUpdateEvent" class="eventAction"  method="entryUpdateEvent" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success">/WEB-INF/views/securityinfo/event/edit.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action> 
+	<action name="updateEvent" class="eventAction"  method="updateEvent" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+	</action>
+	<action name="deleteEvent" class="eventAction"  method="deleteEvent" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result name="success" type="json">
+				<param name="root">ajaxObject</param>
+			</result>
+			<result name="error" type="json">
+				<param name="root">ajaxObject</param>
+			</result>	
+	</action>
+	<action name="checkEventNameExist" class="eventAction"  method="checkEventNameExist" >
+<!--  			<interceptor-ref name="noAuthInterceptorStack"/> -->  
+  			<result type="json">
+				<param name="root">tip</param>
+			</result>
+	</action>
+	
+	<!-- Inspection -->	
+	<action name="queryInspection" class="inspectionAction"  method="queryInspection" >
+  			<result name="success">/WEB-INF/views/securityinfo/inspection/list.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>	
+	</action> 
+	</package>	 
+</struts>

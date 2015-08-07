@@ -1,0 +1,52 @@
+package com.entity.authmgt;
+
+import java.io.Serializable;
+import java.util.List;
+
+import com.entity.CommonBean;
+
+public class OrgIdAndNames  implements Serializable{
+
+	//若用户属总公司，company中放所在总公司,subCompanys中放所有分公司，managements中放所有管理处；
+	//若用户属分公司，subCompanys中放这个分公司，managements中放其下所有管理处；
+	//若用户属管理处，subCompanys中存该管理处所属的分公司，managements中放这个管理处
+	CommonBean company;
+	List<CommonBean> subCompanys;
+	List<CommonBean> managements;
+	public List<CommonBean> getSubCompanys() {
+		return subCompanys;
+	}
+	public void setSubCompanys(List<CommonBean> subCompanys) {
+		this.subCompanys = subCompanys;
+	}
+	public List<CommonBean> getManagements() {
+		return managements;
+	}
+	public void setManagements(List<CommonBean> managements) {
+		this.managements = managements;
+	}
+	public OrgIdAndNames(List<CommonBean> subCompanys,
+			List<CommonBean> managements) {
+		super();
+		this.subCompanys = subCompanys;
+		this.managements = managements;
+	}
+	
+	public OrgIdAndNames() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public CommonBean getCompany() {
+		return company;
+	}
+	public void setCompany(CommonBean company) {
+		this.company = company;
+	}
+	@Override
+	public String toString() {
+		return "OrgIdAndNames [company=" + company + ", subCompanys="
+				+ subCompanys + ", managements=" + managements + "]";
+	}
+
+
+}

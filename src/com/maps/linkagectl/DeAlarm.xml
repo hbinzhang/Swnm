@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="deAlarm">
+<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="DeAlarm" type="com.entity.linkagectl.DeviceAlarm" />
+	<typeAlias alias="deviceAlarm" type="com.entity.alarmmgt.DeviceAlarm" />
+	<!-- 这样以后改了sql，就不需要去改java代码了 -->
+<!-- id表示select里的sql语句，resultClass表示返回结果的类型 -->
+<!-- parameterClass表示参数的内容 -->
+<!-- #表示这是一个外部调用的需要传进的参数，可以理解为占位符 -->
+	<select id="getDeAlarm" parameterClass="java.lang.String"
+		resultClass="DeAlarm">
+		<![CDATA[ 
+    select 
+     	alarmID,alarmCode,alarmTime,
+		deviceID,zoneID,branchID,departmentID,managerTime,peopleID,
+		alarmStatus,info 
+    from T_ALM_DEVALARM
+    where alarmID = #alarmID# 
+    ]]>
+	</select>
+	<!-- 注意这里的resultClass类型，使用SeAlarm类型取决于queryForList还是queryForObject -->
+	<select id="getAllDeAlarm" resultClass="DeAlarm">
+		<![CDATA[ 
+    select 
+      	alarmID,alarmCode,alarmTime,
+		deviceID,zoneID,branchID,departmentID,managerTime,peopleID,
+		alarmStatus,info
+    from T_ALM_DEVALARM
+    ]]>
+	</select>
+
+	<update id="updateDeAlarm" parameterClass="DeAlarm">
+		<![CDATA[ 
+    UPDATE T_ALM_DEVALARM
+    SET         
+      alarmCode=#alarmCode#,
+      alarmTime=#alarmTime#,      
+      deviceID=#deviceID#,
+      zoneID=#zoneID#,      
+      branchID=#branchID#,
+      departmentID=#departmentID#,
+      managerTime=#managerTime#,
+      peopleID=#peopleID#,
+      alarmStatus=#alarmStatus#,      
+      info=#info#
+  WHERE alarmID = #alarmID# 
+]]>
+	</update>
+
+<insert id="insertDeAlarm" parameterClass="DeAlarm">
+	<selectKey resultClass="int" keyProperty="alarmID" > 
+	<![CDATA[ 
+	SELECT DASEQ.NEXTVAL AS alarmID FROM DUAL
+	]]> 
+</selectKey>
+		INSERT INTO T_ALM_DEVALARM (alarmID,alarmCode,alarmTime,
+		deviceID,zoneID,branchID,departmentID,managerTime,peopleID,
+		alarmStatus,info) 
+      VALUES (#alarmID#,#alarmCode#,#alarmTime#,
+      #deviceID#,#zoneID#,#branchID#,#departmentID#,#managerTime#,#peopleID#,#alarmStatus#,#info#)
+	
+	</insert>   
+<!--  
+<insert id="insertDeAlarm" parameterClass="DeAlarm">
+		INSERT INTO T_ALM_DEVALARM (alarmCode,alarmTime,
+		deviceID,zoneID,branchID,departmentID,managerTime，peopleID，
+		alarmStatus,info) 
+      VALUES (#alarmCode#,#alarmTime#,
+      #deviceID#,#zoneID#,#branchID#,#departmentID#,#managerTime#，#peopleID#，#alarmStatus#,#info#)
+	</insert>
+-->
+	<delete id="deleteDeAlarm" parameterClass="java.lang.String">
+		delete from T_ALM_DEVALARM where alarmID=#alarmID#
+	</delete>
+
+<select id="queryDeviceAlarmByID" resultClass="deviceAlarm" 
+			parameterClass="java.lang.Integer">
+			<![CDATA[ 
+		SELECT t.ALARMID,t.ALARMCODE,t.DEVICEID,t.ALARMTIME,t.ALARMSTATUS,
+			t.ZONEID,t.BRANCHID,t.DEPARTMENTID,t.INFO,k.CAUSE,
+			k.OPERATION,k.ALARMNAME,k.DEVICETYPE,k.ALARMLEVEL,k.ALARMTYPE as type,
+			k.ISAFFECT,k.RESULT,z.zoneName as zoneName
+		FROM T_ALM_DEVALARM t left join T_ALM_KNOWLEDGE k on t.alarmCode=k.alarmCode
+			left join T_LC_ZONEINFO z on t.zoneID = z.zoneID
+		WHERE  t.ALARMID=#alarmID#
+		 ]]>
+	</select>
+	<select id="getActiveDevAlarmCount" resultClass="java.lang.Integer" 
+			parameterClass="java.lang.String">
+			SELECT count(*)
+			FROM 
+			T_ALM_DEVALARM 
+			WHERE 
+			deviceId = #devID#
+	</select>
+</sqlMap>

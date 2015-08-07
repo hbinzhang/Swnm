@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.dao.videomonitor.IvaConfigMapperImpl">
+	<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="TVmIvaIpcMap" type="com.entity.videomonitor.TVmIvaIpcMap" />
+	
+	<insert id="batchAddIvaConfig" parameterClass="java.util.List">
+		<![CDATA[
+			insert into T_VM_IVAIPCMAP(IVAID,IPCID,CORDON,HIGHTOSSACT,FLOTAGE,TRAVELTOTRACK,POINT) values
+		]]>
+		<iterate conjunction=",">
+			<![CDATA[
+				(#list[].ivaID#, #list[].ipcID#, #list[].cordon#,#list[].highTossAct#,#list[].flotage#,#list[].travelToTrack#,#list[].point#)
+			]]>
+		</iterate>
+	</insert>
+	
+	<insert id="addIvaConfig" parameterClass="TVmIvaIpcMap">
+		<![CDATA[
+			insert into T_VM_IVAIPCMAP(IVAID,IPCID,CORDON,HIGHTOSSACT,FLOTAGE,TRAVELTOTRACK,POINT) values
+				(#ivaID#, #ipcID#, #cordon#,#highTossAct#,#flotage#,#travelToTrack#,#point#)
+			]]>
+	</insert>
+	
+	<delete id="delIvaConfig" parameterClass="java.lang.String">
+		delete from
+		T_VM_IVAIPCMAP where
+		IVAID=#ivaID#
+	</delete>
+	
+</sqlMap>

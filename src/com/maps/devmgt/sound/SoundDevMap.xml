@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="soundDev">
+	<typeAlias alias="soundDev" type="com.entity.devmgt.sound.SoundDev" />
+	<!-- <resultMap id="queryAllAdapter" class="SoundDev"> <result property="id" 
+		column="id" /> <result property="name" column="name" /> <result property="vendorName" 
+		column="vendorName" /> <result property="ipAddress" column="ipAddress" /> 
+		<result property="devType" column="devType" /> <result property="ownerdev" 
+		column="ownerdev" /> <result property="ownerIp" column="ownerIp" /> <result 
+		property="mgtcode" column="mgtcode" /> </resultMap> -->
+	<statement id="queryCount"
+		parameterClass="com.entity.devmgt.sound.SoundDevQueryCondition"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from
+		(
+		select serverid id,a.serverName name,b.vendorName
+		vendorName,ipAddress
+		ipAddress,devType devType,owner ownerdev,
+		ownerIp
+		ownerIp,mgtcode mgtcode
+		from T_SM_AUDIOSERVER a,T_SM_MANUFACTURER b
+		where a.FACTORYNAME =
+		b.vendorid
+		union all
+		select id id,name
+		name,c.vendorName vendorName,ip ipAddress,'IO控制器'
+		devType,d.audioName
+		ownerdev,d.audioIP ownerIp,mgtCode mgtcode
+		from (select
+		id,name,b.vendorName,ip,'IO控制器',audioid from
+		T_SM_IOCONTROLLER
+		a,T_SM_MANUFACTURER b where a.vendorid = b.vendorid)
+		c,
+		T_SM_AUDIOADAPTER d where c.audioid = d.audioid
+		union all
+		select audioid
+		id,audioName name,vendorName vendorName,audioIP
+		ipAddress,'音频终端'
+		devType,d.serverName ownerdev,
+		d.ipAddress ownerIp,c.mgtCode mgtcode
+		from
+		(select
+		audioid,audioName,b.vendorName,audioIP,'音频终端',mgtCode,a.owner from
+		T_SM_AUDIOADAPTER a,T_SM_MANUFACTURER b where a.vendorid = b.vendorid)
+		c,
+		T_SM_AUDIOSERVER d where c.owner =d.serverid
+		)
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="id">
+          <![CDATA[
+            id like  concat(#id#, '%')
+          ]]>
+			</isNotNull>
+			<isNotNull prepend="AND" property="ipAddress">
+          <![CDATA[
+            ipAddress like  concat(#ipAddress#, '%')
+          ]]>
+			</isNotNull>
+			<isNotNull prepend="AND" property="devType">
+          <![CDATA[
+            devType like concat(#devType#, '%')
+          ]]>
+			</isNotNull>
+			<isNotNull prepend="AND" property="mgtQuery">
+				mgtcode IN $mgtQuery$
+			</isNotNull>
+		</dynamic>
+	</statement>
+	<statement id="query" resultClass="SoundDev"
+		parameterClass="com.entity.devmgt.sound.SoundDevQueryCondition">
+		SELECT * FROM
+		(
+		SELECT A.*, ROWNUM RN
+		FROM (
+		select
+		id,name,vendorName,ipAddress,devType,ownerdev,ownerIp,mgtcode,ipccode,status
+
+		from (
+
+		select serverid id,a.serverName name,b.vendorName vendorName,
+		ipAddress ipAddress,devType devType,owner ownerdev, ownerIp
+		ownerIp,mgtcode
+		mgtcode,null ipccode,a.status status
+		from
+		T_SM_AUDIOSERVER a,T_SM_MANUFACTURER b where a.FACTORYNAME =
+		b.vendorid
+
+		union all
+
+		select id id,name name,c.vendorName vendorName,ip
+		ipAddress,'IO控制器'
+		devType,d.audioName ownerdev,d.audioIP
+		ownerIp,mgtCode mgtcode,null
+		ipccode,c.status status
+		from (select
+		id,name,b.vendorName,ip,'IO控制器',audioid ,
+		a.status status from
+		T_SM_IOCONTROLLER a,T_SM_MANUFACTURER b where a.vendorid
+		= b.vendorid)
+		c,
+		T_SM_AUDIOADAPTER d where c.audioid = d.audioid
+
+		union all
+
+		select
+		audioid id,audioName name,vendorName vendorName,
+		audioIP
+		ipAddress,'音频终端' devType,d.serverName ownerdev, d.ipAddress
+		ownerIp,c.mgtCode mgtcode,c.IPCID ipccode, c.status status
+		from (select
+		audioid,audioName,b.vendorName,audioIP,'音频终端',mgtCode,a.owner,a.IPCID,
+		a.status from
+		T_SM_AUDIOADAPTER a,T_SM_MANUFACTURER b where a.vendorid
+		= b.vendorid) c,
+		T_SM_AUDIOSERVER d where c.owner =d.serverid
+
+		)
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="id">
+          <![CDATA[
+            id like  concat(#id#, '%')
+          ]]>
+			</isNotNull>
+			<isNotNull prepend="AND" property="ipAddress">
+          <![CDATA[
+            ipAddress like concat(#ipAddress#, '%')
+          ]]>
+			</isNotNull>
+			<isNotNull prepend="AND" property="devType">
+          <![CDATA[
+            devType like concat(#devType#, '%')
+          ]]>
+			</isNotNull>
+			<isNotNull prepend="AND" property="mgtQuery">
+				mgtcode IN $mgtQuery$
+			</isNotNull>
+		</dynamic>
+		) A
+		WHERE ROWNUM &lt;= #offset#*#size#
+		)
+		WHERE RN &gt;=
+		((#offset#-1)*#size#+1)
+	</statement>
+
+	<statement id="queryById" resultClass="SoundDev"
+		parameterClass="java.lang.String">
+		select
+		id,name,vendorName,ipAddress,devType,ownerdev,ownerIp,mgtcode,ipccode,status,ownerdevid
+
+		from (
+
+		select serverid id,a.serverName name,b.vendorName vendorName,
+		ipAddress ipAddress,devType devType,owner ownerdev, ownerIp
+		ownerIp,mgtcode
+		mgtcode,null ipccode,a.status status,null ownerdevid
+		from
+		T_SM_AUDIOSERVER a,T_SM_MANUFACTURER b where a.FACTORYNAME =
+		b.vendorid
+
+		union all
+
+		select id id,name name,c.vendorName vendorName,ip
+		ipAddress,'IO控制器'
+		devType,d.audioName ownerdev,d.audioIP
+		ownerIp,mgtCode mgtcode,null
+		ipccode,c.status status,c.audioid ownerdevid
+		from (select
+		id,name,b.vendorName,ip,'IO控制器',audioid ,
+		a.status status from
+		T_SM_IOCONTROLLER a,T_SM_MANUFACTURER b where a.vendorid
+		= b.vendorid)
+		c,
+		T_SM_AUDIOADAPTER d where c.audioid = d.audioid
+
+		union all
+
+		select
+		audioid id,audioName name,vendorName vendorName,
+		audioIP
+		ipAddress,'音频终端' devType,d.serverName ownerdev, d.ipAddress
+		ownerIp,c.mgtCode mgtcode,c.IPCID ipccode, c.status status,c.owner ownerdevid
+		from (select
+		audioid,audioName,b.vendorName,audioIP,'音频终端',mgtCode,a.owner,a.IPCID,
+		a.status from
+		T_SM_AUDIOADAPTER a,T_SM_MANUFACTURER b where a.vendorid
+		= b.vendorid) c,
+		T_SM_AUDIOSERVER d where c.owner =d.serverid
+
+		)
+		where
+		id=#id#
+	</statement>
+	<delete id="delete1" parameterClass="java.util.ArrayList">
+		delete from t_sm_audioadapter
+		where AUDIOID IN
+		<iterate conjunction="," open="(" close=")">
+			#[]#
+		</iterate>
+	</delete>
+	<delete id="delete2" parameterClass="java.util.ArrayList">
+		delete from t_sm_iocontroller
+		WHERE
+		id IN
+		<iterate conjunction="," open="(" close=")">
+			#[]#
+		</iterate>
+	</delete>
+	<delete id="delete3" parameterClass="java.util.ArrayList">
+		delete t_sm_audioserver
+		WHERE
+		serverid IN
+		<iterate conjunction="," open="(" close=")">
+			#[]#
+		</iterate>
+	</delete>
+	<delete id="delete4" parameterClass="java.lang.String">
+		delete t_sm_audioadapter a
+		where a.AUDIOID like concat(#AUDIOID#, '%')
+	</delete>
+	<delete id="delete5" parameterClass="java.lang.String">
+		delete t_sm_iocontroller b
+		where b.id like concat(#AUDIOID#, '%')
+	</delete>
+	<delete id="delete6" parameterClass="java.lang.String">
+		delete t_sm_audioserver c
+		where c.serverid like concat(#AUDIOID#, '%')
+	</delete>
+	<statement id="batchdelectCheck" parameterClass="java.util.ArrayList" resultClass="java.lang.Integer">
+		select
+		count(*)
+		from
+		(
+		select id,owner from(
+		select a.AUDIOID id, a.OWNER
+		owner from
+		t_sm_audioadapter
+		a
+		union all
+		select b.ID id,b.AUDIOID owner
+		from
+		t_sm_iocontroller b
+		union
+		all
+		select c.SERVERID,c.OWNER from
+		t_sm_audioserver c
+		)
+		where
+		id not IN
+		<iterate conjunction="," open="(" close=")">
+			#[]#
+		</iterate>
+		and
+		owner IN
+		<iterate conjunction="," open="(" close=")">
+			#[]#
+		</iterate>
+		)
+	</statement>
+	<statement id="insertIoController" parameterClass="com.entity.devmgt.sound.SoundDev">
+		insert into
+		t_sm_iocontroller( id,AUDIOID,VENDORID,NAME,IP,MGTCODE)
+		values(#id#,#ownerdev#,#vendorName#,#name#,#ipAddress#,null)
+	</statement>
+	<statement id="insertAudioAdapter" parameterClass="com.entity.devmgt.sound.SoundDev">
+		insert into
+		t_sm_audioadapter (
+		AUDIOID,VENDORID,AUDIONAME,AUDIOIP,MGTCODE,OWNER,IPCID)
+		values(#id#,#vendorName#,#name#,#ipAddress#,#mgtCode#,#ownerdev#,#ipcCode#)
+	</statement>
+	<statement id="insertAudioServer" parameterClass="com.entity.devmgt.sound.SoundDev">
+		insert into
+		T_SM_AUDIOSERVER ( SERVERID, SERVERNAME , IPADDRESS , FACTORYNAME ,
+		DEVTYPE , OWNER , OWNERIP , MGTCODE)
+		values(#id#,#name#,#ipAddress#,#vendorName#,#devType#,null,null,null)
+	</statement>
+	<statement id="updateIoController" parameterClass="com.entity.devmgt.sound.SoundDev">
+		update
+		t_sm_iocontroller set AUDIOID=#ownerdev# ,
+		VENDORID=#vendorName# ,
+		NAME=#name#
+		, IP=#ipAddress# ,
+		MGTCODE=null where id=#id#
+	</statement>
+	<statement id="updateAudioAdapter" parameterClass="com.entity.devmgt.sound.SoundDev">
+		update
+		T_SM_AUDIOADAPTER set VENDORID=#vendorName# ,AUDIONAME=#name#,
+		AUDIOIP=#ipAddress# ,MGTCODE=#mgtCode#, OWNER=#ownerdev#
+		,IPCID=#ipcCode# where
+		AUDIOID=#id#
+	</statement>
+	<statement id="updateAudioServer" parameterClass="com.entity.devmgt.sound.SoundDev">
+		update
+		T_SM_AUDIOSERVER set SERVERNAME=#name#,
+		IPADDRESS=#ipAddress#
+		,FACTORYNAME=#vendorName#, DEVTYPE=#devType#
+		where
+		SERVERID=#id#
+	</statement>
+	<statement id="queryAllAudioAdapter" parameterClass="java.util.ArrayList"
+		resultClass="com.entity.devmgt.sound.AudioAdapter">
+		select AUDIOID , VENDORID , AUDIONAME , AUDIOIP , MGTCODE
+		, OWNER
+		from
+		T_SM_AUDIOADAPTER
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="mgtCode">
+				mgtCode IN
+				<iterate conjunction="," open="(" close=")">
+					#[]#
+				</iterate>
+			</isNotNull>
+		</dynamic>
+	</statement>
+	<!-- 音频厂商信息id以EB开头 -->
+	<statement id="queryAllManufacturer" resultClass="com.entity.devmgt.sound.SoundDevManufacturer">
+		select
+		VENDORID,VENDORNAME from T_SM_MANUFACTURER where VENDORID like 'EB%'
+	</statement>
+	<statement id="queryAllAudioServer" resultClass="com.entity.devmgt.sound.AudioServer">
+		select
+		SERVERID,SERVERNAME,IPADDRESS from T_SM_AUDIOSERVER
+	</statement>
+	<statement id="queryControllerByTermId" parameterClass="String"
+		resultClass="com.entity.devmgt.sound.IOCtroller">
+		select
+		ID,AUDIOID,VENDORID,NAME,IP,MGTCODE from
+		T_SM_IOCONTROLLER where AUDIOid=#AUDIOID#
+	</statement>
+
+	<statement id="queryAdapterByTermId" parameterClass="String"
+		resultClass="com.entity.devmgt.sound.AudioAdapter">
+		select
+		AUDIOID , VENDORID , AUDIONAME , AUDIOIP , MGTCODE ,
+		OWNER from
+		T_SM_AUDIOADAPTER where AUDIOID=#audioId#
+	</statement>
+	<statement id="queryServerByTermIp" parameterClass="String"
+		resultClass="com.entity.devmgt.sound.AudioServer">
+		select
+		a.SERVERID , a.SERVERNAME , a.IPADDRESS ,b.audioip
+		from
+		T_SM_AUDIOADAPTER b, T_SM_AUDIOSERVER a where b.owner=a.SERVERID
+		and
+		b.audioip like concat(#audioip#, '%')
+	</statement>
+	<statement id="queryAllAdapterNotAttachedController"
+		resultClass="com.entity.devmgt.sound.AudioAdapter">
+		select a.AUDIOID, a.VENDORID, a.AUDIONAME, a.AUDIOIP,
+		a.MGTCODE, a.OWNER
+		from T_SM_AUDIOADAPTER a where a.audioid not
+		in(select b.audioid from
+		T_SM_IOCONTROLLER b where b.audioid is not
+		null)
+	</statement>
+	<statement id="SounddevQueryAllIPCIDNotAttached" resultClass="java.lang.String">
+		select
+		a.IPCID from T_VM_IPC a where a.IPCID not in (select b.IPCID
+		from
+		T_SM_AUDIOADAPTER b where b.IPCID is not null)
+	</statement>
+	<statement id="queryAdapterByIPCId" parameterClass="String"
+		resultClass="com.entity.devmgt.sound.AudioAdapter">
+		select a.AUDIOID, a.VENDORID, a.AUDIONAME, a.AUDIOIP,
+		a.MGTCODE, a.OWNER, a.IPCID
+		from
+		T_SM_AUDIOADAPTER a where a.IPCID like
+		concat(#ipcId#, '%')
+	</statement>
+	<statement id="queryAdapterByIP" parameterClass="String"
+		resultClass="com.entity.devmgt.sound.AudioAdapter">
+		select a.AUDIOID, a.VENDORID, a.AUDIONAME, a.AUDIOIP,
+		a.MGTCODE, a.OWNER, a.IPCID
+		from
+		T_SM_AUDIOADAPTER a where a.AUDIOIP
+		like
+		concat(#AUDIOIP#, '%')
+	</statement>
+	<statement id="queryAllAudioAdapterId" resultClass="java.lang.String">
+		select
+		AUDIOID from T_SM_AUDIOADAPTER
+	</statement>
+	<statement id="queryAllIOControllerId" resultClass="java.lang.String">
+		select
+		id
+		from T_SM_IOCONTROLLER
+	</statement>
+	<statement id="queryAllServerId" resultClass="java.lang.String">
+		select
+		SERVERID
+		from T_SM_AUDIOSERVER
+	</statement>
+	<statement id="queryAllmanufacturerId" resultClass="java.lang.String">
+		select
+		VENDORID
+		from T_SM_MANUFACTURER
+	</statement>
+	<statement id="addAdapterByImport" parameterClass="com.entity.devmgt.sound.AudioAdapter">
+		insert into
+		t_sm_audioadapter ( AUDIOID,VENDORID,AUDIONAME,AUDIOIP ,MGTCODE
+		,OWNER,IPCID)
+		values(#audioId#,#vendorId#,#audioName#,#audioIp#,#mgtCode#,#owner#,#ipcId#)
+	</statement>
+	<statement id="addIOControllerByImport" parameterClass="com.entity.devmgt.sound.IOCtroller">
+		insert into
+		t_sm_iocontroller ( id,
+		AUDIOID,
+		VENDORID,
+		NAME,
+		IP,
+		MGTCODE)
+		values(#ID#,#AUDIOID#,#VENDORID#,#NAME#,#IP#,#MGTCODE#)
+	</statement>
+	<statement id="addAudioServerByImport" parameterClass="com.entity.devmgt.sound.AudioServer">
+		insert
+		into
+		T_SM_AUDIOSERVER ( SERVERID,
+		SERVERNAME,
+		IPADDRESS,DEVTYPE,FACTORYNAME)
+		values(#SERVERID#,#SERVERNAME#,#IPADDRESS#,'音频服务器',#FACTORYNAME#)
+	</statement>
+	<statement id="addManufacturerByImport" parameterClass="com.entity.devmgt.sound.SoundDevManufacturer">
+		insert
+		into
+		T_SM_MANUFACTURER ( VENDORID,
+		VENDORNAME)
+		values(#vendorId#,#vendorName#)
+	</statement>
+
+	<statement id="queryAllIPCIDByMgtId" resultClass="java.lang.String">
+		select
+		a.IPCID from T_VM_IPC a where a.IPCID not in (select b.IPCID
+		from
+		T_SM_AUDIOADAPTER b where b.IPCID is not null) and a.MANAGEMENTAGENCY
+		like
+		concat(#mgtId#, '%')
+	</statement>
+</sqlMap>

@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="seAlarm">
+<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="SeAlarm" type="com.entity.linkagectl.SecurityAlarm" />
+	<typeAlias alias="UISeAlarm" type="com.entity.linkagectl.UIMCSecurityAlarm" />
+	<typeAlias alias="SeAlarmCount" type="com.entity.linkagectl.AlarmResult" />
+	
+	<!-- 这样以后改了sql，就不需要去改java代码了 -->
+<!-- id表示select里的sql语句，resultClass表示返回结果的类型 -->
+<!-- parameterClass表示参数的内容 -->
+<!-- #表示这是一个外部调用的需要传进的参数，可以理解为占位符 -->
+	<select id="getSeAlarm" parameterClass="java.lang.String"
+		resultClass="SeAlarm">
+		<![CDATA[ 
+    select 
+     	alarmID,alarmCode,alarmTime,lastTime,
+		deviceID,zoneID,alarmCount,branchID,departmentID,alarmStatus,userID,
+		managerTime,checkMothod,checkLevel,isReal,reason,description,peopleID,
+		report,vidioURL,leftVidioURL,rightVidioURL,pictureURL,info 
+    from T_ALM_SECURITYALARM
+    where alarmID = #alarmID# 
+    ]]>
+	</select>
+	<!-- 注意这里的resultClass类型，使用SeAlarm类型取决于queryForList还是queryForObject -->
+	<select id="getAllSeAlarm" resultClass="SeAlarm">
+		<![CDATA[ 
+    select 
+        alarmID,alarmCode,alarmTime,lastTime,
+		deviceID,zoneID,alarmCount,branchID,departmentID,alarmStatus,userID,
+		managerTime,checkMothod,checkLevel,isReal,reason,description,peopleID,
+		report,vidioURL,leftVidioURL,rightVidioURL,pictureURL,info 
+    from T_ALM_SECURITYALARM
+    ]]>
+	</select>
+
+	<update id="updateSeAlarm" parameterClass="SeAlarm">
+		<![CDATA[ 
+    UPDATE T_ALM_SECURITYALARM
+    SET         
+      alarmStatus=#alarmStatus#,
+      userID=#userID#,
+      managerTime=#managerTime#,
+      checkMothod=#checkMothod#,
+      checkLevel=#checkLevel#,
+      isReal=#isReal#,
+      reason=#reason#,
+      description=#description#,
+      peopleID=#peopleID#,
+      report=#report#,
+      vidioURL=#vidioURL#,
+      leftVidioURL=#leftVidioURL#,
+      rightVidioURL=#rightVidioURL#,
+      pictureURL=#pictureURL#,
+      info=#info#
+  WHERE alarmID = #alarmID# 
+]]>
+	</update>
+   
+   <update id="updateSeAlarmSimple" parameterClass="SeAlarm">
+		<![CDATA[ 
+    UPDATE T_ALM_SECURITYALARM
+    SET         
+      alarmStatus=#alarmStatus#,    
+      report=#report#      
+  	WHERE alarmID = #alarmID# 
+]]>
+	</update>
+<!-- 
+<insert id="insertSeAlarm" parameterClass="SeAlarm">
+		INSERT INTO T_ALM_SECURITYALARM (alarmID,alarmCode,alarmTime,lastTime,
+		deviceID,zoneID,alarmCount,branchID,departmentID,alarmStatus,userID,
+		managerTime,checkMothod,checkLevel,isReal,reason,description,peopleID,
+		report,vidioURL,leftVidioURL,rightVidioURL,pictureURL,info) 
+      VALUES (#alarmID#,#alarmCode#,#alarmTime#,#lastTime#,
+      #deviceID#,#zoneID#,#alarmCount#,#branchID#,#departmentID#,#alarmStatus#,#userID#,
+      #managerTime#,#checkMothod#,#checkLevel#,#isReal#,#reason#,#description#,#peopleID#,
+      #report#,#vidioURL#,#leftVidioURL#,#rightVidioURL#,#pictureURL#,#info#)
+	</insert>
+ -->	
+<insert id="insertSeAlarm" parameterClass="SeAlarm">
+<selectKey resultClass="int" keyProperty="alarmID" > 
+	<![CDATA[ 
+	SELECT SELFINCREASESEQ.NEXTVAL as alarmID FROM DUAL
+	]]> 
+</selectKey>
+	<![CDATA[INSERT INTO T_ALM_SECURITYALARM (alarmID,alarmCode,alarmTime,lastTime,
+		deviceID,zoneID,alarmCount,branchID,departmentID,alarmStatus,userID,
+		managerTime,checkMothod,checkLevel,isReal,reason,description,peopleID,
+		report,vidioURL,leftVidioURL,rightVidioURL,pictureURL,info) 
+      VALUES (#alarmID#,#alarmCode#,#alarmTime#,#lastTime#,
+      #deviceID#,#zoneID#,#alarmCount#,#branchID#,#departmentID#,#alarmStatus#,#userID#,
+      #managerTime#,#checkMothod#,#checkLevel#,#isReal#,#reason#,#description#,#peopleID#,
+      #report#,#vidioURL#,#leftVidioURL#,#rightVidioURL#,#pictureURL#,#info#)
+	  ]]>    
+	</insert>
+	<delete id="deleteSeAlarm" parameterClass="java.lang.String">
+		delete from T_ALM_SECURITYALARM where alarmID=#alarmID#
+	</delete>
+	
+	<select id="getAllUISeAlarm_zong"  resultClass="UISeAlarm">
+		<![CDATA[ 
+    select * from (
+    select 
+        a.alarmID as alarmID,a.alarmTime as alarmTime,a.lastTime as alarmDuringTime,
+        a.zoneID as alarmZoneID, nvl(z.zoneName,a.zoneID) as alarmZoneName,k.alarmName as alarmName,
+        k.deviceType as idevType,a.deviceID as devID,k.alarmLevel as alarmLvl,
+        a.departmentID as mgtName,a.branchID as branchName,
+        a.alarmCount as alarmCnt,a.info as info,a.checkMothod as checkMethod,a.isReal as isReal,
+        a.reason as reason,a.peopleID as peopleID,a.userID as userID,a.report as report,
+        a.vidioURL as vidioURL,a.leftVidioURL as leftVidioURL,a.rightVidioURL as rightVidioURL,
+        a.pictureURL as pictureURL,a.description as description
+ 	from T_ALM_SECURITYALARM a left join T_ALM_KNOWLEDGE k on a.alarmCode=k.alarmCode
+    	left join T_LC_ZONEINFO z on a.zoneID = z.zoneID WHERE a.report=0 and a.alarmStatus=0  order by a.alarmID desc
+    	) WHERE ROWNUM <=500
+    	 
+    ]]>
+	</select>
+	<select id="getAllUISeAlarm_com" parameterClass="java.lang.String" resultClass="UISeAlarm">
+		<![CDATA[ 
+	select * from (
+    select 
+        a.alarmID as alarmID,a.alarmTime as alarmTime,a.lastTime as alarmDuringTime,
+        a.zoneID as alarmZoneID, nvl(z.zoneName,a.zoneID) as alarmZoneName,k.alarmName as alarmName,
+        k.deviceType as idevType,a.deviceID as devID,k.alarmLevel as alarmLvl,
+        a.departmentID as mgtName,a.branchID as branchName,
+        a.alarmCount as alarmCnt,a.info as info,a.checkMothod as checkMethod,a.isReal as isReal,
+        a.reason as reason,a.peopleID as peopleID,a.userID as userID,a.report as report,
+        a.vidioURL as vidioURL,a.leftVidioURL as leftVidioURL,a.rightVidioURL as rightVidioURL,
+        a.pictureURL as pictureURL,a.description as description
+	from T_ALM_SECURITYALARM a left join T_ALM_KNOWLEDGE k on a.alarmCode=k.alarmCode
+    	left join T_LC_ZONEINFO z on a.zoneID = z.zoneID WHERE a.branchID=#orgID# 
+    	and  a.report=1 and a.alarmStatus=0  order by a.alarmID desc 
+    	) WHERE ROWNUM <=500
+    ]]>
+	</select>
+	<select id="getAllUISeAlarm_mgt" parameterClass="java.lang.String" resultClass="UISeAlarm">
+		<![CDATA[ 
+	select * from (
+    select 
+        a.alarmID as alarmID,a.alarmTime as alarmTime,a.lastTime as alarmDuringTime,
+        a.zoneID as alarmZoneID, nvl(z.zoneName,a.zoneID) as alarmZoneName,k.alarmName as alarmName,
+        k.deviceType as idevType,a.deviceID as devID,k.alarmLevel as alarmLvl,
+        a.departmentID as mgtName,a.branchID as branchName,
+        a.alarmCount as alarmCnt,a.info as info,a.checkMothod as checkMethod,a.isReal as isReal,
+        a.reason as reason,a.peopleID as peopleID,a.userID as userID,a.report as report,
+        a.vidioURL as vidioURL,a.leftVidioURL as leftVidioURL,a.rightVidioURL as rightVidioURL,
+        a.pictureURL as pictureURL,a.description as description
+	from T_ALM_SECURITYALARM a left join T_ALM_KNOWLEDGE k on a.alarmCode=k.alarmCode
+    	left join T_LC_ZONEINFO z on a.zoneID = z.zoneID WHERE a.departmentID=#orgID# 
+    	and  a.report=2 and a.alarmStatus=0  order by a.alarmID desc 
+    	) WHERE ROWNUM <=500
+    ]]>
+	</select>
+	
+	<select id="getActiveSecurityAlarmCount" resultClass="java.lang.Integer" 
+			parameterClass="java.lang.String">
+			SELECT count(*)
+			FROM 
+			T_ALM_SECURITYALARM 
+			WHERE 
+			deviceID = #devID#
+	</select>
+	
+	<select id="getActiveAlarmCount_zong"  resultClass="SeAlarmCount">
+		<![CDATA[ 
+    select sum(L1) as level1Count, sum(L2) as level2Count,sum(L3) as level3Count,sum(L4) as level4Count
+	from 
+		(
+			select case when ALARMLEVEL=1 then 1 else 0 end as L1,case when ALARMLEVEL=2 then 1 else 0 end as L2,
+			 		case when ALARMLEVEL=3 then 1 else 0 end as L3,case when ALARMLEVEL=4 then 1 else 0 end as L4
+			from	T_ALM_SECURITYALARM left join T_ALM_KNOWLEDGE on T_ALM_SECURITYALARM.alarmCode=T_ALM_KNOWLEDGE.alarmCode	
+			WHERE report=0 and alarmStatus=0
+		)
+     ]]>
+	</select>
+	<select id="getActiveAlarmCount_com" parameterClass="java.lang.String" resultClass="SeAlarmCount">
+		<![CDATA[ 
+ 	select sum(L1) as level1Count, sum(L2) as level2Count,sum(L3) as level3Count,sum(L4) as level4Count,branchID as orgid
+	from 
+	(
+		select case when ALARMLEVEL=1 then 1 else 0 end as L1,case when ALARMLEVEL=2 then 1 else 0 end as L2,
+			 		case when ALARMLEVEL=3 then 1 else 0 end as L3,case when ALARMLEVEL=4 then 1 else 0 end as L4,branchID
+		from	T_ALM_SECURITYALARM left join T_ALM_KNOWLEDGE on T_ALM_SECURITYALARM.alarmCode=T_ALM_KNOWLEDGE.alarmCode	
+		WHERE branchID=#orgID# and report=1 and alarmStatus=0
+	)group by branchID
+   	union 
+	select sum(L1) as level1Count, sum(L2) as level2Count,sum(L3) as level3Count,sum(L4) as level4Count,departmentID  as orgid
+	from 
+	(
+		select case when ALARMLEVEL=1 then 1 else 0 end as L1,case when ALARMLEVEL=2 then 1 else 0 end as L2,
+			 		case when ALARMLEVEL=3 then 1 else 0 end as L3,case when ALARMLEVEL=4 then 1 else 0 end as L4,departmentID
+		from	T_ALM_SECURITYALARM left join T_ALM_KNOWLEDGE on T_ALM_SECURITYALARM.alarmCode=T_ALM_KNOWLEDGE.alarmCode	
+		WHERE branchID=#orgID# and report=2 and alarmStatus=0
+	)group by departmentID
+    ]]>
+	</select>
+	<select id="getActiveAlarmCount_mgt" parameterClass="java.lang.String" resultClass="SeAlarmCount">
+		<![CDATA[ 
+	select sum(L1) as level1Count, sum(L2) as level2Count,sum(L3) as level3Count,sum(L4) as level4Count
+	from
+	(
+		select case when ALARMLEVEL=1 then 1 else 0 end as L1,case when ALARMLEVEL=2 then 1 else 0 end as L2,
+			 	case when ALARMLEVEL=3 then 1 else 0 end as L3,case when ALARMLEVEL=4 then 1 else 0 end as L4
+	 	from T_ALM_SECURITYALARM left join T_ALM_KNOWLEDGE on T_ALM_SECURITYALARM.alarmCode=T_ALM_KNOWLEDGE.alarmCode	
+		WHERE departmentID=#orgID# and report=2 and alarmStatus=0 
+ 	)
+    ]]>
+	</select>
+	
+</sqlMap>

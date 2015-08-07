@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+	
+	<tlib-version>1.0</tlib-version>
+	<short-name>poteviofn</short-name>
+	<uri>/potevio/poteviofn</uri>
+	<function>
+		<description>collection contains</description>
+		<name>clContains</name>
+		<function-class>taglib.SystemFunction</function-class>
+		<function-signature>boolean clContains(java.util.Collection,java.lang.Object)</function-signature>
+		<example>${poteviofn:clContains(collections,object)}</example>
+	</function>
+	
+	<function>
+		<description>systemConfig</description>
+		<name>systemConfig</name>
+		<function-class>taglib.SystemFunction</function-class>
+		<function-signature>String systemConfig(java.lang.String)</function-signature>
+		<example>${poteviofn:systemConfig('')}</example>
+	</function>
+</taglib>

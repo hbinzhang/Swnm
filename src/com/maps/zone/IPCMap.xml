@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	<select id="getIpcIDsByOrgID" parameterClass="java.util.Map"
+		resultClass="java.lang.String">
+		
+		select IPCID from T_VM_IPC
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="branchID">
+				BRANCH = #branchID#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="mngID">
+				MANAGEMENTAGENCY = #mngID#
+			</isNotEmpty>
+		</dynamic>
+
+	</select>
+	<select id="getCountMainIpcByZoneId" parameterClass="java.util.Map"
+		resultClass="java.lang.Integer">
+		
+		select count(1) from T_LC_IPCZONEMAP where ZONEID=#zoneID# and MAINIPC=#mainIpc#
+
+	</select>
+	<select id="getCountIpcByIpcIdAndPreset" parameterClass="java.util.Map"
+		resultClass="java.lang.Integer">
+		
+		select count(1) from T_LC_IPCZONEMAP where IPCID=#ipcId# and POINT=#point#
+
+	</select>
+</sqlMap>

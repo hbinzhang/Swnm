@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.dao.videomonitor.TVmRoundSequenceMapper">
+	<typeAlias alias="TVmRoundSequence" type="com.entity.videomonitor.TVmRoundSequence" />
+	<resultMap class="TVmRoundSequence" id="BaseResultMap">
+		<result property="rsid" jdbcType="NUMBER" column="RSID" />
+		<result property="roundid" jdbcType="NUMBER" column="ROUNDID" />
+		<result property="ipc.ipcid" jdbcType="VARCHAR" column="IPCID" />
+		<result property="ipc.devname" jdbcType="VARCHAR" column="IPCNAME" />
+		<result property="ipc.ip" jdbcType="VARCHAR" column="IPCIP" />
+		<result property="ipc.port" jdbcType="NUMBER" column="IPCPORT" />
+		<result property="ipc.username" jdbcType="VARCHAR" column="USERNAME" />
+		<result property="ipc.password" jdbcType="VARCHAR" column="PASSWORD" />
+		<result property="ipc.nvr.ip" jdbcType="VARCHAR" column="NVRIP" />
+		<result property="seqorder" jdbcType="NUMBER" column="SEQORDER" />
+	</resultMap>
+	
+	<insert id="insertRoundSequence" parameterClass="TVmRoundSequence">
+		<selectKey keyProperty="rsid" resultClass="int">
+         	select ROUNDSEQSEQ.nextval from dual
+    	</selectKey>
+		
+		insert into T_VM_ROUNDSEQUENCE(RSID,ROUNDID,IPCID,SEQORDER)
+		values(#rsid#,#roundid#,#ipc.ipcid#,#seqorder#)	
+	</insert>
+	<delete id="deleteRoundSequenceByRound" parameterClass="int">
+		delete from T_VM_ROUNDSEQUENCE
+		where ROUNDID = #roundid#
+	</delete>
+	<select id="getSequencesByRound" parameterClass="int" resultMap="BaseResultMap">
+		select
+		r.*,i.devname IPCNAME,i.ip IPCIP,i.port IPCPORT,i.username USERNAME,i.password PASSWORD,n.ip NVRIP
+		from T_VM_ROUNDSEQUENCE r
+		left join T_VM_IPC i on i.ipcid = r.ipcid
+		left join T_VM_NVR n on i.nvrid = n.nvrid
+		where
+		r.ROUNDID=#roundid# order by r.SEQORDER
+	</select>
+</sqlMap>

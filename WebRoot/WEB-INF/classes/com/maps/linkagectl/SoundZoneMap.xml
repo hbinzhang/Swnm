@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="soundZoneMap">
+<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="SoundZoneMap" type="com.entity.linkagectl.SoundZoneMap" />
+	<!-- 这样以后改了sql，就不需要去改java代码�?-->
+<!-- id表示select里的sql语句，resultClass表示返回结果的类-->
+<!-- parameterClass表示参数的内�?-->
+<!-- #表示这是一个外部调用的需要传进的参数，可以理解为占位�?-->
+	<select id="SoundZoneMap" parameterClass="java.lang.String"
+		resultClass="SoundZoneMap">
+		<![CDATA[ 
+    select 
+     iD,audioID,zoneID,main,info  
+    from T_LC_SOUNDZONEMAP
+    where iD = #iD# 
+    ]]>
+	</select>
+	<!-- 注意这里的resultClass类型，使用SoundZoneMap类型取决于queryForList还是queryForObject -->
+	<select id="getAllSoundZoneMapFromZoneID" parameterClass="java.lang.Integer"
+		resultClass="SoundZoneMap">
+		<![CDATA[ 
+    select 
+      iD,audioID,zoneID,main,info 
+    from T_LC_SOUNDZONEMAP
+    where zoneID = #zoneID#
+    ]]>
+	</select>
+	<select id="getSoundZoneMapByZoneIdAndAudioId" parameterClass="SoundZoneMap"
+		resultClass="SoundZoneMap">
+		<![CDATA[ 
+    select 
+      iD,audioID,zoneID,main,info 
+    from T_LC_SOUNDZONEMAP
+    where zoneID = #zoneID# and audioID=#audioID#
+    ]]>
+	</select>
+	
+	<select id="getAllSoundIDFromZoneID" parameterClass="java.lang.Integer"
+		resultClass="java.lang.String">
+		<![CDATA[ 
+    select 
+      audioID 
+    from T_LC_IPCZONEMAP,T_SM_AUDIOADAPTER
+    where T_LC_IPCZONEMAP.zoneID = #zoneID# and T_LC_IPCZONEMAP.IPCID=T_SM_AUDIOADAPTER.IPCID
+    ]]>
+	</select>
+	
+
+	<update id="updateSoundZoneMap" parameterClass="SoundZoneMap">
+		<![CDATA[ 
+    UPDATE T_LC_SOUNDZONEMAP
+    SET         
+      audioID=#audioID#,
+      zoneID=#zoneID#,      
+      main=#main#,
+      info=#info#      
+  WHERE iD = #iD# 
+]]>
+	</update>
+
+	<insert id="insertSoundZoneMap" parameterClass="SoundZoneMap">
+		INSERT INTO T_LC_SOUNDZONEMAP (audioID,zoneID,main,info) 
+      VALUES (#audioID#,#zoneID#,#main#,#info#)
+	</insert>
+
+	<delete id="deleteSoundZoneMap" parameterClass="java.lang.String">
+		delete from T_LC_SOUNDZONEMAP where iD=#iD#
+	</delete>
+	<delete id="delSoundZoneMapByZoneID" parameterClass="java.lang.Integer">
+		delete from T_LC_SOUNDZONEMAP where ZONEID=#zoneID#
+	</delete>
+	<delete id="deleteSoundZoneMapByZoneIdAndAudioID" parameterClass="SoundZoneMap" >
+		delete from T_LC_SOUNDZONEMAP where zoneID = #zoneID# and audioID=#audioID#
+	</delete>
+	<delete id="delSoundZoneMapByAudioID" parameterClass="java.lang.String" >
+		delete from T_LC_SOUNDZONEMAP where audioID=#audioID#
+	</delete>
+	<update id="updateSoundZoneMap1" parameterClass="SoundZoneMap">
+		update T_LC_SOUNDZONEMAP
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="main">main=#main#</isNotNull>
+			<isNotNull prepend="," property="info">info=#info#</isNotNull>
+		</dynamic>
+		where zoneID=#zoneID# and audioID=#audioID#
+	</update>
+
+</sqlMap>

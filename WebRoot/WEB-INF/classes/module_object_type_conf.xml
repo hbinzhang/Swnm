@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modulelist>
+	<module id="1" display_name="系统管理">
+	</module>
+	<module id="2" display_name="告警管理">
+	</module>
+	<module id="4" display_name="设备管理">
+	</module>
+	<module id="5" display_name="电子围栏">
+	</module>
+	<module id="6" display_name="地图信息">
+	</module>
+	<module id="7" display_name="综合监控">
+	</module>
+	<module id="8" display_name="视频监控">
+	</module>
+	<module id="9" display_name="防区管理">
+	</module>
+	<module id="10" display_name="安防信息">
+	</module>
+</modulelist>

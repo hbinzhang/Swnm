@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="PositionZoneMapInfo">
+
+	<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="PositionZoneMapBean" type="com.entity.zone.PositionZoneMapBean" />
+	<!-- 这样以后改了sql，就不需要去改java代码了 -->
+	<!-- id表示select里的sql语句，resultClass表示返回结果的类型 -->
+	<!-- parameterClass表示参数的内容 -->
+	<!-- #表示这是一个外部调用的需要传进的参数，可以理解为占位符 -->
+
+	<update id="modPositionZoneMap" parameterClass="PositionZoneMapBean">
+	
+	update T_LC_POSITIONZONEMAP
+	<dynamic prepend="set">
+	<isNotNull prepend="," property="startPoint">STARTPOINT=#startPoint#</isNotNull>
+	<isNotNull prepend="," property="endPoint">ENDPOINT=#endPoint#</isNotNull>
+	<isNotNull prepend="," property="innerZoneID">innerZoneID=#innerZoneID#</isNotNull>
+	<isNotNull prepend="," property="chanID">chanID=#chanID#</isNotNull>
+	<isNotNull prepend="," property="info">INFO=#info#</isNotNull>
+	</dynamic>
+	where ZONEID=#zoneID# AND HOSTID = #hostID#
+	 
+	</update>
+
+	<insert id="insertPositionZoneMap" parameterClass="PositionZoneMapBean">
+		INSERT INTO T_LC_POSITIONZONEMAP 
+		(
+			FIBERZONEID,
+			HOSTID, 
+			ZONEID, 
+			STARTPOINT, 
+			ENDPOINT,
+			CHANID,
+			INNERZONEID,
+			INFO
+		) 
+		VALUES
+		 (
+		 	 #positionZoneID#,
+			 #hostID#,
+			 #zoneID#,
+			 #startPoint#,
+			 #endPoint#,
+			 #chanID#,
+			 #innerZoneID#,
+			 #info#
+		 )
+	</insert>
+
+	<delete id="delPositionZoneMapByZoneID" parameterClass="java.lang.Integer">
+		delete from T_LC_POSITIONZONEMAP where ZONEID=#zoneID#
+	</delete>
+	<delete id="delPositionZoneMapByHostID" parameterClass="java.lang.String">
+		delete from T_LC_POSITIONZONEMAP where HOSTID=#hostID#
+	</delete>
+	<select id="getPositionZoneMapByZoneID" resultClass="PositionZoneMapBean" parameterClass="java.lang.Integer">
+	select * from T_LC_POSITIONZONEMAP where ZONEID=#zoneID#
+	</select>
+	<select id="getPositionZoneMapByZoneIdAndHostId" resultClass="PositionZoneMapBean" parameterClass="PositionZoneMapBean">
+	select * from T_LC_POSITIONZONEMAP where ZONEID=#zoneID# and HOSTID=#hostID#
+	</select>
+	<delete id="delPositionZoneMap" parameterClass="PositionZoneMapBean">
+		delete from T_LC_POSITIONZONEMAP where HOSTID=#hostID# and ZONEID=#zoneID#
+	</delete>
+	<select id="getZoneIDsByHostID02" resultClass="java.lang.Integer" parameterClass="java.lang.String">
+	select ZONEID from T_LC_POSITIONZONEMAP where HOSTID=#hostID#
+	</select>
+	
+
+</sqlMap>

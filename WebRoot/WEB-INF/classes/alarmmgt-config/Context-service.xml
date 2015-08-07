@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="OrganizationManagerService" class="com.service.authmgt.impl.OrganizationManagerServiceImp">
+		<property name="organizationDao" ref="OrganizationImp"></property>
+		<property name="accountDao" ref="AccountImp"></property>
+	</bean>
+	<bean id="AccountManagerService" class="com.service.authmgt.impl.AccountManagerServiceImp">
+		<property name="accountDao" ref="AccountImp"></property>
+		<property name="organizationDao" ref="OrganizationImp"></property>
+		<property name="sessionManagerService" ref="SessionManagerService"></property>
+		<property name="organizationManagerService" ref="OrganizationManagerService"></property>
+		<property name="roleManagerService" ref="RoleManagerService"></property>
+	</bean>
+	
+	<bean id="warningLevelMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="1" value="警告" />
+				<entry key="2" value="次要" />
+				<entry key="3" value="主要" />
+				<entry key="4" value="严重" />
+			</map>
+		</constructor-arg>
+	</bean>
+	<bean id="deviceTypeMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="1" value="高压脉冲主机" />
+				<entry key="2" value="一体化探测主机" />
+				<entry key="3" value="防区型振动光纤" />
+				<entry key="4" value="定位型振动光纤" />
+				<entry key="5" value="NVR" />
+				<entry key="6" value="IPC" />
+				<entry key="7" value="智能视频服务器" />
+				<entry key="8" value="音频服务器" />
+				<entry key="9" value="音频终端" />
+				<entry key="10" value="IO控制器" />
+			</map>
+		</constructor-arg>
+	</bean>
+	<bean id="alarmUIPushImp" class="com.service.linkagectl.impl.AlarmUIPushImp">
+		<!-- <property name="alarmKnowledge" ref="alarmKnowledge"></property> -->
+		<property name="alarmKnowledgeDao" ref="alarmKnlgDaoOracleImp"></property>
+		<property name="uiMcSecAlarm" ref="uIMCSecurityAlarm"></property>
+		<property name="alarmZoneInfoDao" ref="zoneInfoDaoOracleImp"></property>
+		<property name="warningLevelMap" ref="warningLevelMap"></property>
+		<property name="deviceTypeMap" ref="deviceTypeMap"></property>
+		<property name="orgMngService" ref="OrganizationManagerService"></property>
+		<property name="accMgtService" ref="AccountManagerService"></property>
+		<property name="devAlarmService" ref="getDevAlarmImp"></property>
+	</bean>
+	<bean id="getDevAlarmImp" class="com.service.linkagectl.impl.GetDevAlarmImp">
+		<property name="orgMngService" ref="OrganizationManagerService"></property>
+		<property name="devAlarmDao" ref="deAlarmDaoOracleImp"></property>
+	</bean>
+
+	<bean id="SessionManagerService" class="com.service.authmgt.impl.SessionManagerServiceImp">
+		<property name="sessionDao" ref="SessionImp"></property>
+		<property name="organizationManagerService" ref="OrganizationManagerService"></property>
+		<property name="accountManagerService" ref="AccountManagerService"></property>
+	</bean>
+	
+	<bean id="RoleManagerService" class="com.service.authmgt.impl.RoleManagerServiceImp">
+		<property name="roleDao" ref="RoleImp"></property>
+	</bean>
+	
+	<bean id="operationlogservice" class="com.service.logmgt.impl.OperationLogServiceImp">
+		<property name="operationLogDao" ref="operationlogdao"></property>
+	</bean>
+
+	<bean id="alarmqueryservice" class="com.service.alarmmgt.impl.AlarmQueryServiceImp">
+		<property name="alarmQueryDao" ref="alarmquerydao"></property>
+	</bean>
+
+	<bean id="alarmknowledgeservice" class="com.service.alarmmgt.impl.AlarmKnowledgeServiceImp">
+		<property name="alarmKnowledgeInfoDao" ref="alarmknowledgeinfodao"></property>
+	</bean>
+
+	<bean id="alarmstatisticservice" class="com.service.alarmmgt.impl.AlarmStatisticServiceImp">
+		<property name="alarmStatisticDao" ref="alarmstatisticdao"></property>
+	</bean>
+
+	<bean id="saveDeAlarmImp" class="com.service.linkagectl.impl.SaveDeAlarmImp"
+		scope="prototype">
+		<property name="deAlarmDao" ref="deAlarmDaoOracleImp"></property>
+	</bean>
+</beans>

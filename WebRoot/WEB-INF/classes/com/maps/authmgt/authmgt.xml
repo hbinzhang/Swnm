@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="authmgt">
+	<typeAlias alias="Session" type="com.entity.authmgt.Session" />
+	<resultMap id="getSessionsMap" class="Session">
+		<result property="contextId" column="CONTEXTID"
+			jdbcType="NUMBER" javaType="java.lang.Long"/>
+		<result property="id" column="ACCOUNTID"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="loginTime" column="LOGINTIME"
+			jdbcType="DATETIME" javaType="java.util.Date"/>
+		<result property="loginHostName" column="HOSTNAME"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="loginHostIp" column="HOSTIP"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="organizationId" column="ORGID"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="type" column="ACCOUNTTYPE"
+			jdbcType="NUMBER" javaType="java.lang.Integer"/>
+	</resultMap> 
+	
+	<typeAlias alias="Role" type="com.entity.authmgt.Role" />
+	<resultMap id="getAllRolesMap" class="Role">
+		<result property="name" column="ROLENAME"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="desc" column="ROLEDESC"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="authorizedOpIds" column="AUTHORIZEDOPIDS"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+	</resultMap>
+	
+	<typeAlias alias="Organization" type="com.entity.authmgt.Organization" />
+	<resultMap id="getOrganizationsMap" class="Organization">
+		<result property="orgId" column="ORGID"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="orgNm" column="ORGNAME"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="lev" column="LEV"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="updateDate" column="UPDATETIME"
+			jdbcType="DATETIME" javaType="java.util.Date"/>
+		<result property="updatePer" column="UPDATEDUTIER"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="porgId" column="SUPORGID"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="remark" column="REMARK"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+	</resultMap> 
+	
+	<typeAlias alias="Account" type="com.entity.authmgt.Account" />
+	<resultMap id="getAccountsMap" class="Account">
+		<result property="id" column="ID"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="orgId" column="ORGID"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="userId" column="USERID"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="password" column="PASSWORD"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="userName" column="USERNAME"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="position" column="POSITION"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="positionDesc" column="FUNCTDESC"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="sex" column="SEX"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="birthday" column="BIRTHDAY"
+			jdbcType="DATETIME" javaType="java.util.Date"/>
+		<result property="offTel" column="OFFICETEL"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="phone" column="PHONENUM"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="homeTel" column="HOMETEL"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="homeAddress" column="HOMEADDR"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="mail" column="MAIL"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="updateDate" column="UPDATEDATE"
+			jdbcType="DATETIME" javaType="java.util.Date"/>
+		<result property="updatePer" column="UPDATEPER"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="remark" column="REMARK"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="type" column="TYPE"
+			jdbcType="NUMBER" javaType="java.lang.Integer"/>
+		<result property="roles" column="ROLES"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+	</resultMap>
+	
+	<typeAlias alias="CommonBean" type="com.entity.CommonBean" />
+	<resultMap id="getOrgIdAndOrgNmsMap" class="CommonBean">
+		<result property="id" column="ORGID"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="name" column="ORGNAME"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+	</resultMap>
+	<resultMap id="getIdAndUsernamesMap" class="CommonBean">
+		<result property="id" column="ID"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="name" column="USERNAME"
+			jdbcType="VARCHAR" javaType="java.lang.String"/>
+	</resultMap>
+	
+<!-- Login -->
+	<insert id="createSession" parameterClass="Session">
+		<![CDATA[ 
+		INSERT INTO T_AUT_SECURITYSESSION (CONTEXTID,ACCOUNTID,LOGINTIME,HOSTNAME,HOSTIP,ORGID,ACCOUNTTYPE) 
+		  			VALUES (#contextId#,#id#,#loginTime#,#loginHostName#,#loginHostIp#,#organizationId#,#type#)
+    ]]>
+	</insert>	
+	<select id="getCountByContextId" parameterClass="java.lang.Long" resultClass="java.lang.Integer">
+		<![CDATA[ 
+    select 
+     count(*) 
+    from T_AUT_SECURITYSESSION
+    where CONTEXTID = #contextId# 
+    ]]>
+	</select>
+
+<!-- Role -->	
+	<insert id="createRole" parameterClass="Role">
+		<![CDATA[ 
+		INSERT INTO T_AUT_ROLE (ROLENAME,ROLEDESC,AUTHORIZEDOPIDS) 
+		  			VALUES (#name#,#desc#,#authorizedOpIds#)
+    ]]>
+	</insert>		
+	<update id="updateRole" parameterClass="Role">
+	<![CDATA[
+				UPDATE T_AUT_ROLE SET
+						ROLEDESC=#desc#,
+						AUTHORIZEDOPIDS=#authorizedOpIds#
+				WHERE ROLENAME=#name#
+		]]></update>
+	<delete id="deleteRole" parameterClass="java.lang.String">
+		<![CDATA[ 
+		delete from T_AUT_ROLE where ROLENAME=#name#
+    ]]>
+	</delete>
+	<select id="getAllRoles"  resultMap="getAllRolesMap">
+		<![CDATA[ 
+    select 
+      * 
+    from T_AUT_ROLE
+    ]]>
+	</select>	
+	
+	<select id="queryRoleByName"  parameterClass="java.lang.String" resultMap="getAllRolesMap">
+		<![CDATA[ 
+    select 
+      * 
+    from T_AUT_ROLE where ROLENAME=#name#
+    ]]>
+	</select>	
+	
+	<select id="getOperationsByRoleName" parameterClass="java.lang.String" resultClass="String">
+		<![CDATA[ 
+    select 
+      AUTHORIZEDOPIDS 
+    from T_AUT_ROLE
+    where ROLENAME = #name# 
+    ]]>
+	</select>
+	
+	<select id="getRoleCountByName" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+		<![CDATA[ 
+    select 
+     count(*)
+    from T_AUT_ROLE
+    where ROLENAME = #name# 
+    ]]>
+	</select>	
+	
+<!-- Organization -->			
+	<select id="getCountByOrgIdAndOrgNm" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+		<![CDATA[ 
+    select 
+     count(*) 
+    from T_AUT_ORGANIZATION
+    where (ORGID = #orgId#) or (ORGNAME = #orgNm#)
+    ]]>
+	</select>	
+	<select id="getOrgIdAndOrgNmsByLev"  parameterClass="java.lang.String" resultMap="getOrgIdAndOrgNmsMap">
+		<![CDATA[ 
+    select 
+      ORGID, ORGNAME 
+    from T_AUT_ORGANIZATION
+    where LEV = #lev# 
+    ]]>
+	</select>			
+	<select id="getOrgIdAndOrgNmsForSubCompany"  parameterClass="java.lang.String" resultMap="getOrgIdAndOrgNmsMap">
+		<![CDATA[ 
+    select 
+      ORGID, ORGNAME 
+    from T_AUT_ORGANIZATION
+    where LEV = '1'
+    ]]>
+	</select>				
+	<select id="getOrgIdAndOrgNmsForManagement"  parameterClass="java.lang.String" resultMap="getOrgIdAndOrgNmsMap">
+		<![CDATA[ 
+    select 
+      ORGID, ORGNAME 
+    from T_AUT_ORGANIZATION
+    where LEV = '2'
+    ]]>
+	</select>		
+	<select id="getOrgIdAndOrgNmsFor1ByPOrgId"  parameterClass="java.lang.String" resultMap="getOrgIdAndOrgNmsMap">
+		<![CDATA[ 
+    select 
+      ORGID, ORGNAME 
+    from T_AUT_ORGANIZATION
+    where SUPORGID = #porgId# and LEV = '1'
+    ]]>
+	</select>		
+	<select id="getOrgIdAndOrgNmsFor2ByPOrgId"  parameterClass="java.lang.String" resultMap="getOrgIdAndOrgNmsMap">
+		<![CDATA[ 
+    select 
+      ORGID, ORGNAME 
+    from T_AUT_ORGANIZATION
+    where SUPORGID = #porgId# and LEV = '2'
+    ]]>
+	</select>	
+	<select id="getOrgNmByOrgId"  parameterClass="java.lang.String" resultClass="java.lang.String">
+		<![CDATA[ 
+    select 
+      ORGNAME 
+    from T_AUT_ORGANIZATION
+    where ORGID = #orgId#
+    ]]>
+	</select>	
+	<select id="getOrgIdByOrgNm"  parameterClass="java.util.Map" resultClass="java.lang.String">
+		<![CDATA[ 
+    select 
+      ORGID 
+    from T_AUT_ORGANIZATION
+    where (ORGNAME = #orgNm#) and (ORGID!=#orgId#)
+    ]]>
+	</select>
+	<select id="getOrgIdsByPOrgId"  parameterClass="java.lang.String" resultClass="java.lang.String">
+		<![CDATA[ 
+    select 
+      ORGID 
+    from T_AUT_ORGANIZATION
+    where SUPORGID = #porgId#
+    ]]>
+	</select>		
+	<select id="getLevByOrgId"  parameterClass="java.lang.String" resultClass="java.lang.String">
+		<![CDATA[ 
+    select 
+      LEV 
+    from T_AUT_ORGANIZATION
+    where ORGID = #orgId#
+    ]]>
+	</select>	
+	<select id="getPOrgIdByOrgId"  parameterClass="java.lang.String" resultClass="java.lang.String">
+		<![CDATA[ 
+    select 
+      SUPORGID 
+    from T_AUT_ORGANIZATION
+    where ORGID = #orgId#
+    ]]>
+	</select>		
+	<select id="getOrganizationByOrgID"  parameterClass="java.lang.String" resultMap="getOrganizationsMap">
+		<![CDATA[ 
+    select 
+      * 
+    from T_AUT_ORGANIZATION
+    where ORGID = #orgId#
+    ]]>
+	</select>			
+	<select id="getOrganizationsByLev"  parameterClass="java.lang.String" resultMap="getOrganizationsMap">
+		<![CDATA[ 
+    select 
+      * 
+    from T_AUT_ORGANIZATION
+    where LEV = #lev#
+    ]]>
+	</select>	
+	<select id="getOrganizationsFor1ByPOrgId"  parameterClass="java.lang.String" resultMap="getOrganizationsMap">
+		<![CDATA[ 
+    select 
+      * 
+    from T_AUT_ORGANIZATION
+    where SUPORGID = #porgId# and LEV = '1'
+    ]]>
+	</select>	
+	<select id="getOrganizationsFor2ByPOrgId"  parameterClass="java.lang.String" resultMap="getOrganizationsMap">
+		<![CDATA[ 
+    select 
+      * 
+    from T_AUT_ORGANIZATION
+    where SUPORGID = #porgId# and LEV = '2'
+    ]]>
+	</select>	
+	<parameterMap class="java.util.Map" id="maxId">
+		<parameter property="idLength" jdbcType="NUMBER" javaType="Integer"/>
+		<parameter property="pId" jdbcType="VARCHAR" javaType="String"/>
+	</parameterMap>
+	<select id="getOrganizationCountByOrgId" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+		<![CDATA[ 
+    select 
+     count(*) 
+    from T_AUT_ORGANIZATION
+    where ORGID = #orgId# 
+    ]]>
+	</select>
+	<insert id="createOrganization" parameterClass="Organization">
+		<![CDATA[ 
+		INSERT INTO T_AUT_ORGANIZATION (ORGID, ORGNAME,LEV,UPDATETIME,UPDATEDUTIER,SUPORGID,REMARK) 
+		  			VALUES (#orgId#,#orgNm#,#lev#,#updateDate#,#updatePer#,#porgId#,#remark#)
+    ]]>
+	</insert>	
+	<update id="updateOrganization" parameterClass="Organization">
+	<![CDATA[
+				UPDATE T_AUT_ORGANIZATION SET
+						ORGNAME=#orgNm#,
+						LEV=#lev#,
+						UPDATETIME=#updateDate#,
+						UPDATEDUTIER=#updatePer#,
+						SUPORGID=#porgId#,
+						REMARK=#remark#
+				WHERE ORGID=#orgId#
+		]]></update>
+	<delete id="deleteOrganization" parameterClass="java.lang.String">
+		<![CDATA[ 
+		delete from T_AUT_ORGANIZATION where ORGID=#orgId#
+    ]]>
+	</delete>
+
+<!-- Account -->	
+	<parameterMap class="java.util.Map" id="accountRole">
+		<parameter property="id" jdbcType="VARCHAR" javaType="String"/>
+		<parameter property="roles" jdbcType="VARCHAR" javaType="String"/>
+	</parameterMap>		
+	<parameterMap class="java.util.Map" id="idPassword">
+		<parameter property="id" jdbcType="VARCHAR" javaType="String"/>
+		<parameter property="password" jdbcType="VARCHAR" javaType="String"/>
+	</parameterMap>	
+	
+	<update id="updateAccountPassword" parameterClass="java.util.Map">
+	<![CDATA[
+				UPDATE T_AUT_PERSONNEL SET
+						PASSWORD=#password#
+				WHERE ID=#id#
+		]]></update>
+	
+	<update id="updateAccountRoles" parameterClass="java.util.Map">
+	<![CDATA[
+				UPDATE T_AUT_PERSONNEL SET
+						ROLES=#roles#
+				WHERE ID=#id#
+		]]></update>
+	
+	<select id="getAccountCountById" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+		<![CDATA[ 
+    select 
+     count(*) 
+    from T_AUT_PERSONNEL
+    where ID = #id# 
+    ]]>
+	</select>		
+	<select id="getAccountCountByIdAndOldPassword" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+		<![CDATA[ 
+    select 
+     count(*) 
+    from T_AUT_PERSONNEL
+    where (ID = #id#) and (PASSWORD = #password#)
+    ]]>
+	</select>		
+	<select id="getAccountCountByIdAndPassword" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+		<![CDATA[ 
+    select 
+     count(*) 
+    from T_AUT_PERSONNEL
+    where (ID = #id#) and (PASSWORD = #password#)
+    ]]>
+	</select>	
+	<insert id="createAccount" parameterClass="Account">
+		<![CDATA[ 
+		INSERT INTO T_AUT_PERSONNEL (ID, ORGID,USERID,PASSWORD, USERNAME, POSITION, FUNCTDESC,SEX, BIRTHDAY,OFFICETEL,PHONENUM,HOMETEL,HOMEADDR,MAIL,UPDATEDATE,UPDATEPER,REMARK,TYPE,ROLES) 
+		  			VALUES (#id#,#orgId#,#userId#,#password#,#userName#,#position#,#positionDesc#,#sex#,#birthday#,#offTel#,#phone#,#homeTel#,#homeAddress#,#mail#,#updateDate#,#updatePer#,#remark#,#type#,#roles#)
+    ]]>
+	</insert>
+		
+	<update id="updateAccount" parameterClass="Account">
+	<![CDATA[
+				UPDATE T_AUT_PERSONNEL SET
+						ORGID=#orgId#,
+						USERID=#userId#,
+						PASSWORD=#password#,
+						USERNAME=#userName#,
+						POSITION=#position#,
+						FUNCTDESC=#positionDesc#,
+						SEX=#sex#,
+						BIRTHDAY=#birthday#,
+						OFFICETEL=#offTel#,
+						PHONENUM=#phone#,
+						HOMETEL=#homeTel#,
+						HOMEADDR=#homeAddress#,
+						MAIL=#mail#,
+						UPDATEDATE=#updateDate#,
+						UPDATEPER=#updatePer#,
+						TYPE=#type#,
+						REMARK=#remark#,
+						ROLES=#roles#
+				WHERE ID=#id#
+		]]></update>
+	<delete id="deleteAccount" parameterClass="java.lang.String">
+		<![CDATA[ 
+		delete from T_AUT_PERSONNEL where ID=#id#
+    ]]>
+	</delete>
+	
+	
+	<select id="getAllAccounts" resultMap="getAccountsMap">
+		<![CDATA[ 
+    select 
+      * 
+    from T_AUT_PERSONNEL
+    ]]>
+	</select>	
+	<select id="getAccountById" parameterClass="java.lang.String" resultMap="getAccountsMap">
+		<![CDATA[ 
+    select 
+      * 
+    from T_AUT_PERSONNEL where ID=#id#
+    ]]>
+	</select>	
+	<select id="getAccountsByLev" parameterClass="java.lang.String"  resultMap="getAccountsMap">
+    select a.*  from T_AUT_PERSONNEL a
+    where a.ORGID in (select b.ORGID from T_AUT_ORGANIZATION b where b.LEV =#lev#)
+	</select>
+	<select id="getAccountsByAccountIdForOrg" parameterClass="java.lang.String"  resultMap="getAccountsMap">
+    select a.*  from T_AUT_PERSONNEL a
+    where a.ORGID in (select b.ORGID from T_AUT_PERSONNEL b where b.ID =#id#)
+	</select>
+	<select id="getAccountsByAccountIdForSubOrgs" parameterClass="java.lang.String"  resultMap="getAccountsMap">
+    select a.*  from T_AUT_PERSONNEL a
+    where a.ORGID in 
+    (select b.ORGID from T_AUT_ORGANIZATION b where b.SUPORGID in 
+    (select c.ORGID from T_AUT_PERSONNEL c where c.ID =#id#)
+    )
+	</select>
+	<select id="getOrgIdById" parameterClass="java.lang.String" resultClass="String">
+		<![CDATA[ 
+    select 
+      ORGID 
+    from T_AUT_PERSONNEL
+    where ID = #id# 
+    ]]>
+	</select>	
+	<select id="getIdsByPOrgId" parameterClass="java.lang.String" resultClass="String">
+		<![CDATA[ 
+    select 
+      ID 
+    from T_AUT_PERSONNEL
+    where ORGID = #orgId# 
+    ]]>
+	</select>	
+	<select id="getIdAndUsernamesByOrgId" parameterClass="java.lang.String" resultMap="getIdAndUsernamesMap">
+		<![CDATA[ 
+    select 
+      ID,USERNAME 
+    from T_AUT_PERSONNEL
+    where ORGID = #orgId# 
+    ]]>
+	</select>		
+	<select id="getRolesByAccountId" parameterClass="java.lang.String" resultClass="String">
+		<![CDATA[ 
+    select 
+      ROLES 
+    from T_AUT_PERSONNEL
+    where ID = #id# 
+    ]]>
+	</select>	
+
+<!-- Session -->		
+	<select id="querySessionsByAccountId" parameterClass="java.lang.String" resultMap="getSessionsMap">
+		<![CDATA[ 
+    select 
+      * 
+    from T_AUT_SECURITYSESSION where ACCOUNTID=#id#
+    ]]>
+	</select>		
+	<select id="querySessionsByOrganizationId" parameterClass="java.lang.String" resultMap="getSessionsMap">
+		<![CDATA[ 
+    select 
+      * 
+    from T_AUT_SECURITYSESSION where ORGID=#orgId# order by LOGINTIME
+    ]]>
+	</select>		
+	<select id="getSessionCountByContextId" parameterClass="java.lang.Long" resultClass="java.lang.Integer">
+		<![CDATA[ 
+    select 
+     count(*)
+    from T_AUT_SECURITYSESSION
+    where CONTEXTID = #contextId# 
+    ]]>
+	</select>	
+	<delete id="deleteSession" parameterClass="java.lang.Long">
+		<![CDATA[ 
+		delete from T_AUT_SECURITYSESSION where CONTEXTID=#contextId#
+    ]]>
+	</delete>
+	<delete id="deleteSessionByAccountId" parameterClass="java.lang.String">
+		<![CDATA[ 
+		delete from T_AUT_SECURITYSESSION where ACCOUNTID=#accountId#
+    ]]>
+	</delete>		
+	
+</sqlMap>

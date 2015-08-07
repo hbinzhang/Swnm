@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ipcZoneMap">
+<!-- 通过typeAlias使得我们在下面使用Student实体类的时候不需要写包名 -->
+	<typeAlias alias="IpcZoneMap" type="com.entity.linkagectl.IpcZoneMap" />
+	<!-- 这样以后改了sql，就不需要去改java代码-->
+<!-- id表示select里的sql语句，resultClass表示返回结果的类-->
+<!-- parameterClass表示参数的内�?-->
+<!-- #表示这是一个外部调用的需要传进的参数，可以理解为占位�?-->
+	<select id="IpcZoneMap" parameterClass="java.lang.String"
+		resultClass="IpcZoneMap">
+		<![CDATA[ 
+    select 
+     iD,ipcId,zoneID,point,mainIpc,info 
+    from T_LC_IPCZONEMAP
+    where iD = #iD# 
+    ]]>
+	</select>
+	<!-- 注意这里的resultClass类型，使用IpcZoneMap类型取决于queryForList还是queryForObject -->
+	<select id="getAllIpcZoneMapFromZoneID" parameterClass="java.lang.Integer"
+		resultClass="IpcZoneMap">
+		<![CDATA[ 
+    select 
+      iD,ipcId,zoneID,point,mainIpc,info 
+    from T_LC_IPCZONEMAP
+    where zoneID = #zoneID#
+    ]]>
+	</select>
+	<select id="getIpcZoneMapByZoneIdAndIpcId" parameterClass="IpcZoneMap"
+		resultClass="IpcZoneMap">
+		<![CDATA[ 
+    select 
+      * 
+    from T_LC_IPCZONEMAP
+    where zoneID = #zoneID# and ipcId=#ipcId#
+    ]]>
+	</select>
+
+	<update id="updateIpcZoneMap" parameterClass="IpcZoneMap">
+		<![CDATA[ 
+    UPDATE T_LC_IPCZONEMAP
+    SET         
+      ipcId=#ipcId#,
+      zoneID=#zoneID#,
+      point=#point#,
+      mainIpc=#mainIpc#,
+      info=#info#      
+  WHERE iD = #iD# 
+]]>
+	</update>
+
+	<insert id="insertIpcZoneMap" parameterClass="IpcZoneMap">
+		INSERT INTO T_LC_IPCZONEMAP (ipcId,zoneID,point,mainIpc,info) 
+      VALUES (#ipcId#,#zoneID#,#point#,#mainIpc#,#info#)
+	</insert>
+
+	<delete id="deleteIpcZoneMap" parameterClass="java.lang.String">
+		delete from T_LC_IPCZONEMAP where iD=#iD#
+	</delete>
+	<update id="updateIpcZoneMap1" parameterClass="IpcZoneMap">
+		update T_LC_IPCZONEMAP
+		<dynamic prepend="set">
+		<isNotNull prepend="," property="point">point=#point#</isNotNull>
+		<isNotNull prepend="," property="mainIpc">mainIpc=#mainIpc#</isNotNull>
+		<isNotNull prepend="," property="info">info=#info#</isNotNull>
+		</dynamic>
+		where ZONEID=#zoneID# and ipcId=#ipcId#
+	</update>
+	<delete id="delIpcZoneMapByZoneID" parameterClass="java.lang.Integer">
+	
+		delete from T_LC_IPCZONEMAP where ZONEID=#zoneID#
+		
+	</delete>
+	
+	<delete id="delIpcZoneMapByZoneIdAndIpcId" parameterClass="IpcZoneMap">
+	
+		delete from T_LC_IPCZONEMAP where ZONEID=#zoneID# and ipcId=#ipcId#
+		
+	</delete>
+	<delete id="delIpcMapByIpcId" parameterClass="java.lang.String">
+	
+		delete from T_LC_IPCZONEMAP where ipcId=#ipcID#
+		
+	</delete>
+ 
+	<select id="getIpcZoneMapsByZoneID" parameterClass="java.lang.Integer" resultClass="IpcZoneMap">
+	
+	<![CDATA[ 
+    select 
+      * 
+    from T_LC_IPCZONEMAP
+    where zoneID = #zoneID#
+    ]]>
+	
+	</select>
+	
+	<select id="getPointByIpcId" parameterClass="java.lang.String" resultClass="java.lang.Integer">
+	<![CDATA[ 
+    select 
+      POINT 
+    from T_LC_IPCZONEMAP
+    where ipcId=#ipcID#
+    ]]>
+	</select>
+
+</sqlMap>

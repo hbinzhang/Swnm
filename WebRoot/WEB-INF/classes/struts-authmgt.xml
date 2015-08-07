@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="com.actions.authmgt" namespace="/authmgt" extends="struts-default,json-default,auth-interceptor">
+    	
+   	<!--Login -->
+	<action name="login"  class="loginAction"  method="login" >  
+ 			<result name="success" type="redirectAction">
+				<param name="actionName">loadVideoPreview</param>
+ 				<param name="namespace">/videomonitor</param>
+			</result>
+ 			<result name="error">/login.jsp</result>
+		</action>		
+	<action name="logout"  class="loginAction"  method="logout" >  
+ 			<result name="success">/login.jsp</result>
+ 			<result name="error">/login.jsp</result>
+		</action>			
+	<!--Role -->
+	<action name="queryAllGroupAndOperation"  class="roleManagerAction"  method="queryAllGroupAndOperation" >
+			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" >/WEB-INF/views/authmgt/role/add.jsp</result>
+ 			<result name="error">/WEB-INF/views/authmgt/role/add.jsp</result>
+		</action>
+	<action name="queryAllRoles"  class="roleManagerAction"  method="queryAllRoles" >
+			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" >/WEB-INF/views/authmgt/role/list.jsp</result>
+ 			<result name="error">/WEB-INF/views/authmgt/role/list.jsp</result>
+		</action>		
+	<action name="createRole"  class="roleManagerAction"  method="createRole" >
+ 	 		<interceptor-ref name="authInterceptorStack"/>	
+    		<result name="success" type="redirectAction">
+    			<param name="actionName">queryAllRoles</param>
+    		</result>
+ 			<result name="error">/WEB-INF/views/authmgt/role/add.jsp</result>
+		</action> 	
+	<action name="editRole"  class="roleManagerAction"  method="editRole" >
+			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" >/WEB-INF/views/authmgt/role/edit.jsp</result>
+ 			<result name="error">/WEB-INF/views/authmgt/role/edit.jsp</result>
+		</action> 		
+	<action name="updateRole"  class="roleManagerAction"  method="updateRole" >
+ 	 		<interceptor-ref name="authInterceptorStack"/>	
+    		<result name="success" type="redirectAction">
+    			<param name="actionName">queryAllRoles</param>
+    		</result>
+ 			<result name="error">/WEB-INF/views/authmgt/role/edit.jsp</result>
+		</action>	
+	<action name="deleteRole"  class="roleManagerAction"  method="deleteRole" >
+ 	 		<interceptor-ref name="authInterceptorStack"/>	
+		<result name="success" type="json">
+			<param name="root">ajaxObject</param>
+		</result>
+		<result name="error" type="json">
+			<param name="root">ajaxObject</param>
+		</result>
+	</action>  		
+		
+	<!--Organization -->
+	<action name="queryOrganizationsByAccountId"  class="organizationManagerAction"  method="queryOrganizationsByAccountId" >
+			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" >/WEB-INF/views/authmgt/jigou/list.jsp</result>
+ 			<result name="error">/WEB-INF/views/authmgt/jigou/list.jsp</result>
+		</action>	
+	<action name="addOrganization"  class="organizationManagerAction"  method="addOranization" >
+			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" >/WEB-INF/views/authmgt/jigou/add.jsp</result>
+		</action>	
+	<action name="createOrganization"  class="organizationManagerAction"  method="createOrganization" >
+ 	 		<interceptor-ref name="authInterceptorStack"/>	
+    		<result name="success" type="redirectAction">
+    			<param name="actionName">queryOrganizationsByAccountId</param>
+    		</result>
+ 			<result name="error">/WEB-INF/views/authmgt/jigou/add.jsp</result>
+		</action> 	
+	<action name="editOrganization"  class="organizationManagerAction"  method="editOrganization" >
+			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" >/WEB-INF/views/authmgt/jigou/edit.jsp</result>
+ 			<result name="error">/WEB-INF/views/authmgt/jigou/edit.jsp</result>
+		</action> 		 	
+	<action name="updateOrganization"  class="organizationManagerAction"  method="updateOrganization" >
+ 	 		<interceptor-ref name="authInterceptorStack"/>	
+    		<result name="success" type="redirectAction">
+    			<param name="actionName">queryOrganizationsByAccountId</param>
+    		</result>
+ 			<result name="error">/WEB-INF/views/authmgt/jigou/edit.jsp</result>
+		</action>	
+	<!--<action name="deleteOrganization"  class="organizationManagerAction"  method="deleteOrganization" >
+    		<interceptor-ref name="autInterStack"/>
+    		<result name="success" type="json">
+    			<param name="root">result</param>
+    		</result>
+		</action>-->	
+		
+	<!--Account -->
+	<action name="queryAccountByAccountId"  class="accountManagerAction"  method="queryAccountByAccountId" >
+			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" >/success.jsp</result>
+ 			<result name="error">/WEB-INF/views/error.jsp</result>
+		</action>	
+	<action name="queryAccountsByAccountId"  class="accountManagerAction"  method="queryAccountsByAccountId" >
+			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" >/WEB-INF/views/authmgt/account/list.jsp</result>
+ 			<result name="error">/WEB-INF/views/authmgt/account/list.jsp</result>
+		</action>	
+	<action name="entryCreateAccount"  class="accountManagerAction"  method="entryCreateAccount" >
+			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" >/WEB-INF/views/authmgt/account/add.jsp</result>
+ 			<result name="error">/WEB-INF/views/authmgt/account/add.jsp</result>
+		</action>		
+	<action name="createAccount"  class="accountManagerAction"  method="createAccount" >
+ 	 		<interceptor-ref name="authInterceptorStack"/>	
+    		<result name="success" type="redirectAction">
+    			<param name="actionName">queryAccountsByAccountId</param>
+    		</result>
+ 			<result name="error">/WEB-INF/views/authmgt/account/add.jsp</result>
+		</action> 	
+	<action name="editAccount"  class="accountManagerAction"  method="editAccount" >
+			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" >/WEB-INF/views/authmgt/account/edit.jsp</result>
+ 			<result name="error">/WEB-INF/views/authmgt/account/edit.jsp</result>
+		</action> 		 	
+	<action name="updateAccount"  class="accountManagerAction"  method="updateAccount" >
+ 	 		<interceptor-ref name="authInterceptorStack"/>	
+    		<result name="success" type="redirectAction">
+    			<param name="actionName">queryAccountsByAccountId</param>
+    		</result>
+ 			<result name="error">/WEB-INF/views/authmgt/account/edit.jsp</result>
+		</action>	
+	<action name="deleteAccount"  class="accountManagerAction"  method="deleteAccount" >
+ 	 		<interceptor-ref name="authInterceptorStack"/>	
+		<result name="success" type="json">
+			<param name="root">ajaxObject</param>
+		</result>
+		<result name="error" type="json">
+			<param name="root">ajaxObject</param>
+		</result>
+		</action> 		 	
+	<action name="editAccountPassword"  class="accountManagerAction"  method="editAccountPassword" >
+			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" >/WEB-INF/views/authmgt/account/editPassword.jsp</result>
+ 			<result name="error">/WEB-INF/views/authmgt/account/editPassword.jsp</result>
+		</action> 		
+	<action name="resetAccountPassword"  class="accountManagerAction"  method="resetAccountPassword" >
+ 	 		<interceptor-ref name="authInterceptorStack"/>	
+		<result name="success" type="json">
+			<param name="root">ajaxObject</param>
+		</result>
+		<result name="error" type="json">
+			<param name="root">ajaxObject</param>
+		</result>
+		</action>  			 	
+	<action name="updateAccountPassword"  class="accountManagerAction"  method="updateAccountPassword" >
+ 	 		<interceptor-ref name="authInterceptorStack"/>	
+		<result name="success" type="json">
+			<param name="root">ajaxObject</param>
+		</result>
+		<result name="error" type="json">
+			<param name="root">ajaxObject</param>
+		</result>		
+		</action>	
+		
+	<!--Session -->
+	<action name="entrySession"  class="sessionManagerAction"  method="entrySession" >
+			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" >/WEB-INF/views/authmgt/session/list.jsp</result>
+ 			<result name="error">/WEB-INF/views/authmgt/session/list.jsp</result>
+		</action>
+	<action name="searchSession"  class="sessionManagerAction"  method="searchSession" >
+			<interceptor-ref name="noAuthInterceptorStack"/>
+    		<result name="success" >/WEB-INF/views/authmgt/session/list.jsp</result>
+ 			<result name="error">/WEB-INF/views/authmgt/session/list.jsp</result>
+		</action>
+	<action name="deleteSession"  class="sessionManagerAction"  method="deleteSession" >
+ 	 		<interceptor-ref name="authInterceptorStack"/>	
+		<result name="success" type="json">
+			<param name="root">ajaxObject</param>
+		</result>
+		<result name="error" type="json">
+			<param name="root">ajaxObject</param>
+		</result>		
+		</action>	 			
+  			
+  		
+  
+ </package> 
+</struts> 					

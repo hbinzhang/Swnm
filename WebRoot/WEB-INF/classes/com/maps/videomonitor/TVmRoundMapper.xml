@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap 
+    PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="com.dao.videomonitor.TVmRoundMapper">
+	<typeAlias alias="TVmRound" type="com.entity.videomonitor.TVmRound" />
+	<resultMap class="TVmRound" id="BaseResultMap">
+		<result property="roundid" jdbcType="NUMBER" column="ROUNDID" />
+		<result property="pausemins" jdbcType="NUMBER" column="PAUSEMINS" />
+		<result property="screenmod" jdbcType="NUMBER" column="SCREENMOD" />
+		<result property="userid" jdbcType="VARCHAR" column="USERID" />
+		<result property="roundname" jdbcType="VARCHAR" column="ROUNDNAME" />
+	</resultMap>
+	
+	<resultMap class="TVmRound" id="BaseResultMapWithSeq" extends="BaseResultMap">
+		<result property="sequences" column="ROUNDID" select="getSequencesByRound" />
+	</resultMap>
+	<insert id="insertRound" parameterClass="TVmRound">
+		<selectKey keyProperty="roundid" resultClass="int">
+         	select ROUNDSEQ.nextval from dual
+    	</selectKey>
+		
+		insert into T_VM_ROUND(ROUNDID,PAUSEMINS,SCREENMOD,USERID,ROUNDNAME)
+		values(#roundid#,#pausemins#,#screenmod#,#userid#,#roundname#)	
+	</insert>
+	<update id="updateRound" parameterClass="TVmRound">
+		update T_VM_ROUND
+		set ROUNDNAME = #roundname#,PAUSEMINS = #pausemins#
+		where ROUNDID=#roundid#
+	</update>
+	<delete id="deleteRoundByPrimaryKey" parameterClass="int">
+		delete from T_VM_ROUND
+		where ROUNDID = #roundid#
+	</delete>
+	<select id="selectRound" parameterClass="java.util.Map" resultMap="BaseResultMapWithSeq">
+		select
+		*
+		from T_VM_ROUND
+		where
+		USERID = #cond.userid#
+	</select>
+</sqlMap>

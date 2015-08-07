@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
+	>
+
+<!-- 启用AOP功能 -->
+<aop:aspectj-autoproxy proxy-target-class="true"/>
+
+<!-- 指定连接文件路径 -->
+<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:db.properties</value>
+				<value>classpath:task.properties</value>
+				<value>classpath:iva.properties</value>
+				<value>classpath:plugin.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+ <!-- 相关数据源和事务管理的定义 -->
+<!-- 1：配置数据源（从ibatis配置改到spring配置） --> 
+  <bean id="dataSource"
+
+class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+
+    <property name="driverClassName" value="${jdbc.driverClassName}"/>
+
+    <property name="url" value="${jdbc.url}"/>
+
+    <property name="username" value="${jdbc.username}"/>
+
+    <property name="password" value="${jdbc.password}"/>
+
+  </bean>
+  
+   <!-- Transaction manager for a single JDBC DataSource -->
+
+ 	<!-- 配置功能扩展对象-事务处理 -->
+ 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+ 		<property name="dataSource" ref="dataSource"></property>
+ 	</bean>
+ 	
+ 	<aop:config>
+ 		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* com.service..* (..)) "/>
+ 	</aop:config>
+ 	
+ 	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+ 		<tx:attributes>
+ 			<tx:method name="add*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+ 			<tx:method name="create*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+ 			<tx:method name="save*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+ 			<tx:method name="insert*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+ 			<tx:method name="update*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+ 			<tx:method name="mod*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+ 			<tx:method name="reset*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+ 			<tx:method name="checkAndCreate" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+ 			<tx:method name="zoneCtrl" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+ 			<tx:method name="delete*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+ 			<tx:method name="del*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+ 			<tx:method name="find*" read-only="true"/>
+ 			<tx:method name="get*" read-only="true"/>
+ 			<tx:method name="query*" read-only="true"/>
+ 		</tx:attributes>
+ 	</tx:advice>
+ 
+
+
+  <bean id="SqlMapClient"
+
+class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+
+    <property name="configLocation" value="classpath:com/maps/SqlMapConfig.xml"/>
+
+    <property name="dataSource" ref="dataSource"/>
+
+  </bean>
+
+<!-- 2：spring的ibatis配制，目的是要得到SqlMapClientTemplate --> 
+<bean id="sqlMapClientTemplate"
+   class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+   <property name="sqlMapClient">
+    <ref bean="SqlMapClient" />
+   </property>
+  </bean>
+
+</beans>

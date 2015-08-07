@@ -1,0 +1,118 @@
+.gisdetail_table{
+	width:100%;
+	border-collapse: collapse;
+    border-spacing: 0;
+    table-layout:fixed; 
+	overflow:hidden;
+}
+.gisdetail_table tr th {
+    background: #ffffff;
+    height: 20px;
+    line-height: 20px;
+    text-align: right;
+    cursor: pointer;
+    font-size:13px;
+    width:80px;
+    overflow:hidden;
+	text-overflow:ellipsis;
+}
+.gisdetail_table tr td {
+    line-height: 20px;
+    line-height: 20px;
+    font-size:13px;
+    cursor: pointer;
+    padding:5px;
+    background: #ffffff;
+    overflow:hidden;
+	text-overflow:ellipsis;
+	width:210px;
+}
+.singleresult{
+	margin-top:10px;
+	width:300px;
+}
+.gistext{
+	outline:none;
+	background-color: #eef8ff;
+    border: 1px solid #d5dce2;
+    border-radius: 5px;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+}
+.gisselect{
+	outline:none;
+	background-color: #eef8ff;
+    border: 1px solid #d5dce2;
+    border-radius: 5px;
+    font-size: 13px;
+    height: 33px;
+    line-height: 33px;
+    padding-left: 10px;
+}
+.gisselect option{
+    font-size: 13px;
+    padding-left: 10px;
+}
+.gisbtn {
+	background: none repeat scroll 0 0 #36A9E1;
+	border: medium none;
+	border-radius: 5px;
+	color: #FFFFFF;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 15px;
+	font-weight:bold;
+	line-height: 1.5;
+	margin: 5px 0;
+	padding: 5px;
+	outline:none;
+}
+.radiospan{
+	font-size:13px;
+}
+#searchResult{
+	height:810px;
+	overflow:auto;
+}
+#SelectData{
+	height:160px;
+}
+#bottomDivContainer{
+	height:140px;
+	margin-top:20px;
+}
+#searchInput{
+	margin-top:10px;
+	height:80px;
+}
+.gislogo{
+	background:url("../images/header/gislogo.png");
+	width:264px;
+	height:71px;
+	position:absolute;
+	top:10px;
+	left:100px;
+	z-index:99999;
+}
+.zonechefanglink{
+    background: url("../images/chefang.png") no-repeat;
+    padding-left:35px;
+    color: #e9f2f7;
+    font-size: 14px;
+    width:16px;
+    height:16px;
+    color: #0088cc;
+    text-decoration: none;
+}
+.zonebufanglink{
+    background: url("../images/bufang.png") no-repeat;
+    padding-left:35px;
+    color: #e9f2f7;
+    font-size: 14px;
+    width:16px;
+    height:16px;
+    color: #0088cc;
+    text-decoration: none;
+}
